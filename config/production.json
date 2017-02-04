@@ -1,0 +1,19 @@
+{
+  "database-configuration": {
+    "host": "localhost",
+    "user": "user",
+    "pass": "pass",
+    "name": "dbName"
+  },
+
+  "oauthCredentials": {
+    "google": {
+        "id": "<>",
+        "secret": "<>"
+    }
+  },
+
+  "oauthCallbacks": {
+    "googleCallbackUrl"  : "http://localhost:5000/callback/google"
+  }
+}
