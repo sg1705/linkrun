@@ -12,7 +12,7 @@ var passport      = require('passport');
 var google        = require('googleapis');
 var youtube       =  google.youtube('v3');
 
-var GoogleStrategy  = require('passport-google-oauth2').Strategy;
+var GoogleStrategy  = require('passport-google-oauth20').Strategy;
 
 var app = express();
 
@@ -34,7 +34,20 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(cookieParser());
 
+
+
+
 app.use(express.static(path.join(__dirname, 'dist')));
+
+
+app.get("/", isLoggedIn, function(req, res, next) {
+  res.sendFile(path.join(__dirname, 'dist/main.html'));
+  //res.render('index');
+});
+
+
+
+
 
 // app.get('/data.json', function (req, res, next) {
 //   youtube.search.list({
@@ -68,17 +81,33 @@ app.use(express.static(path.join(__dirname, 'dist')));
  * Assumes you've inputted your OAuth service credentials in the
  * /config/default.json or production file as necessary.
  */
+
+// used to serialize the user for the session
+passport.serializeUser(function(user, done) {
+    console.log('serialize user');
+    done(null, user);
+});
+
+// used to deserialize the user
+passport.deserializeUser(function(id, done) {
+    console.log('deserializing');
+    done(null, id);
+});
+
+
 passport.use(
 
   new GoogleStrategy({
     clientID         : config.get('oauthCredentials.google.id'),
     clientSecret     : config.get('oauthCredentials.google.secret'),
     callbackURL      : config.get('oauthCallbacks.googleCallbackUrl'),
-    passReqToCallback: true
+    passReqToCallback: true,
+
   },
     
   function(request, accessToken, refreshToken, profile, done) {
-      console.log(JSON.stringify(profile));
+      console.log(refreshToken);
+      return done(null, profile);
   })
 
 ); // end passport.use()
@@ -86,22 +115,37 @@ passport.use(
 
 
 app.get('/google',
-  passport.authenticate('google', { scope: ['email'], accessType: 'offline'}
+  passport.authenticate('google', 
+  { scope: ['email'], 
+    accessType: 'offline',
+    }
 ));
 
 
-// app.use('*', function (req, res) {
-//   return res.sendFile(path.join(__dirname, 'dist/index.html'));
-// });
 
 
 
 
 app.get(config.get('oauthCallbacks.googleCallbackUri'), 
-  passport.authenticate('google', { failureRedirect: '/login' }),
-  function(req, res) {
-    res.redirect('/');
-  });
+    passport.authenticate('google', { 
+      successRedirect: '/',
+      failureRedirect: '/login'}),
+    function(req, res) {
+        console.log('authenticated');
+        res.redirect('/');
+})
+
+/**
+ * Check if user is authenticated
+ */
+app.use(function(req,res, next) {
+    console.log('generic use');
+    isLoggedIn(req,res, next);
+});
+
+
+
+
 
 
 
@@ -123,5 +167,18 @@ if (module === require.main) {
     console.log('Press Ctrl+C to quit.');
   });
 }
+
+
+function isLoggedIn(req, res, next) {
+    // if user is authenticated in the session, carry on
+        console.log('checking if logged in');
+
+    if (req.isAuthenticated())
+        return next();
+
+    // if they aren't redirect them to the home page
+    res.redirect('/google');
+}
+
 
 // module.exports = app;
