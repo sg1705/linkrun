@@ -138,15 +138,11 @@ app.get(config.get('oauthCallbacks.googleCallbackUri'),
 /**
  * Check if user is authenticated
  */
-app.use(function(req,res, next) {
-    console.log('generic use');
+app.use("/:gourl",function(req,res, next) {
+    console.log(req.params.gourl);
+    session.gourl = req.params.gourl;
     isLoggedIn(req,res, next);
 });
-
-
-
-
-
 
 
 // Basic error logger/handler
@@ -173,8 +169,12 @@ function isLoggedIn(req, res, next) {
     // if user is authenticated in the session, carry on
         console.log('checking if logged in');
 
-    if (req.isAuthenticated())
+    if (req.isAuthenticated()) {
+        console.log('user is authenticated');
         return next();
+    }
+
+        
 
     // if they aren't redirect them to the home page
     res.redirect('/google');
