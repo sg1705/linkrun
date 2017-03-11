@@ -1,7 +1,7 @@
 'use strict';
 
 var errorHandler;
-var config          = require('config');
+var config        = require('config');
 var path          = require('path');
 var express       = require('express');
 var bodyParser    = require('body-parser');
@@ -10,7 +10,7 @@ var path          = require('path');
 var cookieParser  = require('cookie-parser');
 var passport      = require('passport');
 var google        = require('googleapis');
-var youtube       =  google.youtube('v3');
+var youtube       = google.youtube('v3');
 
 var GoogleStrategy  = require('passport-google-oauth20').Strategy;
 
@@ -37,12 +37,11 @@ app.use(cookieParser());
 
 
 
-app.use(express.static(path.join(__dirname, 'dist')));
+app.use(express.static(path.join(__dirname, '../dist')));
 
 
 app.get("/", isLoggedIn, function(req, res, next) {
-  res.sendFile(path.join(__dirname, 'dist/main.html'));
-  //res.render('index');
+  res.sendFile(path.join(__dirname, '../dist/main.html'));
 });
 
 

@@ -1,9 +1,20 @@
 # Linkrun
 
-This project was generated with [angular-cli](https://github.com/angular/angular-cli) version 1.0.0-beta.26.
+Linkrun is a large Angular2 app running on a nodejs server.
+
+1. `src` directory has code for client
+2. `server` directory has nodejs code for server
+3. `config` has configuration for both dev and production.
+
 
 ## Development server
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Two terminal windows need to be open to run the development environment.
+
+1. Run `npm run dev` to start the server on `http://localhost:8090/`
+2. Run `npm run build:watch` to start the server that will watch any changes in client app and run the build.
+
+
+# Angular Commands
 
 ## Code scaffolding
 
