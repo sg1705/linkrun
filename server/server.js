@@ -44,6 +44,9 @@ app.get("/", isLoggedIn, function(req, res, next) {
   res.sendFile(path.join(__dirname, '../dist/main.html'));
 });
 
+app.get("/login", function(req, res, next) {
+  res.sendFile(path.join(__dirname, '../dist/main.html'));
+});
 
 
 
@@ -176,7 +179,7 @@ function isLoggedIn(req, res, next) {
         
 
     // if they aren't redirect them to the home page
-    res.redirect('/google');
+    res.redirect('/login');
 }
 
 
