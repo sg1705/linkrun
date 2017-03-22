@@ -8,7 +8,6 @@ var bodyParser    = require('body-parser');
 var session       = require('express-session');
 var path          = require('path');
 var cookieParser  = require('cookie-parser');
-var passport      = require('passport');
 var google        = require('googleapis');
 var youtube       = google.youtube('v3');
 
