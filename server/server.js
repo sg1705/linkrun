@@ -12,11 +12,6 @@ var passport      = require('passport');
 var google        = require('googleapis');
 var youtube       = google.youtube('v3');
 
-var GoogleStrategy  = require('passport-google-oauth20').Strategy;
-var Passport = require('./passport.js');
-
-
-
 /**
  * Setup Google Cloud monitoring
  */
@@ -29,6 +24,18 @@ if (process.env.GCLOUD_PROJECT) {
   require('@google/cloud-debug').start();
 }
 
+var OAuth2 = google.auth.OAuth2;
+var oauth2Client = new OAuth2(
+    config.get('oauthCredentials.google.id'),
+    config.get('oauthCredentials.google.secret'),
+    config.get('oauthCallbacks.googleCallbackUrl')
+);
+var googleAuthUrl = oauth2Client.generateAuthUrl({
+    access_type: 'offline',
+    scope: ['https://www.googleapis.com/auth/userinfo.email']
+});
+
+
 
 
 /**
@@ -38,10 +45,7 @@ var app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(session({ secret: 'my_precious' }));
-app.use(passport.initialize());
-app.use(passport.session());
-app.use(cookieParser());
-new Passport().setupPassport();
+app.use(cookieParser('my-precious'));
 
 
 
@@ -51,41 +55,46 @@ new Passport().setupPassport();
 app.use(express.static(path.join(__dirname, '../dist')));
 
 
+/**
+ * Go to the url requested
+ */
 app.get("/", isLoggedIn, function(req, res, next) {
-  res.sendFile(path.join(__dirname, '../dist/main.html'));
+  session.gourl = '/';
+  console.log(getRouteUrl());
+  res.sendFile(path.join(__dirname, '../dist/main.html'));  
 });
+
+
+
 
 app.get("/login", function(req, res, next) {
   res.sendFile(path.join(__dirname, '../dist/main.html'));
 });
 
+app.get('/login/google', function(req,res, next) {
+  res.redirect(googleAuthUrl+'&approval_prompt=force')
+});
 
-app.get('/login/google',
-  passport.authenticate('google', 
-  { scope: ['email'], 
-    accessType: 'offline',
-    }
-));
-
-app.get(config.get('oauthCallbacks.googleCallbackUri'), 
-    passport.authenticate('google', { 
-      successRedirect: '/',
-      failureRedirect: '/login'}),
-    function(req, res) {
-        console.log('authenticated');
-        res.redirect('/');
-})
-
-/**
- * Check if user is authenticated
- */
-app.use("/:gourl",function(req,res, next) {
-    console.log(req.params.gourl);
-    session.gourl = req.params.gourl;
-
-    isLoggedIn(req,res, () => {
-      res.redirect(301, 'http://www.cnn.com');
+app.get(
+  config.get('oauthCallbacks.googleCallbackUri'), 
+  function(req,res,next) {
+    var code = req.query.code;
+    if (code != null) {
+      oauth2Client.getToken(code, function (err, tokens) {
+      if (!err) {
+        oauth2Client.setCredentials(tokens);
+        console.log('settting cookie', tokens.refresh_token);
+        res.cookie('refresh_token', tokens.refresh_token , {signed: true})
+        res.redirect(301,getRouteUrl());
+      }
     });
+    }
+  });
+
+
+app.get("/:gourl", setRouteUrl, isLoggedIn, function(req, res, next) {
+  console.log(getRouteUrl());
+  res.redirect(301, 'http://www.cnn.com');
 });
 
 
@@ -111,13 +120,37 @@ if (module === require.main) {
  * Check if user is logged in
  */
 function isLoggedIn(req, res, next) {
-   console.log('checking if logged in');
-    if (req.isAuthenticated()) {
-        console.log('user is authenticated');
-        return next();
-    }
+  if (isUserLoggedIn(req)) {
+    console.log('user is authenticated');
+    return next();
+  }
     res.redirect('/login');
 }
 
+function isUserLoggedIn(req) {
+  var refresh_token = req.signedCookies.refresh_token;
+  console.log('retrieved cookie', refresh_token);
+  if (refresh_token != null) {
+    return true;
+  }
+  return false;
+}
+
+function getRouteUrl() {
+  var routeUrl = '/';
+  if ((session.gourl == null) || (session.gourl == '/')) {
+    routeUrl = '/';
+  } else {
+    routeUrl = '/'+session.gourl;
+  }
+  console.log('route to:', routeUrl);
+  return routeUrl;
+}
+
+function setRouteUrl(req, res, next) {
+  session.gourl = req.params.gourl;
+  console.log('setting path:', session.gourl);
+  next();
+}
 
 // module.exports = app;

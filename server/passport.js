@@ -15,7 +15,7 @@ class Passport {
                 clientID         : config.get('oauthCredentials.google.id'),
                 clientSecret     : config.get('oauthCredentials.google.secret'),
                 callbackURL      : config.get('oauthCallbacks.googleCallbackUrl'),
-                passReqToCallback: true,
+                passReqToCallback: true
 
             },            
             function(request, accessToken, refreshToken, profile, done) {
@@ -31,7 +31,7 @@ class Passport {
         });
         // used to deserialize the user
         passport.deserializeUser(function(id, callback) {
-            console.log('deserializing', id);
+            console.log('deserializing');
             callback(null, id);
         });
     }
