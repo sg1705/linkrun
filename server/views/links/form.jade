@@ -1,0 +1,20 @@
+
+// [START form]
+extends ../base.jade
+
+block content
+  h3 #{action} link
+  form(method="POST")
+    .form-group
+      label(for="gourl") GoURL
+      input.form-control(type="text", name="gourl", id="gourl", value=link.gourl)
+    .form-group
+      label(for="url") URL
+      input.form-control(type="text", name="url", id="url", value=link.url)
+    .form-group
+      label(for="description") Description
+      input.form-control(type="text", name="description", id="description", value=link.description)
+    .form-group
+    button.btn.btn-success(type="submit") Save
+
+// [END form]

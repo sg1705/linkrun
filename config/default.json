@@ -1,9 +1,7 @@
 {
-  "database-configuration": {
-    "host": "localhost",
-    "user": "user",
-    "pass": "pass",
-    "name": "dbName"
+  "db": {
+    "GCLOUD_PROJECT": "gae-test-157202",
+    "DATA_BACKEND": "datastore"
   },
 
   "oauthCredentials": {

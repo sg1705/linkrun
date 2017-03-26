@@ -1,0 +1,22 @@
+
+extends ../base.jade
+
+block content
+  h3 Link
+    small
+
+  .btn-group
+    a(href="/links/#{link.id}/edit", class='btn btn-primary btn-sm')
+      i.glyphicon.glyphicon-edit
+      span  Edit link
+    a(href="/links/#{link.id}/delete", class='btn btn-danger btn-sm')
+      i.glyphicon.glyphicon-trash
+      span  Delete link
+
+  .media
+    .media-body
+      h4= link.gourl
+        | &nbsp;
+        small= link.publishedDate
+      h5 #{link.url||'unknown'}
+      p= link.description

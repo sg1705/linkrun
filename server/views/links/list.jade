@@ -1,0 +1,25 @@
+
+extends ../base.jade
+
+block content
+  h3 links
+
+  a(href="/links/add", class='btn btn-success btn-sm')
+    i.glyphicon.glyphicon-plus
+    span  Add link
+
+  each link in links
+    .media
+      a(href="/links/#{link.id}")
+        .media-body
+          h4= link.gourl
+          p= link.url
+
+  if !links.length
+    p No links found.
+
+  if nextPageToken
+    nav
+      ul.pager
+        li
+          a(href="?pageToken=#{encodeURIComponent(nextPageToken)}") More
