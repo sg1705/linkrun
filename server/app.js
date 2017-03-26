@@ -46,7 +46,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(session({ secret: 'my_precious' }));
 app.use(cookieParser('my-precious'));
 
-
+console.log("calling app.js");
 
 /**
  * Express Routes
@@ -90,6 +90,16 @@ app.get(
     }
   });
 
+// links
+app.use('/links', setRouteUrl, isLoggedIn, require('./links/crud'));
+app.use('/api/links', require('./links/api'));
+
+// users
+app.use('/api/users', require('./users/api'));
+
+//Views
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'jade');
 
 app.get("/:gourl", setRouteUrl, isLoggedIn, function(req, res, next) {
   console.log(getRouteUrl());
@@ -152,4 +162,4 @@ function setRouteUrl(req, res, next) {
   next();
 }
 
-// module.exports = app;
+module.exports = app;
