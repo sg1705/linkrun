@@ -52,15 +52,18 @@ app.use(cookieParser('my-precious'));
 app.use(express.static(path.join(__dirname, '../dist')));
 
 
+
 /**
  * Go to the url requested
  */
 app.get("/", isLoggedIn, function(req, res, next) {
   session.gourl = '/';
   console.log(getRouteUrl());
-  res.sendFile(path.join(__dirname, '../dist/main.html'));  
+  // res.sendFile(path.join(__dirname, '../dist/main.html'));
+  res.redirect('/links');
 });
 
+// links
 
 
 
@@ -88,9 +91,6 @@ app.get(
     }
   });
 
-// links
-app.use('/links', setRouteUrl, isLoggedIn, require('./links/crud'));
-app.use('/api/links', require('./links/api'));
 
 // users
 app.use('/api/users', require('./users/api'));
@@ -98,6 +98,10 @@ app.use('/api/users', require('./users/api'));
 //Views
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
+
+app.use('/links', isLoggedIn, require('./links/crud'));
+app.use('/api/links', require('./links/api'));
+
 
 app.get("/:gourl", setRouteUrl, isLoggedIn, function(req, res, next) {
   console.log(getRouteUrl());
