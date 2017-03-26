@@ -46,8 +46,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(session({ secret: 'my_precious' }));
 app.use(cookieParser('my-precious'));
 
-console.log("calling app.js");
-
 /**
  * Express Routes
  */
