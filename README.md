@@ -12,7 +12,20 @@ Two terminal windows need to be open to run the development environment.
 
 1. Run `npm run dev` to start the server on `http://localhost:8090/`
 2. Run `npm run build:watch` to start the server that will watch any changes in client app and run the build.
+3. App Engine will run `npm start`, so make sure that npm start is working
+4. `gcloud app deploy`
+5. Launch your browser and view the app at http://[YOUR_PROJECT_ID].appspot.com, by running the following command:
+`gcloud app browse`
 
+# Deploying on Google Cloud
+
+1. List projects `gcloud config list`
+2. Set Project `gcloud config set project [YOUR_PROJECT_ID]`
+3. If you have installed the Google Cloud SDK on your machine and 
+have run the command `gcloud auth application-default login`, your identity can be used as a proxy to test code calling APIs from that machine.
+([see|https://developers.google.com/identity/protocols/application-default-credentials])
+
+4. Run `gcloud app deploy`
 
 # Angular Commands
 

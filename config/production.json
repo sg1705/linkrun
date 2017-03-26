@@ -1,19 +1,23 @@
 {
-  "database-configuration": {
-    "host": "localhost",
-    "user": "user",
-    "pass": "pass",
-    "name": "dbName"
+  "db": {
+    "GCLOUD_PROJECT": "gae-test-157202",
+    "DATA_BACKEND": "datastore"
   },
+
+  "server": {
+    "port": "8090"
+  },
+
 
   "oauthCredentials": {
     "google": {
-        "id": "<>",
-        "secret": "<>"
+        "id": "960987803647-8vlrh7jbk9e43v7huhsnc5h7qi7gv0ra.apps.googleusercontent.com",
+        "secret": "pqFLDPkJ_GAFFHN6_cXzUOeB"
     }
   },
 
   "oauthCallbacks": {
-    "googleCallbackUrl"  : "http://localhost:5000/callback/google"
+    "googleCallbackUrl"  : "https://gae-test-157202.appspot.com/oauthcallback/google",
+    "googleCallbackUri"  : "/oauthcallback/google"
   }
 }

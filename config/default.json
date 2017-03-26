@@ -4,6 +4,10 @@
     "DATA_BACKEND": "datastore"
   },
 
+  "server": {
+    "port": "8090"
+  },
+
   "oauthCredentials": {
     "google": {
         "id": "960987803647-8vlrh7jbk9e43v7huhsnc5h7qi7gv0ra.apps.googleusercontent.com",

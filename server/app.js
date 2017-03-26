@@ -116,7 +116,7 @@ if (process.env.NODE_ENV === 'production') {
 
 if (module === require.main) {
   // Start the server
-  var server = app.listen(process.env.port || 8090, function () {
+  var server = app.listen(config.get('server.port') || 8080, function () {
     var port = server.address().port;
     console.log('App listening on port %s', port);
     console.log('Press Ctrl+C to quit.');
