@@ -27,6 +27,11 @@ const kind = 'User';
 //     id: id,
 //     property: value
 //   }
+
+function setKind (kind_Name) {
+  kind = kind_Name;
+}
+
 function fromDatastore (obj) {
   obj.data.id = obj.key.id;
   return obj.data;
@@ -107,7 +112,7 @@ function update (id, data, cb) {
 
   const entity = {
     key: key,
-    data: toDatastore(data, ['description'])
+    data: toDatastore(data, ['picture'])
   };
 
   ds.save(
@@ -149,6 +154,7 @@ function _delete (id, cb) {
 
 // [START exports]
 module.exports = {
+  setKind,
   create,
   read,
   update,
