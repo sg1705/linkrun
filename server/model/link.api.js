@@ -8,7 +8,7 @@ const config = require('config');
 function getModel () {
   return require(`./model-${config.get('db.DATA_BACKEND')}`);
 }
-
+getModel().setKind("Link");
 const router = express.Router();
 
 // Automatically parse request body as JSON

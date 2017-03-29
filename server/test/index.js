@@ -11,7 +11,7 @@ describe(`${config.test}/`, () => {
   //   }).timeout(120 * 1000);
   // }
   //require(`./app.test`);
-  describe(`server/links/`, () => {
+  describe(`model/`, () => {
     const appConfig = require(`config`);
     const DATA_BACKEND = appConfig.get(`db.DATA_BACKEND`);
     console.log(DATA_BACKEND);
@@ -20,7 +20,7 @@ describe(`${config.test}/`, () => {
       //require(`./crud.test`)(`datastore`);
     }
   });
-  describe(`server/users/`, () => {
+  describe(`model/`, () => {
     const appConfig = require(`config`);
     const DATA_BACKEND = appConfig.get(`db.DATA_BACKEND`);
     if (DATA_BACKEND === `datastore` || process.env.TEST_DATASTORE) {

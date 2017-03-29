@@ -12,8 +12,8 @@ var google        = require('googleapis');
 var youtube       = google.youtube('v3');
 var oauth2        = google.oauth2('v2');
 var OAuth2        = google.auth.OAuth2;
-var userService   = require('./users/user.js');
-var orgService    = require('./users/org.js');
+var userService   = require('./model/user.js');
+var orgService    = require('./model/org.js');
 
 
 /**
@@ -120,14 +120,14 @@ app.get(
 
 
 // users
-app.use('/api/users', require('./users/api'));
+app.use('/api/users', require('./model/user.api'));
 
 //Views
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-app.use('/links', isLoggedIn, require('./links/crud'));
-app.use('/api/links', require('./links/api'));
+app.use('/links', isLoggedIn, require('./model/crud'));
+app.use('/api/links', require('./model/link.api'));
 
 
 app.get("/:gourl", setRouteUrl, isLoggedIn, function(req, res, next) {
