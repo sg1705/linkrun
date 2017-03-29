@@ -3,19 +3,20 @@
 
 const config = require('config');
 
-getModel () {
+function getModel () {
   return require(`./model-${config.get('db.DATA_BACKEND')}`);
 }
+
 class User {
   
-  User {
+  constructor() {
     getModel().setKind("User");
   }
 
   /**
    * Create a new user.
    */
-  createUser(orgid, refresh_token, email, fName, lName, picture, cb) {
+  createUser(orgId, refresh_token, email, fName, lName, picture, cb) {
     var userData = {};
     userData["orgId"] = orgId;
     userData["refresh_token"] = refresh_token;
@@ -52,7 +53,7 @@ class User {
   /**
    * Delete a user.
    */
-  deleteUser(uid, cb) {}
+  deleteUser(uid, cb) {
     getModel().delete(uid, cb);
   }
 }

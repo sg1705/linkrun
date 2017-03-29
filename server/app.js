@@ -10,6 +10,11 @@ var path          = require('path');
 var cookieParser  = require('cookie-parser');
 var google        = require('googleapis');
 var youtube       = google.youtube('v3');
+var oauth2        = google.oauth2('v2');
+var OAuth2        = google.auth.OAuth2;
+var userService   = require('./users/user.js');
+var orgService    = require('./users/org.js');
+
 
 /**
  * Setup Google Cloud monitoring
@@ -23,7 +28,7 @@ if (process.env.GCLOUD_PROJECT) {
   require('@google/cloud-debug').start();
 }
 
-var OAuth2 = google.auth.OAuth2;
+
 var oauth2Client = new OAuth2(
     config.get('oauthCredentials.google.id'),
     config.get('oauthCredentials.google.secret'),
@@ -35,7 +40,7 @@ var googleAuthUrl = oauth2Client.generateAuthUrl({
 });
 
 
-
+console.log(oauth2.userinfo.get);
 
 /**
  * Setup Express
@@ -81,8 +86,30 @@ app.get(
     var code = req.query.code;
     if (code != null) {
       oauth2Client.getToken(code, function (err, tokens) {
+        console.log(tokens);
       if (!err) {
         oauth2Client.setCredentials(tokens);
+
+        oauth2.userinfo.get({
+          auth: oauth2Client
+        }, function(err, response) {
+          console.log('org is:', response.hd);
+
+          new orgService().createOrg(response.hd, 'google', function(err, entity) {
+            if (!err) {
+              console.log('org entity', entity);
+              console.log('response', response);
+              // create user
+              new userService().createUser(entity.id, tokens.refresh_token, response.email, response.given_name, 
+                response.family_name,
+                response.picture, 
+                function(err, userEntity) {
+                  console.log('user created', entity);
+                });
+            }
+          })
+          
+        })
         console.log('settting cookie', tokens.refresh_token);
         res.cookie('refresh_token', tokens.refresh_token , {signed: true})
         res.redirect(301,getRouteUrl());

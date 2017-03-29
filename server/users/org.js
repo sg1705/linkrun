@@ -3,13 +3,13 @@
 
 const config = require('config');
 
-getModel () {
+function getModel () {
     return require(`./model-${config.get('db.DATA_BACKEND')}`);
 }
 
 class Org {
   
-  Org {
+  constructor() {
     getModel().setKind("Org");
   }
 
@@ -42,10 +42,15 @@ class Org {
     getModel().read(orgid, cb);
   }
 
+  getOrgByName(orgName, cb) {
+    getModel().read
+  }
+
+
   /**
    * Delete a Org.
    */
-  deleteOrg(orgid, cb) {}
+  deleteOrg(orgid, cb) {
     getModel().delete(orgid, cb);
   }
 }

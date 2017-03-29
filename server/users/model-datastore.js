@@ -8,7 +8,7 @@ const config = require('config');
 const ds = Datastore({
   projectId: config.get('db.GCLOUD_PROJECT')
 });
-const kind = 'User';
+let kind = 'User';
 // [END config]
 
 // Translates from Datastore's entity format to
