@@ -147,6 +147,20 @@ function read (id, cb) {
   });
 }
 
+function readByColumn (columnName, columnValue, cb) {
+  const q = ds.createQuery([kind])
+  .filter(columnName, '=', columnValue);
+  ds.runQuery(q, (err, entities, nextQuery) => {
+    if (err) {
+      cb(err);
+      return;
+    }
+    const hasMore = nextQuery.moreResults !== Datastore.NO_MORE_RESULTS ? nextQuery.endCursor : false;
+    cb(null, entities.map(fromDatastore), hasMore);
+  });
+}
+
+
 function _delete (id, cb) {
   const key = ds.key([kind, parseInt(id, 10)]);
   ds.delete(key, cb);

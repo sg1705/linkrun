@@ -56,6 +56,14 @@ class User {
   deleteUser(uid, cb) {
     getModel().delete(uid, cb);
   }
+
+  /**
+   * Retrieve a user by column
+   */
+  readByColumn (columnName, columnValue, cb) {
+    getModel().readByColumn (columnName, columnValue, cb);
+  }
+
 }
 
 module.exports = User;

@@ -53,6 +53,13 @@ class Org {
   deleteOrg(orgid, cb) {
     getModel().delete(orgid, cb);
   }
+ 
+  /**
+   * Retrieve a Org by column
+   */
+  readByColumn (columnName, columnValue, cb) {
+    getModel().readByColumn (columnName, columnValue, cb);
+  }
 }
 
 module.exports = Org;
