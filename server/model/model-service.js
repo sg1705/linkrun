@@ -211,15 +211,5 @@ class ModelService {
 }
 
 // [START exports]
-module.exports = ModelService
-
-// function() {
-//   this.setKind = setKind,
-//   this.create = create,
-//   this.read = read,
-//   this.update = update,
-//   this.readByColumn = readByColumn
-//   this.delete = _delete,
-//   this.list = list
-// };
+module.exports = ModelService;
 // [END exports]

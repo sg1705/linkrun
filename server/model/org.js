@@ -3,19 +3,12 @@
 
 const config = require('config');
 
-// function getModel () {
-//     var modelService = require(`./model-service.js`);
-//     return new modelService().setKind('Org');
-// }
-
 class Org {
   
   constructor() {
     var ModelService = require(`./model-service.js`);
     console.log(ModelService);
     this.modelService = new ModelService('Org')
-    // return new modelService().setKind('User');      
-    // getModel().setKind("User");
   }
 
   getModel () {

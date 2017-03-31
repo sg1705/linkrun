@@ -8,12 +8,7 @@ class User {
   
   constructor() {
     var ModelService = require(`./model-service.js`);
-    this.modelService = new ModelService('User');
-    
-    // var modelService = require(`./model-service.js`);
-    // this.modelService = new modelService().setKind('User');      
-    // return new modelService().setKind('User');      
-    // getModel().setKind("User");
+    this.modelService = new ModelService('User');   
   }
 
   getModel () {
