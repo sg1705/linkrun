@@ -1,19 +1,19 @@
 'use strict';
 
 var errorHandler;
-var config        = require('config');
-var path          = require('path');
-var express       = require('express');
-var bodyParser    = require('body-parser');
-var session       = require('express-session');
-var path          = require('path');
-var cookieParser  = require('cookie-parser');
-var google        = require('googleapis');
-var youtube       = google.youtube('v3');
-var oauth2        = google.oauth2('v2');
-var OAuth2        = google.auth.OAuth2;
-var userService   = require('./model/user.js');
-var orgService    = require('./model/org.js');
+var config = require('config');
+var path = require('path');
+var express = require('express');
+var bodyParser = require('body-parser');
+var session = require('express-session');
+var path = require('path');
+var cookieParser = require('cookie-parser');
+var google = require('googleapis');
+var youtube = google.youtube('v3');
+var oauth2 = google.oauth2('v2');
+var OAuth2 = google.auth.OAuth2;
+var UserService = require('./model/user.js');
+var OrgService = require('./model/org.js');
 
 
 /**
@@ -30,13 +30,13 @@ if (process.env.GCLOUD_PROJECT) {
 
 
 var oauth2Client = new OAuth2(
-    config.get('oauthCredentials.google.id'),
-    config.get('oauthCredentials.google.secret'),
-    config.get('oauthCallbacks.googleCallbackUrl')
+  config.get('oauthCredentials.google.id'),
+  config.get('oauthCredentials.google.secret'),
+  config.get('oauthCallbacks.googleCallbackUrl')
 );
 var googleAuthUrl = oauth2Client.generateAuthUrl({
-    access_type: 'offline',
-    scope: ['https://www.googleapis.com/auth/userinfo.email']
+  access_type: 'offline',
+  scope: ['https://www.googleapis.com/auth/userinfo.email']
 });
 
 
@@ -61,7 +61,7 @@ app.use(express.static(path.join(__dirname, '../dist')));
 /**
  * Go to the url requested
  */
-app.get("/", isLoggedIn, function(req, res, next) {
+app.get("/", isLoggedIn, function (req, res, next) {
   session.gourl = '/';
   console.log(getRouteUrl());
   // res.sendFile(path.join(__dirname, '../dist/main.html'));
@@ -72,49 +72,115 @@ app.get("/", isLoggedIn, function(req, res, next) {
 
 
 
-app.get("/login", function(req, res, next) {
+app.get("/login", function (req, res, next) {
   res.sendFile(path.join(__dirname, '../dist/main.html'));
 });
 
-app.get('/login/google', function(req,res, next) {
-  res.redirect(googleAuthUrl+'&approval_prompt=force')
+app.get('/login/google', function (req, res, next) {
+  res.redirect(googleAuthUrl + '&approval_prompt=force')
 });
 
+// app.get(
+//   config.get('oauthCallbacks.googleCallbackUri'), 
+//   function(req,res,next) {
+//     var code = req.query.code;
+//     if (code != null) {
+//       oauth2Client.getToken(code, function (err, tokens) {
+//         console.log(tokens);
+//       if (!err) {
+//         oauth2Client.setCredentials(tokens);
+
+//         oauth2.userinfo.get({
+//           auth: oauth2Client
+//         }, function(err, response) {
+//           console.log('org is:', response.hd);
+
+//           new orgService().createOrg(response.hd, 'google', function(err, entity) {
+//             if (!err) {
+//               console.log('org entity', entity);
+//               console.log('response', response);
+//               // create user
+//               new userService().createUser(entity.id, tokens.refresh_token, response.email, response.given_name, 
+//                 response.family_name,
+//                 response.picture, 
+//                 function(err, userEntity) {
+//                   console.log('user created', entity);
+//                 });
+//             }
+//           })
+
+//         })
+//         console.log('settting cookie', tokens.refresh_token);
+//         res.cookie('refresh_token', tokens.refresh_token , {signed: true})
+//         res.redirect(301,getRouteUrl());
+//       }
+//     });
+//     }
+//   });
+
+
 app.get(
-  config.get('oauthCallbacks.googleCallbackUri'), 
-  function(req,res,next) {
+  config.get('oauthCallbacks.googleCallbackUri'),
+  function (req, res, next) {
     var code = req.query.code;
     if (code != null) {
       oauth2Client.getToken(code, function (err, tokens) {
         console.log(tokens);
-      if (!err) {
-        oauth2Client.setCredentials(tokens);
+        if (!err) {
+          oauth2Client.setCredentials(tokens);
 
-        oauth2.userinfo.get({
-          auth: oauth2Client
-        }, function(err, response) {
-          console.log('org is:', response.hd);
+          oauth2.userinfo.get({
+            auth: oauth2Client
+          }, function (err, response) {
+            console.log('org is:', response.hd);
+            if (response.hd == '')
+              response.hd = response.email;
 
-          new orgService().createOrg(response.hd, 'google', function(err, entity) {
-            if (!err) {
-              console.log('org entity', entity);
-              console.log('response', response);
-              // create user
-              new userService().createUser(entity.id, tokens.refresh_token, response.email, response.given_name, 
-                response.family_name,
-                response.picture, 
-                function(err, userEntity) {
-                  console.log('user created', entity);
+            let orgService = new OrgService();
+            orgService.getOrgByName(response.hd).then((data) => {
+              console.log(data);
+              if (data.entities.length == 0) {
+                //org doesn't exist
+                console.log('org doesnt exist');
+                orgService.createOrg(response.hd, 'google').then((orgEntity) => {
+                  getUser(res, orgEntity, response, tokens).then((data) => {
+                    //route to next
+                    res.redirect(301,getRouteUrl());
+                  });
+                  
                 });
-            }
-          })
-          
-        })
-        console.log('settting cookie', tokens.refresh_token);
-        res.cookie('refresh_token', tokens.refresh_token , {signed: true})
-        res.redirect(301,getRouteUrl());
-      }
-    });
+              } else {
+                // org exists
+                let orgEntity = data.entities[0];
+                getUser(res, orgEntity, response, tokens).then((data) => {
+                  //route to next
+                  res.redirect(301,getRouteUrl());
+                });
+              }
+            });
+          });
+          //   //     , function(err, entity) {
+          //   //       if (!err) {
+          //   //         console.log('org entity', entity);
+          //   //         console.log('response', response);
+          //   //         // create user
+          //   //         new userService().createUser(entity.id, tokens.refresh_token, response.email, response.given_name, 
+          //   //           response.family_name,
+          //   //           response.picture, 
+          //   //           function(err, userEntity) {
+          //   //             console.log('user created', entity);
+          //   //           });
+          //   //       }
+          //   //     })
+
+          //   //   })
+          //   //   console.log('settting cookie', tokens.refresh_token);
+          //   //   res.cookie('refresh_token', tokens.refresh_token , {signed: true})
+          //   //   res.redirect(301,getRouteUrl());
+          //   // }
+          // });
+        }
+      });
     }
   });
 
@@ -130,7 +196,7 @@ app.use('/links', isLoggedIn, require('./model/crud'));
 app.use('/api/links', require('./model/link.api'));
 
 
-app.get("/:gourl", setRouteUrl, isLoggedIn, function(req, res, next) {
+app.get("/:gourl", setRouteUrl, isLoggedIn, function (req, res, next) {
   console.log(getRouteUrl());
   res.redirect(301, 'http://www.cnn.com');
 });
@@ -162,11 +228,11 @@ function isLoggedIn(req, res, next) {
     console.log('user is authenticated');
     return next();
   }
-    res.redirect('/login');
+  res.redirect('/login');
 }
 
 function isUserLoggedIn(req) {
-  var refresh_token = req.signedCookies.refresh_token;
+  var refresh_token = req.signedCookies.userid;
   console.log('retrieved cookie', refresh_token);
   if (refresh_token != null) {
     return true;
@@ -179,7 +245,7 @@ function getRouteUrl() {
   if ((session.gourl == null) || (session.gourl == '/')) {
     routeUrl = '/';
   } else {
-    routeUrl = '/'+session.gourl;
+    routeUrl = '/' + session.gourl;
   }
   console.log('route to:', routeUrl);
   return routeUrl;
@@ -190,5 +256,58 @@ function setRouteUrl(req, res, next) {
   console.log('setting path:', session.gourl);
   next();
 }
+
+function setCookie(res, userid) {
+  res.cookie('userid', userid, { signed: true });
+}
+
+function getUser(res, orgEntity, response, tokens) {
+
+  return new Promise((resolve, reject) => {
+    let userService = new UserService();
+    userService.readByColumn(
+        'email', 
+        response.email)
+      .then((userData) => {
+        console.log(userData);
+        if (userData.entities.length > 0) {
+          console.log('user exist');
+          //user exists
+          //update user
+          let userEntity = userData.entities[0];
+          userService.updateUser(
+              userEntity.id,
+              userEntity.orgId,
+              tokens.refresh_token,
+              userEntity.email,
+              userEntity.fName,
+              userEntity.lName,
+              userEntity.picture)
+            .then((entity) => {
+              //set cookie
+              setCookie(res, entity.id);
+              resolve(true);
+            });
+        } else {
+          //user doesn't exist create user
+          console.log('user doesnt exist');
+          userService.createUser(
+            orgEntity.id,
+            tokens.refresh_token,
+            response.email,
+            response.given_name,
+            response.family_name,
+            response.picture)
+          .then((entity) => {
+            //set cookie
+            setCookie(res, entity.id);
+            resolve(true);
+          })
+        }
+    });
+  })
+}
+
+
 
 module.exports = app;

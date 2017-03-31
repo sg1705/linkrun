@@ -3,20 +3,28 @@
 
 const config = require('config');
 
-function getModel () {
-  return require(`./model-${config.get('db.DATA_BACKEND')}`);
-}
 
 class User {
   
   constructor() {
-    getModel().setKind("User");
+    var ModelService = require(`./model-service.js`);
+    this.modelService = new ModelService('User');
+    
+    // var modelService = require(`./model-service.js`);
+    // this.modelService = new modelService().setKind('User');      
+    // return new modelService().setKind('User');      
+    // getModel().setKind("User");
   }
+
+  getModel () {
+    return this.modelService;
+  }
+
 
   /**
    * Create a new user.
    */
-  createUser(orgId, refresh_token, email, fName, lName, picture, cb) {
+  createUser(orgId, refresh_token, email, fName, lName, picture) {
     var userData = {};
     userData["orgId"] = orgId;
     userData["refresh_token"] = refresh_token;
@@ -25,13 +33,13 @@ class User {
     userData["lName"] = lName;
     userData["picture"] = picture;
     console.log("userData", userData);
-    getModel().create(userData, cb);
+    return this.getModel().create(userData);
   }
 
   /**
    * Update an existing user.
    */
-  updateUser(uid, orgid, refresh_token, email, fName, lName, picture, cb) {
+  updateUser(uid, orgId, refresh_token, email, fName, lName, picture) {
     var userData = {};
     userData["orgId"] = orgId;
     userData["refresh_token"] = refresh_token;
@@ -40,28 +48,28 @@ class User {
     userData["lName"] = lName;
     userData["picture"] = picture;
     console.log("userData", userData);
-    getModel().update (uid, userData, cb);
+    return this.getModel().update (uid, userData);
   }
 
   /**
    * Retrieve a user.
    */
-  getUser(uid, cb) {
-    getModel().read(uid, cb);
+  getUser(uid) {
+    return this.getModel().read(uid);
   }
 
   /**
    * Delete a user.
    */
-  deleteUser(uid, cb) {
-    getModel().delete(uid, cb);
+  deleteUser(uid) {
+    return this.getModel().delete(uid);
   }
 
   /**
    * Retrieve a user by column
    */
-  readByColumn (columnName, columnValue, cb) {
-    getModel().readByColumn (columnName, columnValue, cb);
+  readByColumn (columnName, columnValue) {
+    return this.getModel().readByColumn (columnName, columnValue);
   }
 
 }
