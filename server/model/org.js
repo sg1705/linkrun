@@ -3,62 +3,65 @@
 
 const config = require('config');
 
-function getModel () {
-    return require(`./model-${config.get('db.DATA_BACKEND')}`);
-}
-
 class Org {
   
   constructor() {
-    getModel().setKind("Org");
+    var ModelService = require(`./model-service.js`);
+    console.log(ModelService);
+    this.modelService = new ModelService('Org')
+  }
+
+  getModel () {
+    console.log(this.modelService);
+    return this.modelService;
   }
 
   /**
    * Create a new Org.
    */
-  createOrg(orgName, orgType, cb) {
+  createOrg(orgName, orgType) {
     var orgData = {};
-    orgData["orgNmae"] = orgName;
+    orgData["orgName"] = orgName;
     orgData["orgType"] = orgType;
     console.log("OrgData", orgData);
-    getModel().create(orgData, cb);
+    return this.modelService.create(orgData);
   }
   
   /**
    * Update an existing Org.
    */
-  updateOrg(orgid, orgName, orgType, cb) {
+  updateOrg(orgid, orgName, orgType) {
     var orgData = {};
-    orgData["orgNmae"] = orgName;
+    orgData["orgName"] = orgName;
     orgData["orgType"] = orgType;
     console.log("OrgData", orgData);
-    getModel().update (orgid, orgData, cb);
+    return this.modelService.update (orgid, orgData);
   }
 
   /**
    * Retrieve a Org.
    */
-  getOrg(orgid, cb) {
-    getModel().read(orgid, cb);
+  getOrg(orgid) {
+    return this.getModel().read(orgid);
   }
 
-  getOrgByName(orgName, cb) {
-    getModel().read
+  getOrgByName(orgName) {
+    return this.modelService.readByColumn('orgName', orgName);
   }
 
 
   /**
    * Delete a Org.
    */
-  deleteOrg(orgid, cb) {
-    getModel().delete(orgid, cb);
+  deleteOrg(orgid) {
+    return this.getModel().delete(orgid);
   }
  
   /**
    * Retrieve a Org by column
    */
-  readByColumn (columnName, columnValue, cb) {
-    getModel().readByColumn (columnName, columnValue, cb);
+  readByColumn (columnName, columnValue) {
+    return this.getModel().readByColumn (columnName, columnValue);
   }
 }
 
