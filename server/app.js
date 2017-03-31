@@ -69,9 +69,6 @@ app.get("/", isLoggedIn, function (req, res, next) {
 });
 
 // links
-
-
-
 app.get("/login", function (req, res, next) {
   res.sendFile(path.join(__dirname, '../dist/main.html'));
 });
@@ -79,45 +76,6 @@ app.get("/login", function (req, res, next) {
 app.get('/login/google', function (req, res, next) {
   res.redirect(googleAuthUrl + '&approval_prompt=force')
 });
-
-// app.get(
-//   config.get('oauthCallbacks.googleCallbackUri'), 
-//   function(req,res,next) {
-//     var code = req.query.code;
-//     if (code != null) {
-//       oauth2Client.getToken(code, function (err, tokens) {
-//         console.log(tokens);
-//       if (!err) {
-//         oauth2Client.setCredentials(tokens);
-
-//         oauth2.userinfo.get({
-//           auth: oauth2Client
-//         }, function(err, response) {
-//           console.log('org is:', response.hd);
-
-//           new orgService().createOrg(response.hd, 'google', function(err, entity) {
-//             if (!err) {
-//               console.log('org entity', entity);
-//               console.log('response', response);
-//               // create user
-//               new userService().createUser(entity.id, tokens.refresh_token, response.email, response.given_name, 
-//                 response.family_name,
-//                 response.picture, 
-//                 function(err, userEntity) {
-//                   console.log('user created', entity);
-//                 });
-//             }
-//           })
-
-//         })
-//         console.log('settting cookie', tokens.refresh_token);
-//         res.cookie('refresh_token', tokens.refresh_token , {signed: true})
-//         res.redirect(301,getRouteUrl());
-//       }
-//     });
-//     }
-//   });
-
 
 app.get(
   config.get('oauthCallbacks.googleCallbackUri'),
@@ -159,26 +117,6 @@ app.get(
               }
             });
           });
-          //   //     , function(err, entity) {
-          //   //       if (!err) {
-          //   //         console.log('org entity', entity);
-          //   //         console.log('response', response);
-          //   //         // create user
-          //   //         new userService().createUser(entity.id, tokens.refresh_token, response.email, response.given_name, 
-          //   //           response.family_name,
-          //   //           response.picture, 
-          //   //           function(err, userEntity) {
-          //   //             console.log('user created', entity);
-          //   //           });
-          //   //       }
-          //   //     })
-
-          //   //   })
-          //   //   console.log('settting cookie', tokens.refresh_token);
-          //   //   res.cookie('refresh_token', tokens.refresh_token , {signed: true})
-          //   //   res.redirect(301,getRouteUrl());
-          //   // }
-          // });
         }
       });
     }
@@ -307,7 +245,5 @@ function getUser(res, orgEntity, response, tokens) {
     });
   })
 }
-
-
 
 module.exports = app;
