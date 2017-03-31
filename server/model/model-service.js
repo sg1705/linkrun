@@ -104,7 +104,6 @@ class ModelService {
                     entities:entities.map(this.fromDatastore),
                     hasMore: hasMore
                 })
-                // cb(null, entities.map(fromDatastore), hasMore);
             });
         })
     }
@@ -187,7 +186,6 @@ class ModelService {
                     entities: entities.map(this.fromDatastore),
                     hasMore: hasMore
                 })
-                // cb(null, entities.map(fromDatastore), hasMore);
             });
 
         });
