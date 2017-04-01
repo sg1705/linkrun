@@ -14,6 +14,7 @@ var oauth2 = google.oauth2('v2');
 var OAuth2 = google.auth.OAuth2;
 var UserService = require('./model/user.js');
 var OrgService = require('./model/org.js');
+var LinkService = require('./model/link.js');
 
 
 /**
@@ -131,8 +132,29 @@ app.use('/api/links', require('./model/link.api'));
 
 
 app.get("/:gourl", setRouteUrl, isLoggedIn, function (req, res, next) {
-  console.log(getRouteUrl());
-  res.redirect(301, 'http://www.cnn.com');
+  let routeGoUrl = session.gourl;
+  if (routeGoUrl == null) {
+    //error condition
+    next();
+  }
+  // retrieve actual url
+  let linkService = new LinkService();
+  linkService.getLinkByGoLink(routeGoUrl, getOrgIdFromCookie(req))
+  .then(linkEntities => {
+    if (linkEntities.entities.length > 0) {
+      //retrieve the first one
+      let linkEntity = linkEntities.entities[0];
+      res.redirect(301, linkEntity.url);
+    } else {
+      res.redirect('/links');
+    }
+  })
+  .catch(err => {
+    console.log(err);
+    //error condition
+    //route to error page
+  })
+  
 });
 
 
@@ -176,6 +198,14 @@ function isUserIdSetInCookie(req) {
   }
   return false;
 }
+
+function getOrgIdFromCookie(req) {
+  var xsession = req.signedCookies[COOKIE_NAME];
+  if (xsession == null)
+    return null;
+  return xsession.orgId;
+}
+
 
 function getAccessToken(refresh_token) {
 

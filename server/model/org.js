@@ -12,7 +12,6 @@ class Org {
   }
 
   getModel () {
-    console.log(this.modelService);
     return this.modelService;
   }
 
