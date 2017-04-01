@@ -78,54 +78,46 @@ app.get('/login/google', function (req, res, next) {
   res.redirect(googleAuthUrl + '&approval_prompt=force')
 });
 
+
+
 app.get(
   config.get('oauthCallbacks.googleCallbackUri'),
   function (req, res, next) {
-    var code = req.query.code;
-    if (code != null) {
-      oauth2Client.getToken(code, function (err, tokens) {
-        console.log(tokens);
-        if (!err) {
-          oauth2Client.setCredentials(tokens);
-          oauth2.userinfo.get({
-            auth: oauth2Client
-          }, function (err, response) {
-            console.log('org is:', response.hd);
-            if (response.hd == '')
-              response.hd = response.email;
-
-            let orgService = new OrgService();
-            orgService
-              .getOrgByName(response.hd)
-              .then((data) => {
-                console.log(data);
-                if (data.entities.length == 0) {
-                  //org doesn't exist
-                  console.log('org doesnt exist');
-                  orgService
-                    .createOrg(response.hd, 'google')
-                    .then((orgEntity) => {
-                      getUser(res, orgEntity, response, tokens).then((data) => {
-                      //route to next
-                      res.redirect(301,getRouteUrl());
-                    });        
-                  });
-                } else {
-                  // org exists
-                  let orgEntity = data.entities[0];
-                  getUser(res, orgEntity, response, tokens)
-                  .then((data) => {
-                    //route to next
-                    res.redirect(301,getRouteUrl());
-                  });
-                }
-              });
-            });
-          }
-      });
-    }
+    let userInfo = null;
+    let orgService = new OrgService();
+    handleOAuth2Callback(req)
+    //retrieve userinfo from google
+    .then((userinfo) => {
+      userInfo = userinfo;
+      return orgService.getOrgByName(userinfo.hd);
+    })
+    //retrieve org
+    .then(orgEntities => {
+      console.log('org entities', orgEntities);
+      if (orgEntities.entities.length == 0) {
+        //org doesn't exist
+        console.log('org doesnt exist');
+        return orgService.createOrg(userInfo.hd, 'google')
+        .then((orgEntity) => {
+          return getUser(res, orgEntity, userInfo, userInfo.refresh_token);
+        });
+      } else {
+        // org exists
+        let orgEntity = orgEntities.entities[0];
+        return getUser(res, orgEntity, userInfo, userInfo.refresh_token);        
+      }   
+    })
+    //retrieve user
+    .then((data) => {
+      console.log('routing');
+      res.redirect(301,getRouteUrl());
+    })
+    //error
+    .catch(err => {
+      console.log('routing to err', err);
+      //return err
+    });
   });
-
 
 // users
 app.use('/api/users', require('./model/user.api'));
@@ -207,6 +199,13 @@ function setRouteUrl(req, res, next) {
   next();
 }
 
+/**
+ * Sets the cookie in the header
+ * 
+ * @param http response
+ * @param user id
+ * @param org id
+ */
 function setCookie(res, userId, orgId) {
   res.cookie(
     COOKIE_NAME, 
@@ -218,13 +217,14 @@ function setCookie(res, userId, orgId) {
 /**
  * Returns a user entity. If the user doesn't exist then it creates one
  * 
- * @param response
+ * @param http response
  * @param orgEntity
  * @param userinfo returned by Google
  * @param tokens returned by Google
+ * @return user entity
  * 
  */
-function getUser(res, orgEntity, response, tokens) {
+function getUser(res, orgEntity, response, refresh_token) {
   return new Promise((resolve, reject) => {
     let userService = new UserService();
     userService.readByColumn(
@@ -240,7 +240,7 @@ function getUser(res, orgEntity, response, tokens) {
           userService.updateUser(
               userEntity.id,
               userEntity.orgId,
-              tokens.refresh_token,
+              refresh_token,
               userEntity.email,
               userEntity.fName,
               userEntity.lName,
@@ -255,19 +255,57 @@ function getUser(res, orgEntity, response, tokens) {
           console.log('user doesnt exist');
           userService.createUser(
             orgEntity.id,
-            tokens.refresh_token,
+            refresh_token,
             response.email,
             response.given_name,
             response.family_name,
             response.picture)
           .then((entity) => {
             //set cookie
-            setCookie(res, entity.id, userEntity.orgId);
+            setCookie(res, entity.id, entity.orgId);
             resolve(true);
           })
         }
     });
   })
 }
+
+/**
+ * Handles OAuth callback
+ * 
+ * @param http request
+ * @return response from oauth2.userinfo
+ */
+function handleOAuth2Callback(req) {
+  return new Promise((resolve, reject) => {
+    var oauth2Client = new OAuth2(
+      config.get('oauthCredentials.google.id'),
+      config.get('oauthCredentials.google.secret'),
+      config.get('oauthCallbacks.googleCallbackUrl')
+    );    
+    var code = req.query.code;
+    if (code != null) {
+      oauth2Client
+        .getToken(code, function (err, tokens) {
+          if (!err) {
+            oauth2Client.setCredentials(tokens);
+            oauth2.userinfo.get({
+              auth: oauth2Client
+            }, function (err, response) {
+              if (err) {
+                reject(err)
+              } else {
+                //inject refresh token in userinfo
+                response.refresh_token = tokens.refresh_token;
+                resolve(response);
+              }
+            })
+          }
+        });
+      }
+  });
+}
+
+
 
 module.exports = app;
