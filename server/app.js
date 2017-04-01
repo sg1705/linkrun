@@ -75,7 +75,10 @@ app.get(
     //retrieve userinfo from google
     .then((userinfo) => {
       userInfo = userinfo;
-      return orgService.getOrgByName(userinfo.hd);
+      if (userInfo.hd == null) {
+        userInfo.hd = userInfo.email;
+      }
+      return orgService.getOrgByName(userInfo.hd);
     })
     //retrieve org
     .then(orgEntities => {
