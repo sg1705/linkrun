@@ -56,6 +56,7 @@ app.use(cookieParser('my-precious'));
  */
 app.use(express.static(path.join(__dirname, '../dist')));
 
+const COOKIE_NAME = 'xsession';
 
 
 /**
@@ -173,7 +174,7 @@ function isLoggedIn(req, res, next) {
 }
 
 function isUserIdSetInCookie(req) {
-  var xsession = req.signedCookies.xsession;
+  var xsession = req.signedCookies[COOKIE_NAME];
   if (xsession == null)
     return false;
   var userId = xsession.userId;
@@ -208,7 +209,7 @@ function setRouteUrl(req, res, next) {
 
 function setCookie(res, userId, orgId) {
   res.cookie(
-    'xsession', 
+    COOKIE_NAME, 
     { userId: userId,
       orgId:  orgId},
     { signed: true });
