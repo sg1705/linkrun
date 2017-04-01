@@ -3,20 +3,21 @@
 
 const config = require('config');
 
-function getModel () {
-  return require(`./model-${config.get('db.DATA_BACKEND')}`);
-}
-
 class Link {
   
   constructor() {
-    getModel().setKind("Link");
+    var ModelService = require(`./model-service.js`);
+    this.modelService = new ModelService('Link');   
+  }
+
+  getModel () {
+    return this.modelService;
   }
 
   /**
    * Create a new link.
    */
-  createLink(orgId, uid, gourl, url, description, cb) {
+  createLink(orgId, uid, gourl, url, description) {
     var linkData = {};
     linkData["orgId"] = orgId;
     linkData["uid"] = uid;
@@ -24,13 +25,13 @@ class Link {
     linkData["url"] = url;
     linkData["description"] = description;
     console.log("linkData", linkData);
-    getModel().create(linkData, cb);
+    return this.getModel().create(linkData);
   }
 
   /**
    * Update an existing link.
    */
-  updateLink(id, orgId, uid, gourl, url, description, cb) {
+  updateLink(id, orgId, uid, gourl, url, description) {
     var linkData = {};
     linkData["orgId"] = orgId;
     linkData["uid"] = uid;
@@ -38,28 +39,28 @@ class Link {
     linkData["url"] = url;
     linkData["description"] = description;
     console.log("linkData", linkData);
-    getModel().update (id, linkData, cb);
+    return this.getModel().update (id, linkData);
   }
 
   /**
    * Retrieve a link.
    */
-  getLink(id, cb) {
-    getModel().read(id, cb);
+  getLinkByGoLink(linkName, orgId) {
+    return this.getModel().readByColumns('gourl', linkName, 'orgId', orgId);
   }
 
   /**
    * Delete a link.
    */
-  deleteUser(id, cb) {
-    getModel().delete(id, cb);
+  deleteUser(id) {
+    return getModel().delete(id);
   }
 
   /**
    * Retrieve a link by column 
    */
-  readByColumn (columnName, columnValue, cb) {
-    getModel().readByColumn (columnName, columnValue, cb);
+  readByColumn (columnName, columnValue) {
+    return getModel().readByColumn (columnName, columnValue);
   }
 }
 

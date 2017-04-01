@@ -192,6 +192,30 @@ class ModelService {
     }
 
 
+    readByColumns(c1, v1, c2, v2) {
+        let ds = this.ds;
+        let kind = this.kind;
+        return new Promise((resolve, reject) => {
+            const q = 
+                ds.createQuery([kind])
+                .filter(c1, '=', v1)
+                .filter(c2, '=', v2);
+            ds.runQuery(q, (err, entities, nextQuery) => {
+                if (err) {
+                    reject(err);
+                }
+                const hasMore = nextQuery.moreResults !== Datastore.NO_MORE_RESULTS ? nextQuery.endCursor : false;
+                resolve({
+                    entities: entities.map(this.fromDatastore),
+                    hasMore: hasMore
+                })
+            });
+
+        });
+    }
+
+
+
     _delete (id, cb) {
         let ds = this.ds;
         let kind = this.kind;
