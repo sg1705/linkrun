@@ -1,21 +1,19 @@
 'use strict';
 
 var errorHandler;
-var config = require('config');
-var path = require('path');
-var express = require('express');
-var bodyParser = require('body-parser');
-var session = require('express-session');
-var path = require('path');
+var config       = require('config');
+var path         = require('path');
+var express      = require('express');
+var bodyParser   = require('body-parser');
+var session      = require('express-session');
+var path         = require('path');
 var cookieParser = require('cookie-parser');
-var google = require('googleapis');
-var youtube = google.youtube('v3');
-var oauth2 = google.oauth2('v2');
-var OAuth2 = google.auth.OAuth2;
-var UserService = require('./model/user.js');
-var OrgService = require('./model/org.js');
-var LinkService = require('./model/link.js');
-
+var UserService  = require('./model/user.js');
+var OrgService   = require('./model/org.js');
+var LinkService  = require('./model/link.js');
+var cookie       = require('./cookie.js');
+var auth         = require('./auth.js');
+var googAuth     = require('./googleauth.js');
 
 /**
  * Setup Google Cloud monitoring
@@ -29,19 +27,6 @@ if (process.env.GCLOUD_PROJECT) {
   require('@google/cloud-debug').start();
 }
 
-
-var oauth2Client = new OAuth2(
-  config.get('oauthCredentials.google.id'),
-  config.get('oauthCredentials.google.secret'),
-  config.get('oauthCallbacks.googleCallbackUrl')
-);
-var googleAuthUrl = oauth2Client.generateAuthUrl({
-  access_type: 'offline',
-  scope: ['https://www.googleapis.com/auth/userinfo.email']
-});
-
-
-console.log(oauth2.userinfo.get);
 
 /**
  * Setup Express
@@ -63,7 +48,7 @@ const COOKIE_NAME = 'xsession';
 /**
  * Go to the url requested
  */
-app.get("/", isLoggedIn, function (req, res, next) {
+app.get("/", auth.isLoggedIn, function (req, res, next) {
   session.gourl = '/';
   console.log(getRouteUrl());
   // res.sendFile(path.join(__dirname, '../dist/main.html'));
@@ -76,7 +61,7 @@ app.get("/login", function (req, res, next) {
 });
 
 app.get('/login/google', function (req, res, next) {
-  res.redirect(googleAuthUrl + '&approval_prompt=force')
+  res.redirect(googAuth.getGoogleAuthUrl() + '&approval_prompt=force')
 });
 
 
@@ -86,7 +71,7 @@ app.get(
   function (req, res, next) {
     let userInfo = null;
     let orgService = new OrgService();
-    handleOAuth2Callback(req)
+    googAuth.handleOAuth2Callback(req)
     //retrieve userinfo from google
     .then((userinfo) => {
       userInfo = userinfo;
@@ -127,11 +112,11 @@ app.use('/api/users', require('./model/user.api'));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-app.use('/links', isLoggedIn, require('./model/crud'));
+app.use('/links', auth.isLoggedIn, require('./model/crud'));
 app.use('/api/links', require('./model/link.api'));
 
 
-app.get("/:gourl", setRouteUrl, isLoggedIn, function (req, res, next) {
+app.get("/:gourl", setRouteUrl, auth.isLoggedIn, function (req, res, next) {
   let routeGoUrl = session.gourl;
   if (routeGoUrl == null) {
     //error condition
@@ -139,7 +124,7 @@ app.get("/:gourl", setRouteUrl, isLoggedIn, function (req, res, next) {
   }
   // retrieve actual url
   let linkService = new LinkService();
-  linkService.getLinkByGoLink(routeGoUrl, getOrgIdFromCookie(req))
+  linkService.getLinkByGoLink(routeGoUrl, cookie.getOrgIdFromCookie(req))
   .then(linkEntities => {
     if (linkEntities.entities.length > 0) {
       //retrieve the first one
@@ -176,42 +161,6 @@ if (module === require.main) {
   });
 }
 
-/**
- * Check if user is logged in
- */
-function isLoggedIn(req, res, next) {
-  if (isUserIdSetInCookie(req)) {
-    console.log('user is authenticated');
-    return next();
-  }
-  res.redirect('/login');
-}
-
-function isUserIdSetInCookie(req) {
-  var xsession = req.signedCookies[COOKIE_NAME];
-  if (xsession == null)
-    return false;
-  var userId = xsession.userId;
-  console.log('retrieved cookie', userId);  
-  if (userId != null) {
-    return true;
-  }
-  return false;
-}
-
-function getOrgIdFromCookie(req) {
-  var xsession = req.signedCookies[COOKIE_NAME];
-  if (xsession == null)
-    return null;
-  return xsession.orgId;
-}
-
-
-function getAccessToken(refresh_token) {
-
-}
-
-
 function getRouteUrl() {
   var routeUrl = '/';
   if ((session.gourl == null) || (session.gourl == '/')) {
@@ -229,20 +178,6 @@ function setRouteUrl(req, res, next) {
   next();
 }
 
-/**
- * Sets the cookie in the header
- * 
- * @param http response
- * @param user id
- * @param org id
- */
-function setCookie(res, userId, orgId) {
-  res.cookie(
-    COOKIE_NAME, 
-    { userId: userId,
-      orgId:  orgId},
-    { signed: true });
-}
 
 /**
  * Returns a user entity. If the user doesn't exist then it creates one
@@ -277,7 +212,7 @@ function getUser(res, orgEntity, response, refresh_token) {
               userEntity.picture)
             .then((entity) => {
               //set cookie
-              setCookie(res, entity.id, userEntity.orgId);
+              cookie.setCookie(res, entity.id, userEntity.orgId);
               resolve(true);
             });
         } else {
@@ -292,50 +227,13 @@ function getUser(res, orgEntity, response, refresh_token) {
             response.picture)
           .then((entity) => {
             //set cookie
-            setCookie(res, entity.id, entity.orgId);
+            cookie.setCookie(res, entity.id, entity.orgId);
             resolve(true);
           })
         }
     });
   })
 }
-
-/**
- * Handles OAuth callback
- * 
- * @param http request
- * @return response from oauth2.userinfo
- */
-function handleOAuth2Callback(req) {
-  return new Promise((resolve, reject) => {
-    var oauth2Client = new OAuth2(
-      config.get('oauthCredentials.google.id'),
-      config.get('oauthCredentials.google.secret'),
-      config.get('oauthCallbacks.googleCallbackUrl')
-    );    
-    var code = req.query.code;
-    if (code != null) {
-      oauth2Client
-        .getToken(code, function (err, tokens) {
-          if (!err) {
-            oauth2Client.setCredentials(tokens);
-            oauth2.userinfo.get({
-              auth: oauth2Client
-            }, function (err, response) {
-              if (err) {
-                reject(err)
-              } else {
-                //inject refresh token in userinfo
-                response.refresh_token = tokens.refresh_token;
-                resolve(response);
-              }
-            })
-          }
-        });
-      }
-  });
-}
-
 
 
 module.exports = app;
