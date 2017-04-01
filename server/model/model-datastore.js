@@ -81,10 +81,11 @@ function toDatastore (obj, nonIndexed) {
 // return per page. The ``token`` argument allows requesting additional
 // pages. The callback is invoked with ``(err, links, nextPageToken)``.
 // [START list]
-function list (limit, token, cb) {
+function list (limit, token, orgId, cb) {
   const q = ds.createQuery([kind])
+    .filter("orgId", "=", orgId)
     .limit(limit)
-    .order('gourl')
+    //.order('gourl') need to create composite index in order to use gourl with orgId
     .start(token);
 
   ds.runQuery(q, (err, entities, nextQuery) => {

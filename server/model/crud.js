@@ -26,7 +26,12 @@ router.use((req, res, next) => {
  * Display a page of links (up to ten at a time).
  */
 router.get('/', (req, res, next) => {
-  getModel().list(10, req.query.pageToken, (err, entities, cursor) => {
+  var xsession = req.signedCookies[config.get("COOKIE_NAME")];
+  if (xsession == null) {
+    console.log('link is not saved as xsession stored in cookie is NULL'); 
+    res.redirect(`/login`);
+  }
+  getModel().list(10, req.query.pageToken, xsession.orgId, (err, entities, cursor) => {
     if (err) {
       next(err);
       return;
