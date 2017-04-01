@@ -85,12 +85,16 @@ app.get(
   function (req, res, next) {
     let userInfo = null;
     let orgService = new OrgService();
-    handleOAuth2Callback(req).then((userinfo) => {
+    handleOAuth2Callback(req)
+    //retrieve userinfo from google
+    .then((userinfo) => {
       userInfo = userinfo;
       return orgService.getOrgByName(userinfo.hd);
-    }).then((data) => {
-      console.log('org data', data);
-      if (data.entities.length == 0) {
+    })
+    //retrieve org
+    .then(orgEntities => {
+      console.log('org entities', orgEntities);
+      if (orgEntities.entities.length == 0) {
         //org doesn't exist
         console.log('org doesnt exist');
         return orgService.createOrg(userInfo.hd, 'google')
@@ -99,14 +103,17 @@ app.get(
         });
       } else {
         // org exists
-        let orgEntity = data.entities[0];
+        let orgEntity = orgEntities.entities[0];
         return getUser(res, orgEntity, userInfo, userInfo.refresh_token);        
       }   
-    }).then((data) => {
-      //route to next
+    })
+    //retrieve user
+    .then((data) => {
       console.log('routing');
       res.redirect(301,getRouteUrl());
-    }).catch(err => {
+    })
+    //error
+    .catch(err => {
       console.log('routing to err', err);
       //return err
     });
