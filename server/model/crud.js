@@ -1,6 +1,5 @@
 
 'use strict';
-
 const express = require('express');
 const bodyParser = require('body-parser');
 const config = require('config');
@@ -8,6 +7,7 @@ const config = require('config');
 function getModel () {
   return require(`./model-${config.get('db.DATA_BACKEND')}`);
 }
+
 getModel().setKind("Link");
 const router = express.Router();
 
@@ -59,8 +59,15 @@ router.get('/add', (req, res) => {
  */
 // [START add_post]
 router.post('/add', (req, res, next) => {
-  const data = req.body;
-
+  let data = req.body;
+  var xsession = req.signedCookies[config.get("COOKIE_NAME")];
+  if (xsession == null) {
+    console.log('link is not saved as xsession stored in cookie is NULL'); 
+    res.redirect(`/login`);
+  }
+  data['userId'] = xsession.userId;
+  data['orgId'] = xsession.orgId;
+  console.log(data);
   // Save the data to the database.
   getModel().create(data, (err, savedData) => {
     if (err) {
@@ -96,8 +103,14 @@ router.get('/:link/edit', (req, res, next) => {
  * Update a link.
  */
 router.post('/:link/edit', (req, res, next) => {
-  const data = req.body;
-
+  let data = req.body;
+  var xsession = req.signedCookies[config.get("COOKIE_NAME")];
+  if (xsession == null) {
+    console.log('link is not saved as xsession stored in cookie is NULL'); 
+    res.redirect(`/login`);
+  }
+  data['userId'] = xsession.userId;
+  data['orgId'] = xsession.orgId;
   getModel().update(req.params.link, data, (err, savedData) => {
     if (err) {
       next(err);

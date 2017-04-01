@@ -18,5 +18,6 @@
   "oauthCallbacks": {
     "googleCallbackUrl"  : "http://localhost:8090/oauthcallback/google",
     "googleCallbackUri"  : "/oauthcallback/google"
-  }
+  },
+  "COOKIE_NAME" : "xsession"
 }
