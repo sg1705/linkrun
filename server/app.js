@@ -86,7 +86,6 @@ app.get(
         console.log(tokens);
         if (!err) {
           oauth2Client.setCredentials(tokens);
-
           oauth2.userinfo.get({
             auth: oauth2Client
           }, function (err, response) {
@@ -95,29 +94,33 @@ app.get(
               response.hd = response.email;
 
             let orgService = new OrgService();
-            orgService.getOrgByName(response.hd).then((data) => {
-              console.log(data);
-              if (data.entities.length == 0) {
-                //org doesn't exist
-                console.log('org doesnt exist');
-                orgService.createOrg(response.hd, 'google').then((orgEntity) => {
-                  getUser(res, orgEntity, response, tokens).then((data) => {
+            orgService
+              .getOrgByName(response.hd)
+              .then((data) => {
+                console.log(data);
+                if (data.entities.length == 0) {
+                  //org doesn't exist
+                  console.log('org doesnt exist');
+                  orgService
+                    .createOrg(response.hd, 'google')
+                    .then((orgEntity) => {
+                      getUser(res, orgEntity, response, tokens).then((data) => {
+                      //route to next
+                      res.redirect(301,getRouteUrl());
+                    });        
+                  });
+                } else {
+                  // org exists
+                  let orgEntity = data.entities[0];
+                  getUser(res, orgEntity, response, tokens)
+                  .then((data) => {
                     //route to next
                     res.redirect(301,getRouteUrl());
                   });
-                  
-                });
-              } else {
-                // org exists
-                let orgEntity = data.entities[0];
-                getUser(res, orgEntity, response, tokens).then((data) => {
-                  //route to next
-                  res.redirect(301,getRouteUrl());
-                });
-              }
+                }
+              });
             });
-          });
-        }
+          }
       });
     }
   });
@@ -162,21 +165,29 @@ if (module === require.main) {
  * Check if user is logged in
  */
 function isLoggedIn(req, res, next) {
-  if (isUserLoggedIn(req)) {
+  if (isUserIdSetInCookie(req)) {
     console.log('user is authenticated');
     return next();
   }
   res.redirect('/login');
 }
 
-function isUserLoggedIn(req) {
-  var refresh_token = req.signedCookies.userid;
-  console.log('retrieved cookie', refresh_token);
-  if (refresh_token != null) {
+function isUserIdSetInCookie(req) {
+  var xsession = req.signedCookies.xsession;
+  if (xsession == null)
+    return false;
+  var userId = xsession.userId;
+  console.log('retrieved cookie', userId);  
+  if (userId != null) {
     return true;
   }
   return false;
 }
+
+function getAccessToken(refresh_token) {
+
+}
+
 
 function getRouteUrl() {
   var routeUrl = '/';
@@ -195,12 +206,24 @@ function setRouteUrl(req, res, next) {
   next();
 }
 
-function setCookie(res, userid) {
-  res.cookie('userid', userid, { signed: true });
+function setCookie(res, userId, orgId) {
+  res.cookie(
+    'xsession', 
+    { userId: userId,
+      orgId:  orgId},
+    { signed: true });
 }
 
+/**
+ * Returns a user entity. If the user doesn't exist then it creates one
+ * 
+ * @param response
+ * @param orgEntity
+ * @param userinfo returned by Google
+ * @param tokens returned by Google
+ * 
+ */
 function getUser(res, orgEntity, response, tokens) {
-
   return new Promise((resolve, reject) => {
     let userService = new UserService();
     userService.readByColumn(
@@ -223,7 +246,7 @@ function getUser(res, orgEntity, response, tokens) {
               userEntity.picture)
             .then((entity) => {
               //set cookie
-              setCookie(res, entity.id);
+              setCookie(res, entity.id, userEntity.orgId);
               resolve(true);
             });
         } else {
@@ -238,7 +261,7 @@ function getUser(res, orgEntity, response, tokens) {
             response.picture)
           .then((entity) => {
             //set cookie
-            setCookie(res, entity.id);
+            setCookie(res, entity.id, userEntity.orgId);
             resolve(true);
           })
         }
