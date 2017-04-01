@@ -17,7 +17,7 @@
   },
 
   "oauthCallbacks": {
-    "googleCallbackUrl"  : "https://gae-test-157202.appspot.com/oauthcallback/google",
+    "googleCallbackUrl"  : "http://link.run/oauthcallback/google",
     "googleCallbackUri"  : "/oauthcallback/google"
   },
   "COOKIE_NAME" : "xsession"
