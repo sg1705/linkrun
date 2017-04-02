@@ -44,6 +44,19 @@ app.use(express.static(path.join(__dirname, '../dist')));
 
 const COOKIE_NAME = 'xsession';
 
+/**
+ * No cache
+ */
+app.get('/*', nocache);
+
+//caching strategy is to not cache
+function nocache(req, res, next) {
+  res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+  res.header('Expires', '-1');
+  res.header('Pragma', 'no-cache');
+  next();
+}
+
 
 /**
  * Go to the url requested
