@@ -16,11 +16,11 @@ function isUserIdSetInCookie(req) {
   var xsession = cookie.getXsession(req);
   if (xsession == null)
     return false;
-  var userId = xsession.userId;
-  console.log('UserId:', userId);  
+  var userId = xsession.userId;  
   if (userId != null) {
     return true;
   }
+  console.log('UserId is not set in Session');
   return false;
 }
 

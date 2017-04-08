@@ -14,7 +14,7 @@ var LinkService  = require('./model/link.js');
 var cookie       = require('./cookie.js');
 var auth         = require('./auth.js');
 var googAuth     = require('./googleauth.js');
-
+var Logger       = require('./model/log.js');
 /**
  * Setup Google Cloud monitoring
  */
@@ -28,7 +28,7 @@ if (process.env.NODE_ENV === 'production') {
 if (process.env.GCLOUD_PROJECT) {
   require('@google/cloud-debug').start();
 }
-
+let logger = new Logger();
 
 /**
  * Setup Express
@@ -69,7 +69,7 @@ function nocache(req, res, next) {
  */
 app.get("/", auth.isLoggedIn, function (req, res, next) {
   session.gourl = '/';
-  console.log(getRouteUrl());
+  console.log("routing_url =",getRouteUrl());
   // res.sendFile(path.join(__dirname, '../dist/main.html'));
   res.redirect('/links');
 });
@@ -102,7 +102,6 @@ app.get(
     })
     //retrieve org
     .then(orgEntities => {
-      console.log('org entities', orgEntities);
       if (orgEntities.entities.length == 0) {
         //org doesn't exist
         console.log('org doesnt exist');
@@ -118,12 +117,12 @@ app.get(
     })
     //retrieve user
     .then((data) => {
-      console.log('routing');
+      console.log('routing_to_301=',getRouteUrl());
       res.redirect(301,getRouteUrl());
     })
     //error
     .catch(err => {
-      console.log('routing to err', err);
+      console.log('routing_to_err=', err);
       //return err
     });
   });
@@ -138,7 +137,6 @@ app.set('view engine', 'jade');
 app.use('/links', auth.isLoggedIn, require('./model/crud'));
 app.use('/api/links', require('./model/link.api'));
 
-
 app.get("/:gourl", setRouteUrl, auth.isLoggedIn, function (req, res, next) {
   let routeGoUrl = session.gourl;
   if (routeGoUrl == null) {
@@ -152,8 +150,15 @@ app.get("/:gourl", setRouteUrl, auth.isLoggedIn, function (req, res, next) {
     if (linkEntities.entities.length > 0) {
       //retrieve the first one
       let linkEntity = linkEntities.entities[0];
-      res.redirect(301, linkEntity.url);
+      logger.log(linkEntity.orgId, linkEntity.userId, linkEntity.gourl, "getLinkByGoLink", "retrieve actual url");
+      if (linkEntity.url) {
+        res.redirect(301, linkEntity.url);
+      } else {
+        console.log("url_is_empty, redirecting to links");
+        res.redirect('/links');
+      }
     } else {
+      console.log("no_url_found, redirecting to links");
       res.redirect('/links');
     }
   })
