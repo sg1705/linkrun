@@ -22,7 +22,7 @@ class Org {
     var orgData = {};
     orgData["orgName"] = orgName;
     orgData["orgType"] = orgType;
-    console.log("CreateOrg=", orgData);
+    console.log("create_org=", orgData);
     return this.modelService.create(orgData);
   }
   
@@ -33,7 +33,7 @@ class Org {
     var orgData = {};
     orgData["orgName"] = orgName;
     orgData["orgType"] = orgType;
-    Console.log("CreateOrg=", orgData);
+    Console.log("create_org=", orgData);
     return this.modelService.update (orgid, orgData);
   }
 
@@ -53,7 +53,7 @@ class Org {
    * Delete a Org.
    */
   deleteOrg(orgid) {
-    console.log("deleteOrg=", orgid);
+    console.log("delete_org=", orgid);
     return this.getModel().delete(orgid);
   }
  

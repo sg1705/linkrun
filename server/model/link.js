@@ -24,7 +24,7 @@ class Link {
     linkData["gourl"] = gourl;
     linkData["url"] = url;
     linkData["description"] = description;
-    console.log("createLink=", linkData);
+    console.log("create_link=", linkData);
     return this.getModel().create(linkData);
   }
 
@@ -38,7 +38,7 @@ class Link {
     linkData["gourl"] = gourl;
     linkData["url"] = url;
     linkData["description"] = description;
-    console.log("updateLink=", linkData);
+    console.log("update_link=", linkData);
     return this.getModel().update (id, linkData);
   }
 
@@ -53,7 +53,7 @@ class Link {
    * Delete a link.
    */
   deleteLink(id) {
-    console.log("deleteLink=", id);
+    console.log("delete_link=", id);
     return getModel().delete(id);
   }
 
