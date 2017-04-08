@@ -1,10 +1,10 @@
-import { LinkrunPage } from './app.po';
+import { ClientPage } from './app.po';
 
-describe('linkrun App', function() {
-  let page: LinkrunPage;
+describe('client App', () => {
+  let page: ClientPage;
 
   beforeEach(() => {
-    page = new LinkrunPage();
+    page = new ClientPage();
   });
 
   it('should display message saying app works', () => {

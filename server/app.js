@@ -21,6 +21,8 @@ var googAuth     = require('./googleauth.js');
 if (process.env.NODE_ENV === 'production') {
   require('@google/cloud-trace').start();
   errorHandler = require('@google/cloud-errors').start();
+  app.use('/*.js',express.static(path.join(__dirname, '../dist')));
+  app.use('/*.css',express.static(path.join(__dirname, '../dist')));  
 }
 
 if (process.env.GCLOUD_PROJECT) {
@@ -34,13 +36,13 @@ if (process.env.GCLOUD_PROJECT) {
 var app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(session({ secret: 'my_precious' }));
+app.use(session({ 
+  resave: true,
+  saveUninitialized: true,
+  secret: 'my_precious' }));
 app.use(cookieParser('my-precious'));
 
-/**
- * Express Routes
- */
-app.use(express.static(path.join(__dirname, '../dist')));
+
 
 const COOKIE_NAME = 'xsession';
 
@@ -57,6 +59,10 @@ function nocache(req, res, next) {
   next();
 }
 
+/**
+ * Express Routes
+ */
+
 
 /**
  * Go to the url requested
@@ -70,13 +76,14 @@ app.get("/", auth.isLoggedIn, function (req, res, next) {
 
 // links
 app.get("/login", function (req, res, next) {
-  res.sendFile(path.join(__dirname, '../dist/main.html'));
+  res.sendFile(path.join(__dirname, '../dist/index.html'));
 });
 
 app.get('/login/google', function (req, res, next) {
   res.redirect(googAuth.getGoogleAuthUrl() + '&approval_prompt=force')
 });
 
+app.use(express.static(path.join(__dirname, '../dist')));
 
 
 app.get(
