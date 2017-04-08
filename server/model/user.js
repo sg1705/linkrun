@@ -27,7 +27,7 @@ class User {
     userData["fName"] = fName;
     userData["lName"] = lName;
     userData["picture"] = picture;
-    console.log("userData", userData);
+    console.log("create_user=", userData);
     return this.getModel().create(userData);
   }
 
@@ -42,7 +42,7 @@ class User {
     userData["fName"] = fName;
     userData["lName"] = lName;
     userData["picture"] = picture;
-    console.log("userData", userData);
+    console.log("update_user=", userData);
     return this.getModel().update (uid, userData);
   }
 
@@ -57,6 +57,7 @@ class User {
    * Delete a user.
    */
   deleteUser(uid) {
+    console.log("delete_user=", uid);
     return this.getModel().delete(uid);
   }
 

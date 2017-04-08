@@ -127,7 +127,18 @@ function update (id, data, cb) {
 // [END update]
 
 function create (data, cb) {
-  update(null, data, cb);
+   getLinkId(data.orgId, data.gourl, (err, entities) => {
+    if (err) {
+      cb(err);
+      return;
+    }
+    if(entities.length > 0) {
+        console.log("link_already_exist; overwriting_link:" + entities[0].id);
+        update(entities[0].id, data, cb);
+     } else {
+        update(null, data, cb);
+     }
+    });
 }
 
 function read (id, cb) {
@@ -158,6 +169,19 @@ function readByColumn (columnName, columnValue, cb) {
     }
     const hasMore = nextQuery.moreResults !== Datastore.NO_MORE_RESULTS ? nextQuery.endCursor : false;
     cb(null, entities.map(fromDatastore), hasMore);
+  });
+}
+
+function getLinkId (orgId, gourl, cb) {
+  const q = ds.createQuery([kind])
+  .filter('orgId', '=', orgId)
+  .filter('gourl', '=', gourl);
+  ds.runQuery(q, (err, entities, nextQuery) => {
+    if (err) {
+      cb(err);
+      return;
+    }
+    cb(null, entities.map(fromDatastore));
   });
 }
 

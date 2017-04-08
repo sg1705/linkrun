@@ -191,7 +191,6 @@ class ModelService {
         });
     }
 
-
     readByColumns(c1, v1, c2, v2) {
         let ds = this.ds;
         let kind = this.kind;
@@ -213,8 +212,6 @@ class ModelService {
 
         });
     }
-
-
 
     _delete (id, cb) {
         let ds = this.ds;
