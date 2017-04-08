@@ -2,9 +2,9 @@
 'use strict';
 
 const config = require('config');
-
+ 
 class Link {
-  
+
   constructor() {
     var ModelService = require(`./model-service.js`);
     this.modelService = new ModelService('Link');   
@@ -24,7 +24,7 @@ class Link {
     linkData["gourl"] = gourl;
     linkData["url"] = url;
     linkData["description"] = description;
-    console.log("linkData", linkData);
+    console.log("createLink=", linkData);
     return this.getModel().create(linkData);
   }
 
@@ -38,7 +38,7 @@ class Link {
     linkData["gourl"] = gourl;
     linkData["url"] = url;
     linkData["description"] = description;
-    console.log("linkData", linkData);
+    console.log("updateLink=", linkData);
     return this.getModel().update (id, linkData);
   }
 
@@ -52,7 +52,8 @@ class Link {
   /**
    * Delete a link.
    */
-  deleteUser(id) {
+  deleteLink(id) {
+    console.log("deleteLink=", id);
     return getModel().delete(id);
   }
 

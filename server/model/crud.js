@@ -72,7 +72,7 @@ router.post('/add', (req, res, next) => {
   }
   data['userId'] = xsession.userId;
   data['orgId'] = xsession.orgId;
-  console.log(data);
+  console.log("Add Link=", data); 
   // Save the data to the database.
   getModel().create(data, (err, savedData) => {
     if (err) {
@@ -116,6 +116,7 @@ router.post('/:link/edit', (req, res, next) => {
   }
   data['userId'] = xsession.userId;
   data['orgId'] = xsession.orgId;
+  console.log("Edit Link=", data); 
   getModel().update(req.params.link, data, (err, savedData) => {
     if (err) {
       next(err);
@@ -136,6 +137,7 @@ router.get('/:link', (req, res, next) => {
       next(err);
       return;
     }
+    console.log("view Link=", entity); 
     res.render('links/view.jade', {
       link: entity
     });
@@ -153,6 +155,7 @@ router.get('/:link/delete', (req, res, next) => {
       next(err);
       return;
     }
+    console.log("delete Link=", req.params); 
     res.redirect(req.baseUrl);
   });
 });
