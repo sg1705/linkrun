@@ -63,7 +63,7 @@ function nocache(req, res, next) {
  */
 app.get("/", auth.isLoggedIn, function (req, res, next) {
   session.gourl = '/';
-  console.log("Go to the url requested =",getRouteUrl());
+  console.log("routing_url =",getRouteUrl());
   // res.sendFile(path.join(__dirname, '../dist/main.html'));
   res.redirect('/links');
 });
