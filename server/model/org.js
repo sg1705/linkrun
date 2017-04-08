@@ -8,7 +8,8 @@ class Org {
   constructor() {
     var ModelService = require(`./model-service.js`);
     console.log(ModelService);
-    this.modelService = new ModelService('Org')
+    this.modelService = new ModelService('Org');
+    this.lo
   }
 
   getModel () {
@@ -33,7 +34,7 @@ class Org {
     var orgData = {};
     orgData["orgName"] = orgName;
     orgData["orgType"] = orgType;
-    Console.log("create_org=", orgData);
+    console.log("create_org=", orgData);
     return this.modelService.update (orgid, orgData);
   }
 
