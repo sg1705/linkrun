@@ -15,20 +15,6 @@ var cookie       = require('./cookie.js');
 var auth         = require('./auth.js');
 var googAuth     = require('./googleauth.js');
 var Logger       = require('./model/log.js');
-/**
- * Setup Google Cloud monitoring
- */
-if (process.env.NODE_ENV === 'production') {
-  require('@google/cloud-trace').start();
-  errorHandler = require('@google/cloud-errors').start();
-  app.use('/*.js',express.static(path.join(__dirname, '../dist')));
-  app.use('/*.css',express.static(path.join(__dirname, '../dist')));  
-}
-
-if (process.env.GCLOUD_PROJECT) {
-  require('@google/cloud-debug').start();
-}
-let logger = new Logger();
 
 /**
  * Setup Express
@@ -41,10 +27,24 @@ app.use(session({
   saveUninitialized: true,
   secret: 'my_precious' }));
 app.use(cookieParser('my-precious'));
-
-
-
 const COOKIE_NAME = 'xsession';
+
+
+/**
+ * Setup Google Cloud monitoring
+ */
+if (process.env.NODE_ENV === 'production') {
+  require('@google/cloud-trace').start();
+  errorHandler = require('@google/cloud-errors').start();
+  // app.use('/*.js',express.static(path.join(__dirname, '../dist')));
+  // app.use('/*.css',express.static(path.join(__dirname, '../dist')));  
+}
+
+if (process.env.GCLOUD_PROJECT) {
+  require('@google/cloud-debug').start();
+}
+let logger = new Logger();
+
 
 /**
  * No cache
