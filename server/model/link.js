@@ -2,12 +2,14 @@
 'use strict';
 
 const config = require('config');
- 
+var Logger       = require('./log.js');
+
 class Link {
 
   constructor() {
     var ModelService = require(`./model-service.js`);
-    this.modelService = new ModelService('Link');   
+    this.modelService = new ModelService('Link'); 
+    let logger = new Logger();
   }
 
   getModel () {
@@ -24,7 +26,7 @@ class Link {
     linkData["gourl"] = gourl;
     linkData["url"] = url;
     linkData["description"] = description;
-    console.log("create_link=", linkData);
+    this.logger.log(linkData.orgId, linkData.userId, linkData.gourl, "create_link", "create_link");
     return this.getModel().create(linkData);
   }
 
@@ -38,7 +40,7 @@ class Link {
     linkData["gourl"] = gourl;
     linkData["url"] = url;
     linkData["description"] = description;
-    console.log("update_link=", linkData);
+    this.logger.log(linkData.orgId, linkData.userId, linkData.gourl, "update_link", "update_link");
     return this.getModel().update (id, linkData);
   }
 
