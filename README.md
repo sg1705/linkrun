@@ -11,7 +11,7 @@ Linkrun is a large Angular2 app running on a nodejs server.
 Two terminal windows need to be open to run the development environment.
 
 1. Run `npm run dev` to start the server on `http://localhost:8090/`
-2. Run `npm run build:watch` to start the server that will watch any changes in client app and run the build.
+2. Run `cd client && ng build -watch` to start the server that will watch any changes in client app and run the build.
 3. App Engine will run `npm start`, so make sure that npm start is working
 4. `gcloud app deploy`
 5. Launch your browser and view the app at http://[YOUR_PROJECT_ID].appspot.com, by running the following command:
@@ -19,6 +19,7 @@ Two terminal windows need to be open to run the development environment.
 
 # Deploying on Google Cloud
 
+0. Build for product `npm run build:prod`
 1. List projects `gcloud config list`
 2. Set Project `gcloud config set project [YOUR_PROJECT_ID]`
 3. If you have installed the Google Cloud SDK on your machine and 
