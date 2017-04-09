@@ -29,7 +29,6 @@ app.use(session({
 app.use(cookieParser('my-precious'));
 const COOKIE_NAME = 'xsession';
 
-
 /**
  * Setup Google Cloud monitoring
  */
@@ -82,7 +81,7 @@ app.get("/", auth.isLoggedIn, function (req, res, next) {
   session.gourl = '/';
   console.log("routing_url =",getRouteUrl());
   // res.sendFile(path.join(__dirname, '../dist/main.html'));
-  res.redirect('/links');
+  res.redirect('/__/links');
 });
 
 // links
@@ -90,7 +89,7 @@ app.get("/login", function (req, res, next) {
   res.sendFile(path.join(__dirname, '../dist/index.html'));
 });
 
-app.get('/login/google', function (req, res, next) {
+app.get('/__/login/google', function (req, res, next) {
   res.redirect(googAuth.getGoogleAuthUrl() + '&approval_prompt=force')
 });
 
@@ -139,14 +138,14 @@ app.get(
   });
 
 // users
-app.use('/api/users', require('./model/user.api'));
+app.use('/__/api/users', require('./model/user.api'));
 
 //Views
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-app.use('/links', auth.isLoggedIn, require('./model/crud'));
-app.use('/api/links', require('./model/link.api'));
+app.use('/__/links', auth.isLoggedIn, require('./model/crud'));
+app.use('/__/api/links', require('./model/link.api'));
 
 app.get("/:gourl", setRouteUrl, auth.isLoggedIn, function (req, res, next) {
   let routeGoUrl = session.gourl;

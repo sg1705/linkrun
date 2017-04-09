@@ -9,7 +9,7 @@ function isLoggedIn(req, res, next) {
   if (isUserIdSetInCookie(req)) {
     return next();
   }
-  res.redirect('/login');
+  res.redirect('/_/');
 }
 
 function isUserIdSetInCookie(req) {
