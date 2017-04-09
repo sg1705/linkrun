@@ -17,7 +17,7 @@ Two terminal windows need to be open to run the development environment.
 4. Confirm using `gcloud config list`
 
 ### Start development server
-1. Run `cd client && ng build -watch` to start the server that will watch any changes in client app and run the build.
+1. Run `cd client && npm install && ng build -watch` to start the server that will watch any changes in client app and run the build.
 2. Run `npm run dev` to start the server on `http://localhost:8090/`
 3. App Engine will run `npm start`, so make sure that npm start is working
 4. `gcloud app deploy`
