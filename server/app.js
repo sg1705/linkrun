@@ -40,6 +40,16 @@ if (process.env.NODE_ENV === 'production') {
   // app.use('/*.css',express.static(path.join(__dirname, '../dist')));  
 }
 
+/**
+ * Setup Google Cloud monitoring
+ */
+if (process.env.NODE_ENV === 'staging') {
+  require('@google/cloud-trace').start();
+  errorHandler = require('@google/cloud-errors').start();
+}
+
+
+
 if (process.env.GCLOUD_PROJECT) {
   require('@google/cloud-debug').start();
 }
@@ -60,8 +70,9 @@ function nocache(req, res, next) {
 }
 
 /**
- * Express Routes
+ * Static Home pageExpress Routes
  */
+app.use('/_/', express.static(path.join(__dirname, '../static')));
 
 
 /**
