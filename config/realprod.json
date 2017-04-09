@@ -1,6 +1,6 @@
 {
   "db": {
-    "GCLOUD_PROJECT": "gae-test-157202",
+    "GCLOUD_PROJECT": "linkrun-production",
     "DATA_BACKEND": "datastore"
   },
 
@@ -8,10 +8,11 @@
     "port": "8080"
   },
 
+
   "oauthCredentials": {
     "google": {
-        "id": "960987803647-8vlrh7jbk9e43v7huhsnc5h7qi7gv0ra.apps.googleusercontent.com",
-        "secret": "pqFLDPkJ_GAFFHN6_cXzUOeB"
+        "id": "327801700235-sg1u5256frrav0g9revuu153i5qkubkk.apps.googleusercontent.com",
+        "secret": "l-DZX6QSp-ck5PnchBlSROgh"
     }
   },
 
@@ -19,5 +20,6 @@
     "googleCallbackUrl"  : "http://link.run/oauthcallback/google",
     "googleCallbackUri"  : "/oauthcallback/google"
   },
+
   "COOKIE_NAME" : "xsession"
 }
