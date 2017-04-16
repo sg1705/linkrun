@@ -17,8 +17,8 @@
   },
 
   "oauthCallbacks": {
-    "googleCallbackUrl"  : "http://link.run/oauthcallback/google",
-    "googleCallbackUri"  : "/oauthcallback/google"
+    "googleCallbackUrl"  : "http://link.run/__/oauthcallback/google",
+    "googleCallbackUri"  : "/__/oauthcallback/google"
   },
 
   "COOKIE_NAME" : "xsession"

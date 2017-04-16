@@ -165,11 +165,11 @@ app.get("/:gourl", setRouteUrl, auth.isLoggedIn, function (req, res, next) {
         res.redirect(301, linkEntity.url);
       } else {
         console.log("url_is_empty, redirecting to links");
-        res.redirect('/links');
+        res.redirect('/__/links');
       }
     } else {
       console.log("no_url_found, redirecting to links");
-      res.redirect('/links');
+      res.redirect('/__/links');
     }
   })
   .catch(err => {
