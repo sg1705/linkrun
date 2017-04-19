@@ -15,6 +15,8 @@ var cookie       = require('./cookie.js');
 var auth         = require('./auth.js');
 var googAuth     = require('./googleauth.js');
 var Logger       = require('./model/log.js');
+var NSC          = require('./model/NSC.js');
+
 
 /**
  * Setup Express
@@ -153,6 +155,11 @@ app.get("/:gourl", setRouteUrl, auth.isLoggedIn, function (req, res, next) {
     //error condition
     next();
   }
+
+  var nsc = NSC.NorvigSpellChecker();
+  nsc.train('zacks seekingalpha');  
+  routeGoUrl = nsc.correct(routeGoUrl)[routeGoUrl];
+
   // retrieve actual url
   let linkService = new LinkService();
   linkService.getLinkByGoLink(routeGoUrl, cookie.getOrgIdFromCookie(req))
@@ -161,6 +168,7 @@ app.get("/:gourl", setRouteUrl, auth.isLoggedIn, function (req, res, next) {
       //retrieve the first one
       let linkEntity = linkEntities.entities[0];
       logger.log(linkEntity.orgId, linkEntity.userId, linkEntity.gourl, "getLinkByGoLink", "retrieve actual url");
+
       if (linkEntity.url) {
         res.redirect(301, linkEntity.url);
       } else {
