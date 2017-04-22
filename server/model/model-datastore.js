@@ -3,6 +3,8 @@
 
 const Datastore = require('@google-cloud/datastore');
 const config = require('config');
+var Logger = require('./logger.js');
+let logger = new Logger();
 
 // [START config]
 const ds = Datastore({
@@ -133,7 +135,7 @@ function create (data, cb) {
       return;
     }
     if(entities.length > 0) {
-        console.log("link_already_exist; overwriting_link:" + entities[0].id);
+        logger.info("link_already_exist; overwriting_link:" + entities[0].id);
         update(entities[0].id, data, cb);
      } else {
         update(null, data, cb);

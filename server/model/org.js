@@ -2,14 +2,14 @@
 'use strict';
 
 const config = require('config');
+var Logger   = require('./logger.js');
 
 class Org {
   
   constructor() {
     var ModelService = require(`./model-service.js`);
-    console.log(ModelService);
     this.modelService = new ModelService('Org');
-    this.lo
+    this.logger = new Logger();
   }
 
   getModel () {
@@ -23,7 +23,7 @@ class Org {
     var orgData = {};
     orgData["orgName"] = orgName;
     orgData["orgType"] = orgType;
-    console.log("create_org=", orgData);
+    this.logger.info ("creating org", orgData);
     return this.modelService.create(orgData);
   }
   
@@ -34,7 +34,7 @@ class Org {
     var orgData = {};
     orgData["orgName"] = orgName;
     orgData["orgType"] = orgType;
-    console.log("create_org=", orgData);
+    this.logger.info ("updating org", orgData);
     return this.modelService.update (orgid, orgData);
   }
 
@@ -54,7 +54,7 @@ class Org {
    * Delete a Org.
    */
   deleteOrg(orgid) {
-    console.log("delete_org=", orgid);
+    this.logger.info ("deleting org", {'orgid':orgid});
     return this.getModel().delete(orgid);
   }
  
