@@ -51,27 +51,19 @@ var spellChecker = function () {
 
 
 	var correct = function (word) {
-		console.log('dict', dict)
-		console.log('dict has test', dict.has('test'))
-		console.log('word', word)
+
 		if (dict.has(word)) return word;
 
 
 		let editsSet = edits1([word]);
 
 		for (let w of editsSet){
-							// console.log('w',w)
-
 			if (dict.has(w)) {
 				return w;
 			}
 		}
 
 		editsSet = edits1(editsSet);
-				console.log('editsSet', editsSet)
-
-						console.log('editsSet has test', editsSet.has('test'))
-
 		for (let w of editsSet){
 			if (dict.has(w)) return w;
 		}
