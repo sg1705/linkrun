@@ -1,20 +1,20 @@
 'use strict';
 
 var errorHandler;
-var config       = require('config');
-var path         = require('path');
-var express      = require('express');
-var bodyParser   = require('body-parser');
-var session      = require('express-session');
-var path         = require('path');
+var config = require('config');
+var path = require('path');
+var express = require('express');
+var bodyParser = require('body-parser');
+var session = require('express-session');
+var path = require('path');
 var cookieParser = require('cookie-parser');
-var UserService  = require('./model/user.js');
-var OrgService   = require('./model/org.js');
-var LinkService  = require('./model/link.js');
-var cookie       = require('./cookie.js');
-var auth         = require('./auth.js');
-var googAuth     = require('./googleauth.js');
-var Logger       = require('./model/log.js');
+var UserService = require('./model/user.js');
+var OrgService = require('./model/org.js');
+var LinkService = require('./model/link.js');
+var cookie = require('./cookie.js');
+var auth = require('./auth.js');
+var googAuth = require('./googleauth.js');
+var Logger = require('./model/log.js');
 var SC = require('./model/spell-checker.js');
 
 
@@ -24,10 +24,11 @@ var SC = require('./model/spell-checker.js');
 var app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(session({ 
+app.use(session({
   resave: true,
   saveUninitialized: true,
-  secret: 'my_precious' }));
+  secret: 'my_precious'
+}));
 app.use(cookieParser('my-precious'));
 const COOKIE_NAME = 'xsession';
 
@@ -81,7 +82,7 @@ app.use('/_/', express.static(path.join(__dirname, '../static')));
  */
 app.get("/", auth.isLoggedIn, function (req, res, next) {
   session.gourl = '/';
-  console.log("routing_url =",getRouteUrl());
+  console.log("routing_url =", getRouteUrl());
   // res.sendFile(path.join(__dirname, '../dist/main.html'));
   res.redirect('/__/links');
 });
@@ -104,39 +105,39 @@ app.get(
     let userInfo = null;
     let orgService = new OrgService();
     googAuth.handleOAuth2Callback(req)
-    //retrieve userinfo from google
-    .then((userinfo) => {
-      userInfo = userinfo;
-      if (userInfo.hd == null) {
-        userInfo.hd = userInfo.email;
-      }
-      return orgService.getOrgByName(userInfo.hd);
-    })
-    //retrieve org
-    .then(orgEntities => {
-      if (orgEntities.entities.length == 0) {
-        //org doesn't exist
-        console.log('org doesnt exist');
-        return orgService.createOrg(userInfo.hd, 'google')
-        .then((orgEntity) => {
+      //retrieve userinfo from google
+      .then((userinfo) => {
+        userInfo = userinfo;
+        if (userInfo.hd == null) {
+          userInfo.hd = userInfo.email;
+        }
+        return orgService.getOrgByName(userInfo.hd);
+      })
+      //retrieve org
+      .then(orgEntities => {
+        if (orgEntities.entities.length == 0) {
+          //org doesn't exist
+          console.log('org doesnt exist');
+          return orgService.createOrg(userInfo.hd, 'google')
+            .then((orgEntity) => {
+              return getUser(res, orgEntity, userInfo, userInfo.refresh_token);
+            });
+        } else {
+          // org exists
+          let orgEntity = orgEntities.entities[0];
           return getUser(res, orgEntity, userInfo, userInfo.refresh_token);
-        });
-      } else {
-        // org exists
-        let orgEntity = orgEntities.entities[0];
-        return getUser(res, orgEntity, userInfo, userInfo.refresh_token);        
-      }   
-    })
-    //retrieve user
-    .then((data) => {
-      console.log('routing_to_301=',getRouteUrl());
-      res.redirect(301,getRouteUrl());
-    })
-    //error
-    .catch(err => {
-      console.log('routing_to_err=', err);
-      //return err
-    });
+        }
+      })
+      //retrieve user
+      .then((data) => {
+        console.log('routing_to_301=', getRouteUrl());
+        res.redirect(301, getRouteUrl());
+      })
+      //error
+      .catch(err => {
+        console.log('routing_to_err=', err);
+        //return err
+      });
   });
 
 // users
@@ -161,34 +162,45 @@ app.get("/:gourl", setRouteUrl, auth.isLoggedIn, function (req, res, next) {
   // retrieve actual url
   let linkService = new LinkService();
 
-  let gourls = linkService.getGourls(cookie.getOrgIdFromCookie(req));
-  sc.setDict(gourls);
-  routeGoUrl = sc.correct(routeGoUrl);
-  
-  linkService.getLinkByGoLink(routeGoUrl, cookie.getOrgIdFromCookie(req))
-  .then(linkEntities => {
-    if (linkEntities.entities.length > 0) {
-      //retrieve the first one
-      let linkEntity = linkEntities.entities[0];
-      logger.log(linkEntity.orgId, linkEntity.userId, linkEntity.gourl, "getLinkByGoLink", "retrieve actual url");
+  // let gourls = linkService.getGourls(cookie.getOrgIdFromCookie(req));
+  linkService.getGourls(cookie.getOrgIdFromCookie(req))
+    .then(shortNames => {
+      let gourls = shortNames;
+      sc.setDict(gourls);
+      console.log('gourls', gourls)
+      routeGoUrl = sc.correct(routeGoUrl);
+      console.log('corrected', routeGoUrl)
 
-      if (linkEntity.url) {
-        res.redirect(301, linkEntity.url);
+    }).then(() =>
+      linkService.getLinkByGoLink(routeGoUrl, cookie.getOrgIdFromCookie(req))
+
+    )
+
+    // sc.setDict(gourls);
+
+    .then(linkEntities => {
+      if (linkEntities.entities.length > 0) {
+        //retrieve the first one
+        let linkEntity = linkEntities.entities[0];
+        logger.log(linkEntity.orgId, linkEntity.userId, linkEntity.gourl, "getLinkByGoLink", "retrieve actual url");
+
+        if (linkEntity.url) {
+          res.redirect(301, linkEntity.url);
+        } else {
+          console.log("url_is_empty, redirecting to links");
+          res.redirect('/__/links');
+        }
       } else {
-        console.log("url_is_empty, redirecting to links");
+        console.log("no_url_found, redirecting to links");
         res.redirect('/__/links');
       }
-    } else {
-      console.log("no_url_found, redirecting to links");
-      res.redirect('/__/links');
-    }
-  })
-  .catch(err => {
-    console.log(err);
-    //error condition
-    //route to error page
-  })
-  
+    })
+    .catch(err => {
+      console.log(err);
+      //error condition
+      //route to error page
+    })
+
 });
 
 
@@ -242,8 +254,8 @@ function getUser(res, orgEntity, response, refresh_token) {
   return new Promise((resolve, reject) => {
     let userService = new UserService();
     userService.readByColumn(
-        'email', 
-        response.email)
+      'email',
+      response.email)
       .then((userData) => {
         console.log(userData);
         if (userData.entities.length > 0) {
@@ -252,13 +264,13 @@ function getUser(res, orgEntity, response, refresh_token) {
           //update user
           let userEntity = userData.entities[0];
           userService.updateUser(
-              userEntity.id,
-              userEntity.orgId,
-              refresh_token,
-              userEntity.email,
-              userEntity.fName,
-              userEntity.lName,
-              userEntity.picture)
+            userEntity.id,
+            userEntity.orgId,
+            refresh_token,
+            userEntity.email,
+            userEntity.fName,
+            userEntity.lName,
+            userEntity.picture)
             .then((entity) => {
               //set cookie
               cookie.setCookie(res, entity.id, userEntity.orgId);
@@ -274,13 +286,13 @@ function getUser(res, orgEntity, response, refresh_token) {
             response.given_name,
             response.family_name,
             response.picture)
-          .then((entity) => {
-            //set cookie
-            cookie.setCookie(res, entity.id, entity.orgId);
-            resolve(true);
-          })
+            .then((entity) => {
+              //set cookie
+              cookie.setCookie(res, entity.id, entity.orgId);
+              resolve(true);
+            })
         }
-    });
+      });
   })
 }
 

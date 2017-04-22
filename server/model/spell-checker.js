@@ -12,8 +12,8 @@ var spellChecker = function () {
 	
 	var edits1 = function (words) {
 		var edits1Set = new Set();
-		for(var w = 0; w < words.length; w++) {
-			var word = words[w];
+		for(var word of words) {
+			// var word = words[w];
 			for (var i = 0; i <= word.length; i++) {
 				//splits (a & b)
 				var a = word.slice(0,i),
@@ -22,21 +22,21 @@ var spellChecker = function () {
 					d = b.slice(2);
 				if (b != '') {
 					//deletes
-					edits1Set.push(a + c);
+					edits1Set.add(a + c);
 					//transposes
 					if (b.length > 1) {
-						edits1Set.push(a + b.charAt(1) + b.charAt(0) + d);
+						edits1Set.add(a + b.charAt(1) + b.charAt(0) + d);
 					}
 					//replaces & inserts
 					for (var j = 0; j < alphabets.length; j++) {
-						edits1Set.push(a + alphabets[j] + c);//replaces
-						edits1Set.push(a + alphabets[j] + b);//inserts
+						edits1Set.add(a + alphabets[j] + c);//replaces
+						edits1Set.add(a + alphabets[j] + b);//inserts
 					}
 				}
 				else {
 					//inserts (remaining set for b == '')
 					for (var j = 0; j < alphabets.length; j++) {
-						edits1Set.push(a + alphabets[j] + b);
+						edits1Set.add(a + alphabets[j] + b);
 					}
 				}
 			}
@@ -51,26 +51,42 @@ var spellChecker = function () {
 
 
 	var correct = function (word) {
-		
+		console.log('dict', dict)
+		console.log('dict has test', dict.has('test'))
+		console.log('word', word)
 		if (dict.has(word)) return word;
 
-		let editsSet = edits1(word);
-		for (w in editsSet){
-			if (dict.has(w)) return w;
+
+		let editsSet = edits1([word]);
+
+		for (let w of editsSet){
+							// console.log('w',w)
+
+			if (dict.has(w)) {
+				return w;
+			}
 		}
 
-		let editsSet = edits1(edit1Set);
-		for (w in editsSet){
+		editsSet = edits1(editsSet);
+				console.log('editsSet', editsSet)
+
+						console.log('editsSet has test', editsSet.has('test'))
+
+		for (let w of editsSet){
 			if (dict.has(w)) return w;
 		}
 
 		return null;
 	};
+
+	that.setDict = setDict;
+	that.correct = correct;
+	return that;
 	
 };
 
 	
 
 module.exports = {
-    SpellChecker: SpellChecker
+    spellChecker: spellChecker
 };

@@ -32,10 +32,11 @@ function setKind (kind_Name) {
   kind = kind_Name;
 }
 
-function fromDatastore (obj) {
-  obj.data.id = obj.key.id;
-  return obj.data;
-}
+// function fromDatastore (obj) {
+//   console.log('obj',obj)
+//   obj.data.id = obj.key.id;
+//   return obj.data;
+// }
 
 // Translates from the application's format to the datastore's
 // extended entity property format. It also handles marking any
@@ -94,12 +95,12 @@ function list (limit, token, orgId, cb) {
       return;
     }
     const hasMore = nextQuery.moreResults !== Datastore.NO_MORE_RESULTS ? nextQuery.endCursor : false;
-    cb(null, entities.map(fromDatastore), hasMore);
+    cb(null, entities, hasMore);
+    // cb(null, entities.map(fromDatastore), hasMore);
+    
   });
 }
 // [END list]
-
-
 
 // Creates a new link or updates an existing link with new data. The provided
 // data is automatically translated into Datastore format. The link will be
@@ -157,7 +158,7 @@ function read (id, cb) {
       });
       return;
     }
-    cb(null, fromDatastore(entity));
+    cb(null, entity);
   });
 }
 
@@ -170,7 +171,7 @@ function readByColumn (columnName, columnValue, cb) {
       return;
     }
     const hasMore = nextQuery.moreResults !== Datastore.NO_MORE_RESULTS ? nextQuery.endCursor : false;
-    cb(null, entities.map(fromDatastore), hasMore);
+    cb(null, entities, hasMore);
   });
 }
 
@@ -183,7 +184,7 @@ function getLinkId (orgId, gourl, cb) {
       cb(err);
       return;
     }
-    cb(null, entities.map(fromDatastore));
+    cb(null, entities);
   });
 }
 

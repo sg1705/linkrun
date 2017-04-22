@@ -37,10 +37,10 @@ class ModelService {
         this.kind = kind_Name;
     }
 
-    fromDatastore(obj) {
-        obj.data.id = obj.key.id;
-        return obj.data;
-    }
+    // fromDatastore(obj) {
+    //     obj.data.id = obj.key.id;
+    //     return obj.data;
+    // }
 
     // Translates from the application's format to the datastore's
     // extended entity property format. It also handles marking any
@@ -101,7 +101,7 @@ class ModelService {
                 }
                 const hasMore = nextQuery.moreResults !== Datastore.NO_MORE_RESULTS ? nextQuery.endCursor : false;
                 resolve({
-                    entities: entities.map(this.fromDatastore),
+                    entities: entities,//.map(this.fromDatastore),
                     hasMore: hasMore
                 })
             });
@@ -183,7 +183,7 @@ class ModelService {
                 }
                 const hasMore = nextQuery.moreResults !== Datastore.NO_MORE_RESULTS ? nextQuery.endCursor : false;
                 resolve({
-                    entities: entities.map(this.fromDatastore),
+                    entities: entities,//.map(this.fromDatastore),
                     hasMore: hasMore
                 })
             });
@@ -205,7 +205,7 @@ class ModelService {
                 }
                 const hasMore = nextQuery.moreResults !== Datastore.NO_MORE_RESULTS ? nextQuery.endCursor : false;
                 resolve({
-                    entities: entities.map(this.fromDatastore),
+                    entities: entities,//.map(this.fromDatastore),
                     hasMore: hasMore
                 })
             });
@@ -214,19 +214,27 @@ class ModelService {
     }
 
     getColumn(c, c2, v2) {
+        let ds = this.ds;
+        let kind = this.kind;
         const q = ds.createQuery([kind])
-            .filter(c2, "=", v2)
+            // .filter(c2, "=", v2)
             .select([c])
         const shortNames = new Set();
-
+console.log('get column', c, c2, v2)
         return ds.runQuery(q)
             .then((results) => {
+                console.log('query ',results)
                 const entries = results[0];
                 entries.forEach((entry) => {
-                    shortNames.add(entry.c);
-                })
+                    shortNames.add(entry[c]);
 
-                return shortNames;
+                })
+console.log('shortNames', shortNames)
+return shortNames;
+
+                // return {
+                //     shortNames: shortNames
+                // }
             })
     }
 
