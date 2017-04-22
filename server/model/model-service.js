@@ -220,17 +220,14 @@ class ModelService {
             // .filter(c2, "=", v2)
             .select([c])
         const shortNames = new Set();
-console.log('get column', c, c2, v2)
         return ds.runQuery(q)
             .then((results) => {
-                console.log('query ',results)
                 const entries = results[0];
                 entries.forEach((entry) => {
                     shortNames.add(entry[c]);
 
                 })
-console.log('shortNames', shortNames)
-return shortNames;
+                return shortNames;
 
                 // return {
                 //     shortNames: shortNames
