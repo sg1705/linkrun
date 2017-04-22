@@ -37,6 +37,7 @@ router.post('/', (req, res, next) => {
 router.get('/:user', (req, res, next) => {
   getModel().read(req.params.user, (err, entity) => {
     if (err) {
+      console.log(err);
       next(err);
       return;
     }

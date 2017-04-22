@@ -89,6 +89,12 @@ app.get("/login", function (req, res, next) {
   res.sendFile(path.join(__dirname, '../dist/index.html'));
 });
 
+// links
+app.get("/form", function (req, res, next) {
+  res.sendFile(path.join(__dirname, '../dist/index.html'));
+});
+
+
 app.get('/__/login/google', function (req, res, next) {
   res.redirect(googAuth.getGoogleAuthUrl() + '&approval_prompt=force')
 });
@@ -222,7 +228,7 @@ function setRouteUrl(req, res, next) {
  * 
  * @param http response
  * @param orgEntity
- * @param userinfo returned by Google
+ * @param response userinfo.email returned by Google
  * @param tokens returned by Google
  * @return user entity
  * 
