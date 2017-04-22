@@ -15,7 +15,7 @@ var cookie       = require('./cookie.js');
 var auth         = require('./auth.js');
 var googAuth     = require('./googleauth.js');
 var Logger       = require('./model/log.js');
-var NSC          = require('./model/NSC.js');
+var SC = require('./model/spell-checker.js');
 
 
 /**
@@ -156,12 +156,15 @@ app.get("/:gourl", setRouteUrl, auth.isLoggedIn, function (req, res, next) {
     next();
   }
 
-  var nsc = NSC.NorvigSpellChecker();
-  nsc.train('zacks seekingalpha');  
-  routeGoUrl = nsc.correct(routeGoUrl)[routeGoUrl];
+  var sc = SC.spellChecker();
 
   // retrieve actual url
   let linkService = new LinkService();
+
+  let gourls = linkService.getGourls(cookie.getOrgIdFromCookie(req));
+  sc.setDict(gourls);
+  routeGoUrl = sc.correct(routeGoUrl);
+  
   linkService.getLinkByGoLink(routeGoUrl, cookie.getOrgIdFromCookie(req))
   .then(linkEntities => {
     if (linkEntities.entities.length > 0) {

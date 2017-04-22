@@ -51,6 +51,10 @@ class Link {
     return this.getModel().readByColumns('gourl', linkName, 'orgId', orgId);
   }
 
+  getGourls(orgId){
+    return this.getModel().getColumn('gourl', 'orgId', orgId);
+  }
+
   /**
    * Delete a link.
    */
