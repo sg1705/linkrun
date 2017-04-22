@@ -17,33 +17,49 @@ class Logger {
     this.metadata = { resource: { type: 'global' } };
  }
 
+ logOnConsole(msg, detail) {
+   if (!process.env.NODE_ENV) {
+      if(!detail){
+        console.log(msg);
+      } else 
+        console.log(msg, detail);
+      return true;
+  }
+ }
+
  debug (msg) {
+    if (this.logOnConsole(msg)) return;
     let entry = this.log.entry(this.metadata, { "msg": msg});
     this.log.debug (entry);
  }
   
- debug (msg, detailMessage) {
-    let entry = this.log.entry(this.metadata, { "msg": msg, "detail": detailMessage});
+ debug (msg, detail) {
+    if (this.logOnConsole(msg, detail)) return;
+    let entry = this.log.entry(this.metadata, { "msg": msg, "detail": detail});
     this.log.debug (entry);
  }
  
  info (msg) {
+    if (this.logOnConsole(msg)) return;
     let entry = this.log.entry(this.metadata, { "msg": msg});
     this.log.info(entry);
  }
 
- info (msg, detailMessage) {
-    let entry = this.log.entry(this.metadata, { "msg": msg, "detail": detailMessage});
+ info (msg, detail) {
+    if (this.logOnConsole(msg, detail)) return;
+    let entry = this.log.entry(this.metadata, { "msg": msg, "detail": detail});
     this.log.info(entry);
  }
 
  error (msg) {
+    if (this.logOnConsole(msg)) return;
     let entry = this.log.entry(this.metadata, { "msg": msg});
     this.log.error (entry);
  }
 
- error (msg, detailMessage) {
-    let entry = this.log.entry(this.metadata, { "msg": msg, "detail": detailMessage});
+ error (msg, detail) {
+    if (this.logOnConsole(msg, detail)) return;
+    let entry = this.log.entry(this.metadata, { "msg": msg, "detail": detail});
     this.log.error (entry);
  }
 }

@@ -74,7 +74,6 @@ app.use('/_/', express.static(path.join(__dirname, '../static')));
  */
 app.get("/", auth.isLoggedIn, function (req, res, next) {
   session.gourl = '/';
-  logger.info("routing_url =" + getRouteUrl());
   // res.sendFile(path.join(__dirname, '../dist/main.html'));
   res.redirect('/__/links');
 });

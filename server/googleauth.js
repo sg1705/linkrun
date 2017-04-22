@@ -29,7 +29,7 @@ function handleOAuth2Callback(req) {
               auth: oauth2Client
             }, function (err, response) {
               if (err) {
-                logger.error('Failed to login', {'userId':config.get('oauthCredentials.google.id'), 'error':error});
+                logger.error('Failed to login', {'error':error});
                 reject(err)
               } else {
                 //inject refresh token in userinfo
