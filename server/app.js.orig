@@ -100,7 +100,7 @@ app.get(
     googAuth.handleOAuth2Callback(req)
       //retrieve userinfo from google
       .then((userinfo) => {
-      userInfo = userinfo;    
+        userInfo = userinfo;
         if (userInfo.hd == null) {
           userInfo.hd = userInfo.email;
         }
@@ -170,6 +170,9 @@ app.get("/:gourl", setRouteUrl, auth.isLoggedIn, function (req, res, next) {
       linkService.getLinkByGoLink(routeGoUrl, cookie.getOrgIdFromCookie(req))
 
     )
+
+    // sc.setDict(gourls);
+
     .then(linkEntities => {
       if (linkEntities.entities.length > 0) {
         //retrieve the first one

@@ -217,8 +217,8 @@ class ModelService {
         let ds = this.ds;
         let kind = this.kind;
         const q = ds.createQuery([kind])
-            // .filter(c2, "=", v2)
-            .select([c])
+            // .select([c])
+            .filter(c2, "=", v2)
         const shortNames = new Set();
         return ds.runQuery(q)
             .then((results) => {
@@ -228,10 +228,6 @@ class ModelService {
 
                 })
                 return shortNames;
-
-                // return {
-                //     shortNames: shortNames
-                // }
             })
     }
 
