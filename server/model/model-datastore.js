@@ -34,8 +34,8 @@ function setKind (kind_Name) {
 }
 
 function fromDatastore (obj) {
-  obj.data.id = obj.key.id;
-  return obj.data;
+  obj.id = obj[Datastore.KEY].id;
+  return obj;
 }
 
 // Translates from the application's format to the datastore's
@@ -94,8 +94,10 @@ function list (limit, token, orgId, cb) {
       cb(err);
       return;
     }
+    console.log('entities', entities);
     const hasMore = nextQuery.moreResults !== Datastore.NO_MORE_RESULTS ? nextQuery.endCursor : false;
     cb(null, entities.map(fromDatastore), hasMore);
+    
   });
 }
 // [END list]
