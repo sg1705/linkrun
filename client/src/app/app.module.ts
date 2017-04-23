@@ -7,18 +7,8 @@ import { RouterModule }   from '@angular/router';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { FormComponent } from './form/form.component';
+import { MaterialModule} from './material/material.module';
 
-import {MdInputModule} from '@angular/material';
-import {MdToolbarModule} from '@angular/material';
-import {MdButtonModule} from '@angular/material';
-import {MdListModule} from '@angular/material';
-import {MdGridListModule} from '@angular/material';
-import {MdTabsModule} from '@angular/material';
-
-
-
-
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { LinkListComponent } from './link-list/link-list.component';
 
 @NgModule({
@@ -32,13 +22,7 @@ import { LinkListComponent } from './link-list/link-list.component';
     BrowserModule,
     FormsModule,
     HttpModule,
-    BrowserAnimationsModule,
-    MdInputModule,
-    MdToolbarModule,
-    MdButtonModule,
-    MdListModule,
-    MdGridListModule,
-    MdTabsModule,
+    MaterialModule,
     RouterModule.forRoot([
       {
         path: 'login',
