@@ -37,10 +37,10 @@ class ModelService {
         this.kind = kind_Name;
     }
 
-    // fromDatastore(obj) {
-    //     obj.data.id = obj.key.id;
-    //     return obj.data;
-    // }
+    fromDatastore(obj) {
+        obj.id = obj[Datastore.KEY].id;
+        return obj;
+    }
 
     // Translates from the application's format to the datastore's
     // extended entity property format. It also handles marking any
@@ -101,7 +101,7 @@ class ModelService {
                 }
                 const hasMore = nextQuery.moreResults !== Datastore.NO_MORE_RESULTS ? nextQuery.endCursor : false;
                 resolve({
-                    entities: entities,//.map(this.fromDatastore),
+                    entities: entities.map(this.fromDatastore),
                     hasMore: hasMore
                 })
             });
@@ -183,7 +183,7 @@ class ModelService {
                 }
                 const hasMore = nextQuery.moreResults !== Datastore.NO_MORE_RESULTS ? nextQuery.endCursor : false;
                 resolve({
-                    entities: entities,//.map(this.fromDatastore),
+                    entities: entities.map(this.fromDatastore),
                     hasMore: hasMore
                 })
             });
@@ -205,7 +205,7 @@ class ModelService {
                 }
                 const hasMore = nextQuery.moreResults !== Datastore.NO_MORE_RESULTS ? nextQuery.endCursor : false;
                 resolve({
-                    entities: entities,//.map(this.fromDatastore),
+                    entities: entities.map(this.fromDatastore),
                     hasMore: hasMore
                 })
             });

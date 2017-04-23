@@ -32,11 +32,14 @@ function setKind (kind_Name) {
   kind = kind_Name;
 }
 
-// function fromDatastore (obj) {
-//   console.log('obj',obj)
-//   obj.data.id = obj.key.id;
-//   return obj.data;
-// }
+function fromDatastore (obj) {
+  console.log('obj',obj)
+  console.log('---',obj[Datastore.KEY])
+  // obj.data.id = obj.key.id;
+  obj.id = obj[Datastore.KEY].id;
+  
+  return obj;
+}
 
 // Translates from the application's format to the datastore's
 // extended entity property format. It also handles marking any
@@ -94,9 +97,9 @@ function list (limit, token, orgId, cb) {
       cb(err);
       return;
     }
+    console.log('entities', entities);
     const hasMore = nextQuery.moreResults !== Datastore.NO_MORE_RESULTS ? nextQuery.endCursor : false;
-    cb(null, entities, hasMore);
-    // cb(null, entities.map(fromDatastore), hasMore);
+    cb(null, entities.map(fromDatastore), hasMore);
     
   });
 }
@@ -158,7 +161,7 @@ function read (id, cb) {
       });
       return;
     }
-    cb(null, entity);
+    cb(null, fromDatastore(entity));
   });
 }
 
@@ -171,7 +174,7 @@ function readByColumn (columnName, columnValue, cb) {
       return;
     }
     const hasMore = nextQuery.moreResults !== Datastore.NO_MORE_RESULTS ? nextQuery.endCursor : false;
-    cb(null, entities, hasMore);
+    cb(null, entities.map(fromDatastore), hasMore);
   });
 }
 
@@ -184,7 +187,7 @@ function getLinkId (orgId, gourl, cb) {
       cb(err);
       return;
     }
-    cb(null, entities);
+    cb(null, entities.map(fromDatastore));
   });
 }
 

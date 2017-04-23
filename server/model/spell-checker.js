@@ -43,11 +43,6 @@ var spellChecker = function () {
 		}
 		return edits1Set;
 	};
-	
-	var edits2 = function (words) {
-		return edits1(edits1(words));
-	};
-
 
 
 	var correct = function (word) {
