@@ -4,7 +4,7 @@ var config       = require('config');
 var google       = require('googleapis');
 var oauth2       = google.oauth2('v2');
 var OAuth2       = google.auth.OAuth2;
-
+var logger       = require('./model/logger.js')
 /**
  * Handles OAuth callback
  * 
@@ -28,6 +28,7 @@ function handleOAuth2Callback(req) {
               auth: oauth2Client
             }, function (err, response) {
               if (err) {
+                logger.error('Failed to login', {'error':error});
                 reject(err)
               } else {
                 //inject refresh token in userinfo
