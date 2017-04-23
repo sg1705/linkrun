@@ -3,8 +3,7 @@
 
 const Datastore = require('@google-cloud/datastore');
 const config = require('config');
-var Logger = require('./logger.js');
-let logger = new Logger();
+var logger = require('./logger.js');
 
 // [START config]
 const ds = Datastore({

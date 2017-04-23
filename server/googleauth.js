@@ -4,8 +4,7 @@ var config       = require('config');
 var google       = require('googleapis');
 var oauth2       = google.oauth2('v2');
 var OAuth2       = google.auth.OAuth2;
-var Logger       = require('./model/logger.js')
-let logger = new Logger();
+var logger       = require('./model/logger.js')
 /**
  * Handles OAuth callback
  * 

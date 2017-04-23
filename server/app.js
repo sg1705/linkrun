@@ -14,7 +14,7 @@ var LinkService  = require('./model/link.js');
 var cookie       = require('./cookie.js');
 var auth         = require('./auth.js');
 var googAuth     = require('./googleauth.js');
-var Logger       = require('./model/logger.js');
+var logger       = require('./model/logger.js');
 /**
  * Setup Express
  */
@@ -27,7 +27,6 @@ app.use(session({
   secret: 'my_precious' }));
 app.use(cookieParser('my-precious'));
 const COOKIE_NAME = 'xsession';
-let logger = new Logger();
 /**
  * Setup Google Cloud monitoring
  */
@@ -98,11 +97,11 @@ app.get(
     googAuth.handleOAuth2Callback(req)
     //retrieve userinfo from google
     .then((userinfo) => {
-      userInfo = userinfo;     
-      logger.info('user_login', {'userInfo':userInfo});
+      userInfo = userinfo;    
       if (userInfo.hd == null) {
         userInfo.hd = userInfo.email;
       }
+      logger.info('user_login', {'userInfo':userInfo.hd});
       return orgService.getOrgByName(userInfo.hd);
     })
     //retrieve org
@@ -190,7 +189,7 @@ if (module === require.main) {
   // Start the server
   var server = app.listen(config.get('server.port') || 8080, function () {
     var port = server.address().port;
-    logger.info('App listening on port ' + port);
+    logger.debug('app_running_on_port ' + port);
   });
 }
 

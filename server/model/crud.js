@@ -3,8 +3,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const config = require('config');
-var Logger = require('./logger.js');
-let logger = new Logger();
+var logger = require('./logger.js');
 
 function getModel () {
   return require(`./model-${config.get('db.DATA_BACKEND')}`);

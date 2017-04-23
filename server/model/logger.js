@@ -63,4 +63,4 @@ class Logger {
     this.log.error (entry);
  }
 }
-module.exports = Logger;
+module.exports = new Logger;
