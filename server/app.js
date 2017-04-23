@@ -14,8 +14,7 @@ var LinkService  = require('./model/link.js');
 var cookie       = require('./cookie.js');
 var auth         = require('./auth.js');
 var googAuth     = require('./googleauth.js');
-var Logger       = require('./model/log.js');
-
+var logger       = require('./model/logger.js');
 /**
  * Setup Express
  */
@@ -28,7 +27,6 @@ app.use(session({
   secret: 'my_precious' }));
 app.use(cookieParser('my-precious'));
 const COOKIE_NAME = 'xsession';
-
 /**
  * Setup Google Cloud monitoring
  */
@@ -47,13 +45,9 @@ if (process.env.NODE_ENV === 'staging') {
   errorHandler = require('@google/cloud-errors').start();
 }
 
-
-
 if (process.env.GCLOUD_PROJECT) {
   require('@google/cloud-debug').start();
 }
-let logger = new Logger();
-
 
 /**
  * No cache
@@ -79,7 +73,6 @@ app.use('/_/', express.static(path.join(__dirname, '../static')));
  */
 app.get("/", auth.isLoggedIn, function (req, res, next) {
   session.gourl = '/';
-  console.log("routing_url =",getRouteUrl());
   // res.sendFile(path.join(__dirname, '../dist/main.html'));
   res.redirect('/__/links');
 });
@@ -104,17 +97,18 @@ app.get(
     googAuth.handleOAuth2Callback(req)
     //retrieve userinfo from google
     .then((userinfo) => {
-      userInfo = userinfo;
+      userInfo = userinfo;    
       if (userInfo.hd == null) {
         userInfo.hd = userInfo.email;
       }
+      logger.info('user_login', {'userInfo':userInfo.hd});
       return orgService.getOrgByName(userInfo.hd);
     })
     //retrieve org
     .then(orgEntities => {
       if (orgEntities.entities.length == 0) {
         //org doesn't exist
-        console.log('org doesnt exist');
+        logger.info('org doesnt exist for user', userInfo);
         return orgService.createOrg(userInfo.hd, 'google')
         .then((orgEntity) => {
           return getUser(res, orgEntity, userInfo, userInfo.refresh_token);
@@ -127,12 +121,12 @@ app.get(
     })
     //retrieve user
     .then((data) => {
-      console.log('routing_to_301=',getRouteUrl());
+      logger.info('routing to 301'+ getRouteUrl());
       res.redirect(301,getRouteUrl());
     })
     //error
     .catch(err => {
-      console.log('routing_to_err=', err);
+      logger.error('routing error', err);
       //return err
     });
   });
@@ -151,6 +145,7 @@ app.get("/:gourl", setRouteUrl, auth.isLoggedIn, function (req, res, next) {
   let routeGoUrl = session.gourl;
   if (routeGoUrl == null) {
     //error condition
+    logger.error('link is null');
     next();
   }
   // retrieve actual url
@@ -160,20 +155,20 @@ app.get("/:gourl", setRouteUrl, auth.isLoggedIn, function (req, res, next) {
     if (linkEntities.entities.length > 0) {
       //retrieve the first one
       let linkEntity = linkEntities.entities[0];
-      logger.log(linkEntity.orgId, linkEntity.userId, linkEntity.gourl, "getLinkByGoLink", "retrieve actual url");
+      logger.info("fetch_URL", linkEntity);
       if (linkEntity.url) {
         res.redirect(301, linkEntity.url);
       } else {
-        console.log("url_is_empty, redirecting to links");
+        logger.info("url_is_empty, redirecting to links page");
         res.redirect('/__/links');
       }
     } else {
-      console.log("no_url_found, redirecting to links");
+      logger.info("no_url_found, redirecting to links page");
       res.redirect('/__/links');
     }
   })
   .catch(err => {
-    console.log(err);
+    logger.error (err);
     //error condition
     //route to error page
   })
@@ -194,8 +189,7 @@ if (module === require.main) {
   // Start the server
   var server = app.listen(config.get('server.port') || 8080, function () {
     var port = server.address().port;
-    console.log('App listening on port %s', port);
-    console.log('Press Ctrl+C to quit.');
+    logger.debug('app_running_on_port ' + port);
   });
 }
 
@@ -206,13 +200,12 @@ function getRouteUrl() {
   } else {
     routeUrl = '/' + session.gourl;
   }
-  console.log('route to:', routeUrl);
   return routeUrl;
 }
 
 function setRouteUrl(req, res, next) {
   session.gourl = req.params.gourl;
-  console.log('setting path:', session.gourl);
+  logger.info('invoking link:' + session.gourl);
   next();
 }
 
@@ -234,12 +227,11 @@ function getUser(res, orgEntity, response, refresh_token) {
         'email', 
         response.email)
       .then((userData) => {
-        console.log(userData);
-        if (userData.entities.length > 0) {
-          console.log('user exist');
+        if (userData.entities.length > 0) {  
           //user exists
           //update user
           let userEntity = userData.entities[0];
+          logger.info('user exist', {'userId' :userEntity.userId});
           userService.updateUser(
               userEntity.id,
               userEntity.orgId,
@@ -255,7 +247,7 @@ function getUser(res, orgEntity, response, refresh_token) {
             });
         } else {
           //user doesn't exist create user
-          console.log('user doesnt exist');
+          logger.info('user doesnt exist');
           userService.createUser(
             orgEntity.id,
             refresh_token,
@@ -272,6 +264,5 @@ function getUser(res, orgEntity, response, refresh_token) {
     });
   })
 }
-
 
 module.exports = app;

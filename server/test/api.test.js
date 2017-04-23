@@ -11,15 +11,12 @@ module.exports = (DATA_BACKEND) => {
     let id;
 
     before(() => {
-      // const appConfig = require(`config`);
-      // ORIG_DATA_BACKEND = appConfig.get(`db.DATA_BACKEND`);
-      // appConfig.set(`DATA_BACKEND`, DATA_BACKEND);
     });
 
     it(`should create a link`, (done) => {
       utils.getRequest(config)
         .post(`/api/links`)
-        .send({ gourl: `beep` })
+        .send({ orgId: 'orgId', gourl: `beep` })
         .expect(200)
         .expect((response) => {
           id = response.body.id;

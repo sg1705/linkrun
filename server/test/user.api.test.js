@@ -20,7 +20,7 @@ module.exports = (DATA_BACKEND) => {
     it(`should create a user`, (done) => {
       utils.getRequest(config)
         .post(`/api/users`)
-        .send({ gourl: `beep` })
+        .send({ orgId: 'orgId', gourl: `beep` })
         .expect(200)
         .expect((response) => {
           id = response.body.id;

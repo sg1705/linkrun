@@ -1,6 +1,7 @@
 'use strict';
 
 var cookie = require('./cookie.js');
+var logger = require('./model/logger.js');
 
 /**
  * Check if user is logged in
@@ -18,9 +19,10 @@ function isUserIdSetInCookie(req) {
     return false;
   var userId = xsession.userId;  
   if (userId != null) {
+    logger.debug('userId_from_cookie', {'userId': userId})
     return true;
   }
-  console.log('UserId is not set in Session');
+  logger.info('UserId is not set in Session');
   return false;
 }
 
