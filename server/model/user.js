@@ -2,13 +2,13 @@
 'use strict';
 
 const config = require('config');
-
+var logger   = require('./logger.js');
 
 class User {
   
   constructor() {
     var ModelService = require(`./model-service.js`);
-    this.modelService = new ModelService('User');   
+    this.modelService = new ModelService('User'); 
   }
 
   getModel () {
@@ -27,7 +27,7 @@ class User {
     userData["fName"] = fName;
     userData["lName"] = lName;
     userData["picture"] = picture;
-    console.log("create_user=", userData);
+    logger.info("creating user", userData);
     return this.getModel().create(userData);
   }
 
@@ -42,7 +42,7 @@ class User {
     userData["fName"] = fName;
     userData["lName"] = lName;
     userData["picture"] = picture;
-    console.log("update_user=", userData);
+    logger.info("updating user", userData);
     return this.getModel().update (uid, userData);
   }
 
@@ -57,7 +57,7 @@ class User {
    * Delete a user.
    */
   deleteUser(uid) {
-    console.log("delete_user=", uid);
+    logger.info("deleting user", uid);
     return this.getModel().delete(uid);
   }
 

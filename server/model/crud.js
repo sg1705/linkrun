@@ -3,6 +3,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const config = require('config');
+var logger = require('./logger.js');
 
 function getModel () {
   return require(`./model-${config.get('db.DATA_BACKEND')}`);
@@ -28,7 +29,7 @@ router.use((req, res, next) => {
 router.get('/', (req, res, next) => {
   var xsession = req.signedCookies[config.get("COOKIE_NAME")];
   if (xsession == null) {
-    console.log('link is not saved as xsession stored in cookie is NULL'); 
+    logger.info('link is not saved as xsession stored in cookie is NULL'); 
     res.redirect(`/login`);
   }
   getModel().list(10, req.query.pageToken, xsession.orgId, (err, entities, cursor) => {
@@ -67,12 +68,12 @@ router.post('/add', (req, res, next) => {
   let data = req.body;
   var xsession = req.signedCookies[config.get("COOKIE_NAME")];
   if (xsession == null) {
-    console.log('link is not saved as xsession stored in cookie is NULL'); 
+    logger.info('link is not saved as xsession stored in cookie is NULL'); 
     res.redirect(`/login`);
   }
   data['userId'] = xsession.userId;
   data['orgId'] = xsession.orgId;
-  console.log("add_link=", data); 
+  logger.info("add_link", data); 
   // Save the data to the database.
   getModel().create(data, (err, savedData) => {
     if (err) {
@@ -111,14 +112,15 @@ router.post('/:link/edit', (req, res, next) => {
   let data = req.body;
   var xsession = req.signedCookies[config.get("COOKIE_NAME")];
   if (xsession == null) {
-    console.log('link is not saved as xsession stored in cookie is NULL'); 
+    logger.info('link is not saved as xsession stored in cookie is NULL'); 
     res.redirect(`/login`);
   }
   data['userId'] = xsession.userId;
   data['orgId'] = xsession.orgId;
-  console.log("edit_link=", data); 
+  logger.info("edit_link=", data); 
   getModel().update(req.params.link, data, (err, savedData) => {
     if (err) {
+      logger.error('error_edit_link',err); 
       next(err);
       return;
     }
@@ -134,10 +136,11 @@ router.post('/:link/edit', (req, res, next) => {
 router.get('/:link', (req, res, next) => {
   getModel().read(req.params.link, (err, entity) => {
     if (err) {
+     logger.error('error_get_link',err); 
       next(err);
       return;
     }
-    console.log("view_link=", entity); 
+    logger.debug("view_link", entity); 
     res.render('links/view.jade', {
       link: entity
     });
@@ -152,10 +155,11 @@ router.get('/:link', (req, res, next) => {
 router.get('/:link/delete', (req, res, next) => {
   getModel().delete(req.params.link, (err) => {
     if (err) {
+      logger.error('error_delete_link',err); 
       next(err);
       return;
     }
-    console.log("delete_link=", req.params); 
+    logger.debug("delete_link", req.params); 
     res.redirect(req.baseUrl);
   });
 });
