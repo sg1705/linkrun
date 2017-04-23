@@ -1,17 +1,17 @@
 export class User {
-  id:         Number;
-  orgId:      Number;
-  firstName:  String;
-  lastName:   String;
-  photoUrl:   String;
-  email:      String;
+  id:         number;
+  orgId:      number;
+  fName:      string;
+  lName:   string;
+  picture:   string;
+  email:      string;
 
-  construction(id, orgId, firstName, lastName, photoUrl, email) {
+  constructor(id, orgId, firstName, lastName, photoUrl, email) {
     this.id = id;
     this.orgId = orgId;
-    this.firstName = firstName;
-    this.lastName = lastName;
-    this.photoUrl = photoUrl;
+    this.fName = firstName;
+    this.lName = lastName;
+    this.picture = photoUrl;
     this.email = email;
   }
   

@@ -1,12 +1,21 @@
 import { Component } from '@angular/core';
+import { UserService } from './services/user.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  providers: [UserService]
 })
 export class AppComponent {
   title = 'app works!';
+
+  constructor(private userService: UserService) {
+    this.userService.getCurrentUser().then(user => {
+      console.debug('logged in user', user);
+    })
+  }
+
 }
 
 export class Link {
@@ -16,21 +25,3 @@ export class Link {
   description:  String;
 }
 
-export class User {
-  id:         Number;
-  orgId:      Number;
-  firstName:  String;
-  lastName:   String;
-  photoUrl:   String;
-  email:      String;
-
-  construction(id, orgId, firstName, lastName, photoUrl, email) {
-    this.id = id;
-    this.orgId = orgId;
-    this.firstName = firstName;
-    this.lastName = lastName;
-    this.photoUrl = photoUrl;
-    this.email = email;
-  }
-  
-}

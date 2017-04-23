@@ -33,7 +33,7 @@ have run the command `gcloud auth application-default login`, your identity can 
 
 # Deploying on Google Cloud
 
-1. Build for product `npm run build:prod`
+1. Build for product `npm install && cd client && npm install && cd .. && npm run build:prod`
 2. Change the environment variable in app.yaml to `production`
 3. List projects `gcloud config list`
 4. Set Project `gcloud config set project linkrun-production`

@@ -1,20 +1,43 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
-import { User } from '../model/user'
+import { User } from '../model/user';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/toPromise';
 
 @Injectable()
 export class UserService {
 
-  currentUser: User;
+  private apiUrl: string = '/__/api/users';
+  private currentUser: User;
 
-  constructor() {
+  constructor(private http: Http) {
 
   }
 
-  authenticateUser():User {
+  getCurrentUser(): Promise<User> {
+    if (this.currentUser == null) {
+      //make a network call to get user
+      return this.http.get(this.apiUrl)
+        .toPromise().then(res => {
+          var data = res.json();
+          var user = new User(
+            data.id,
+            data.orgId,
+            data.fName,
+            data.lName,
+            data.picture,
+            data.email
+          );
+          this.currentUser = user;
+          return this.currentUser;
+        })
 
-    return null;
+    } else {
+      return new Promise<User>((resolve, reject) => {
+        resolve(this.currentUser);
+      });
+    }
   }
-  
+
 
 }
