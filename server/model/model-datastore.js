@@ -33,11 +33,7 @@ function setKind (kind_Name) {
 }
 
 function fromDatastore (obj) {
-  console.log('obj',obj)
-  console.log('---',obj[Datastore.KEY])
-  // obj.data.id = obj.key.id;
   obj.id = obj[Datastore.KEY].id;
-  
   return obj;
 }
 
