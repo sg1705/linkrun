@@ -33,13 +33,13 @@ class ModelService {
     //     property: value
     //   }
 
-    setKind (kind_Name) {
+    setKind(kind_Name) {
         this.kind = kind_Name;
     }
 
-    fromDatastore (obj) {
-        obj.data.id = obj.key.id;
-        return obj.data;
+    fromDatastore(obj) {
+        obj.id = obj[Datastore.KEY].id;
+        return obj;
     }
 
     // Translates from the application's format to the datastore's
@@ -65,17 +65,17 @@ class ModelService {
     //       excludeFromIndexes: true
     //     }
     //   ]
-    toDatastore (obj, nonIndexed) {
+    toDatastore(obj, nonIndexed) {
         nonIndexed = nonIndexed || [];
         const results = [];
         Object.keys(obj).forEach((k) => {
             if (obj[k] === undefined) {
-            return;
+                return;
             }
             results.push({
-            name: k,
-            value: obj[k],
-            excludeFromIndexes: nonIndexed.indexOf(k) !== -1
+                name: k,
+                value: obj[k],
+                excludeFromIndexes: nonIndexed.indexOf(k) !== -1
             });
         });
         return results;
@@ -86,7 +86,7 @@ class ModelService {
     // return per page. The ``token`` argument allows requesting additional
     // pages. The callback is invoked with ``(err, links, nextPageToken)``.
     // [START list]
-    list (limit, token) {
+    list(limit, token) {
         let ds = this.ds;
         let kind = this.kind;
         return new Promise((resolve, reject) => {
@@ -101,7 +101,7 @@ class ModelService {
                 }
                 const hasMore = nextQuery.moreResults !== Datastore.NO_MORE_RESULTS ? nextQuery.endCursor : false;
                 resolve({
-                    entities:entities.map(this.fromDatastore),
+                    entities: entities.map(this.fromDatastore),
                     hasMore: hasMore
                 })
             });
@@ -113,7 +113,7 @@ class ModelService {
     // data is automatically translated into Datastore format. The link will be
     // queued for background processing.
     // [START update]
-    update (id, data) {
+    update(id, data) {
         let ds = this.ds;
         let kind = this.kind;
         return new Promise((resolve, reject) => {
@@ -144,13 +144,13 @@ class ModelService {
     }
     // [END update]
 
-    create (data) {
+    create(data) {
         let ds = this.ds;
         let kind = this.kind;
         return this.update(null, data);
     }
 
-    read (id) {
+    read(id) {
         let ds = this.ds;
         let kind = this.kind;
         return new Promise((resolve, reject) => {
@@ -161,8 +161,8 @@ class ModelService {
                 }
                 if (!entity) {
                     resolve({
-                    code: 404,
-                    message: 'Not found'
+                        code: 404,
+                        message: 'Not found'
                     });
                 }
                 resolve(entity);
@@ -174,9 +174,9 @@ class ModelService {
         let ds = this.ds;
         let kind = this.kind;
         return new Promise((resolve, reject) => {
-            const q = 
+            const q =
                 ds.createQuery([kind])
-                .filter(columnName, '=', columnValue);
+                    .filter(columnName, '=', columnValue);
             ds.runQuery(q, (err, entities, nextQuery) => {
                 if (err) {
                     reject(err);
@@ -195,10 +195,10 @@ class ModelService {
         let ds = this.ds;
         let kind = this.kind;
         return new Promise((resolve, reject) => {
-            const q = 
+            const q =
                 ds.createQuery([kind])
-                .filter(c1, '=', v1)
-                .filter(c2, '=', v2);
+                    .filter(c1, '=', v1)
+                    .filter(c2, '=', v2);
             ds.runQuery(q, (err, entities, nextQuery) => {
                 if (err) {
                     reject(err);
@@ -213,13 +213,31 @@ class ModelService {
         });
     }
 
-    _delete (id, cb) {
+    getColumn(c, c2, v2) {
+        let ds = this.ds;
+        let kind = this.kind;
+        const q = ds.createQuery([kind])
+            // .select([c])
+            .filter(c2, "=", v2)
+        const shortNames = new Set();
+        return ds.runQuery(q)
+            .then((results) => {
+                const entries = results[0];
+                entries.forEach((entry) => {
+                    shortNames.add(entry[c]);
+
+                })
+                return shortNames;
+            })
+    }
+
+    _delete(id, cb) {
         let ds = this.ds;
         let kind = this.kind;
         return new Promise((resolve, reject) => {
             const key = ds.key([kind, parseInt(id, 10)]);
-            ds.delete(key, function(err) {
-                if(err) {
+            ds.delete(key, function (err) {
+                if (err) {
                     reject(err);
                 } else {
                     resolve(true);
