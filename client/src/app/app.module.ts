@@ -31,7 +31,11 @@ import { LinkListComponent } from './link-list/link-list.component';
       {
         path: 'form',
         component: FormComponent
-      }
+      },
+      {
+        path: 'links',
+        component: LinkListComponent
+      },
       
     ])    
   ],
