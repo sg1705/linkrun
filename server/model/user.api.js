@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const config = require('config');
 const UserService = require(`./user.js`);
 const cookieService = require('../cookie.js');
+const Datastore = require('@google-cloud/datastore');
 
 const userService = new UserService();
 
@@ -17,22 +18,6 @@ const router = express.Router();
 
 // Automatically parse request body as JSON
 router.use(bodyParser.json());
-
-// /**
-//  * POST /api/users
-//  *
-//  * Create a new user.
-//  */
-// router.post('/', (req, res, next) => {
-//   userService.
-//   getModel().create(req.body, (err, entity) => {
-//     if (err) {
-//       next(err);
-//       return;
-//     }
-//     res.json(entity);
-//   });
-// });
 
 /**
  * GET /api/users/:id
@@ -46,69 +31,18 @@ router.get('/', (req, res, next) => {
   .then(entity => {
     //create user object
     var userData = {};
-    userData['id'] = entity.key.id;
-    userData["orgId"] = entity.data.orgId;
-    userData["email"] = entity.data.email;
-    userData["fName"] = entity.data.fName;
-    userData["lName"] = entity.data.lName;
-    userData["picture"] = entity.data.picture;
+    userData['id'] = entity[Datastore.KEY].id;
+    console.log(entity[Datastore.KEY].id);
+    userData["orgId"] = entity['orgId'];
+    userData["email"] = entity['email'];
+    userData["fName"] = entity['fName'];
+    userData["lName"] = entity['lName'];
+    userData["picture"] = entity['picture'];
     res.json(userData);
   }).catch(err => {
       console.log(err);
-      next(err);
       return;    
   })
-  // getModel().read(req.params.user, (err, entity) => {
-  //   if (err) {
-  //     console.log(err);
-  //     next(err);
-  //     return;
-  //   }
-  //   res.json(entity);
-  // });
 });
-
-// /**
-//  * PUT /api/users/:id
-//  *
-//  * Update a user.
-//  */
-// router.put('/:user', (req, res, next) => {
-//   getModel().update(req.params.user, req.body, (err, entity) => {
-//     if (err) {
-//       next(err);
-//       return;
-//     }
-//     res.json(entity);
-//   });
-// });
-
-// /**
-//  * DELETE /api/users/:id
-//  *
-//  * Delete a user.
-//  */
-// router.delete('/:user', (req, res, next) => {
-//   getModel().delete(req.params.user, (err) => {
-//     if (err) {
-//       next(err);
-//       return;
-//     }
-//     res.status(200).send('OK');
-//   });
-// });
-
-// /**
-//  * Errors on "/api/users/*" routes.
-//  */
-// router.use((err, req, res, next) => {
-//   // Format error and forward to generic error handler for logging and
-//   // responding to the request
-//   err.response = {
-//     message: err.message,
-//     internalCode: err.code
-//   };
-//   next(err);
-// });
 
 module.exports = router;
