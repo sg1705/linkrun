@@ -33,4 +33,15 @@ describe('FormComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should have three input fields', () => {
+    expect(fixture.nativeElement.querySelectorAll('input').length).toEqual(2);
+  })
+
+  it('should have one text area field', () => {
+    expect(fixture.nativeElement.querySelectorAll('textarea').length).toEqual(1);
+  })
+
+
+
 });
