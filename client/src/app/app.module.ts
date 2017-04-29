@@ -6,24 +6,42 @@ import { RouterModule }   from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
+import { FormComponent } from './form/form.component';
+import { MaterialModule} from './material/material.module';
+
+import { LinkListComponent } from './link-list/link-list.component';
+
+export let ROUTES = [
+  {
+    path: 'login',
+    component: LoginComponent
+  },
+  {
+    path: 'form',
+    component: FormComponent
+  },
+  {
+    path: 'links',
+    component: LinkListComponent
+  }]
+
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent
+    LoginComponent,
+    FormComponent,
+    LinkListComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
-    RouterModule.forRoot([
-      {
-        path: 'login',
-        component: LoginComponent
-      }
-    ])    
+    MaterialModule,
+    RouterModule.forRoot([ROUTES])    
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+

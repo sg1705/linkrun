@@ -1,15 +1,60 @@
-import { TestBed, async } from '@angular/core/testing';
+import { TestBed, async, ComponentFixture } from '@angular/core/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { HttpModule } from '@angular/http';
+import { Router } from "@angular/router";
 
 import { AppComponent } from './app.component';
+import { MaterialModule} from './material/material.module';
+import { FormComponent } from './form/form.component';
+import { LinkListComponent } from './link-list/link-list.component';
+
+import { UserService } from './services/user.service';
+import { User } from './model/user';
+
+
+let userServiceSpy: UserService;
+let router: Router;
+let location: Location;
+let fixture: ComponentFixture<AppComponent>;
+
 
 describe('AppComponent', () => {
+  
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        AppComponent
+        AppComponent,
+        FormComponent,
+        LinkListComponent
       ],
+      imports: [
+        MaterialModule,
+        RouterTestingModule.withRoutes([
+          {
+            path: 'form',
+            component: FormComponent
+          },
+          {
+            path: 'links',
+            component: LinkListComponent
+          }          
+        ])
+      ]
+    })
+    .overrideComponent(AppComponent, {
+      set: {
+        providers: [
+          { provide: UserService, useClass: UserServiceSpy }
+        ]
+      }
     }).compileComponents();
+
+    //initialize test stuff
+    fixture         = TestBed.createComponent(AppComponent);
+    userServiceSpy  = fixture.debugElement.injector.get(UserService);
+    router          = TestBed.get(Router);
   }));
+
 
   it('should create the app', async(() => {
     const fixture = TestBed.createComponent(AppComponent);
@@ -17,16 +62,65 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   }));
 
-  it(`should have as title 'app works!'`, async(() => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app.title).toEqual('app works!');
-  }));
 
-  it('should render title in a h1 tag', async(() => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('app works!');
-  }));
+
+  it('should get current user in the construtor', () => {
+    expect(userServiceSpy.getCurrentUser).toHaveBeenCalled();
+
+    fixture.whenStable().then(() => {
+      fixture.detectChanges();
+      userServiceSpy.getCurrentUser().then(user => {
+        expect(user.email).toEqual('sg1705@gmail.com');
+      })
+    })
+  });
+
+  it('should contain two buttons to navigate', () => {
+    let tabButtons = fixture.nativeElement.querySelectorAll('button');
+    expect(tabButtons[0].textContent).toContain('My Links');
+    expect(tabButtons[1].textContent).toContain('New Link');
+  })
+
+  it('should navigate to new link form when clicked', () => {
+    let tabButtons = fixture.nativeElement.querySelectorAll('button');
+    tabButtons[1].click();
+
+    fixture.whenStable().then(() => {
+      fixture.detectChanges();
+      expect(router.url).toContain('/form');
+    })
+  })
+
+  it('should navigate to link list when clicked', () => {
+    let tabButtons = fixture.nativeElement.querySelectorAll('button');
+    tabButtons[0].click();
+
+    fixture.whenStable().then(() => {
+      fixture.detectChanges();
+      expect(router.url).toContain('/link');
+    })
+  })
+
+
+
+
 });
+
+
+
+export class UserServiceSpy {
+  testUser = new User(
+    5715921523965952,
+    5704147139559424,
+    "Saurabh",
+    "Gupta",
+    "https://lh5.googleusercontent.com/-EKWz1QcfjGg/AAAAAAAAAAI/AAAAAAAAEdM/rQpQ4Z44pRA/photo.jpg",
+    "sg1705@gmail.com",
+  )
+
+  getCurrentUser = jasmine.createSpy('getCurrentUser').and.callFake(
+    () => Promise
+      .resolve(true)
+      .then(() => Object.assign({}, this.testUser))
+  );
+}
