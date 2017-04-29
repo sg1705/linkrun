@@ -1,6 +1,5 @@
 import { TestBed, inject, async } from '@angular/core/testing';
 import { BaseRequestOptions, Http, HttpModule, Response, ResponseOptions } from '@angular/http';
-
 import { MockBackend } from '@angular/http/testing';
 import { LinkService } from './link.service';
 
@@ -48,7 +47,4 @@ describe('LinkService', () => {
       }))
     ));
   })
-
-
-
 });

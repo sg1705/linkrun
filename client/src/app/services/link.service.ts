@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
-
 import { Link } from '../model/link';
 
 @Injectable()
 export class LinkService {
-
   private apiUrl: string = '/__/api/users';
 
   constructor(private http: Http) { }
