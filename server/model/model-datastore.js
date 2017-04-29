@@ -194,20 +194,6 @@ function _delete (id, cb) {
   ds.delete(key, cb);
 }
 
-// function DatastoreService(kind) {
-
-//   return { 
-//     setKind,
-//     create,
-//     read,
-//     update,
-//     delete: _delete,
-//     list
-//   }
-// }
-
-// module.exports = DatastoreService;
-
 // [START exports]
 module.exports = {
   setKind,
