@@ -1,6 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { MaterialModule} from '../material/material.module';
 
 import { FormComponent } from './form.component';
+import { UserService } from '../services/user.service';
+import { UserServiceSpy } from '../app.component.spec'
 
 describe('FormComponent', () => {
   let component: FormComponent;
@@ -8,9 +11,17 @@ describe('FormComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ FormComponent ]
+      declarations: [ FormComponent ],
+      imports: [MaterialModule]
     })
-    .compileComponents();
+    .overrideComponent(FormComponent, {
+      set: {
+        providers: [
+          { provide: UserService, useClass: UserServiceSpy }
+        ]
+      }
+    }).compileComponents();
+
   }));
 
   beforeEach(() => {

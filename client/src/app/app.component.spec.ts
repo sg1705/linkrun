@@ -47,7 +47,8 @@ describe('AppComponent', () => {
           { provide: UserService, useClass: UserServiceSpy }
         ]
       }
-    });
+    }).compileComponents();
+
     //initialize test stuff
     fixture         = TestBed.createComponent(AppComponent);
     userServiceSpy  = fixture.debugElement.injector.get(UserService);
@@ -107,7 +108,7 @@ describe('AppComponent', () => {
 
 
 
-class UserServiceSpy {
+export class UserServiceSpy {
   testUser = new User(
     5715921523965952,
     5704147139559424,
