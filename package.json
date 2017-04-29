@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node server/app.js",
     "dev": "nodemon server/app.js",
-    "build:prod": "cd client && ng build -prod"
+    "build:prod": "cd client && ng build -prod",
+    "test": "mocha"
   },
   "private": true,
   "dependencies": {
@@ -31,6 +32,7 @@
   "devDependencies": {
     "@types/jasmine": "2.5.38",
     "@types/node": "^6.0.42",
+    "google-datastore-emulator": "^1.0.5",
     "jasmine-core": "2.5.2",
     "jasmine-spec-reporter": "2.5.0",
     "mocha": "^3.0.2",
