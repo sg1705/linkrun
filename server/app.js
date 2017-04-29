@@ -14,7 +14,7 @@ var LinkService = require('./model/link.js');
 var cookie = require('./cookie.js');
 var auth = require('./auth.js');
 var googAuth = require('./googleauth.js');
-var logger       = require('./model/logger.js');
+var logger = require('./model/logger.js');
 var SC = require('./model/spell-checker.js');
 
 /**
@@ -85,6 +85,17 @@ app.get("/login", function (req, res, next) {
   res.sendFile(path.join(__dirname, '../dist/index.html'));
 });
 
+// links
+app.get("/form", function (req, res, next) {
+  res.sendFile(path.join(__dirname, '../dist/index.html'));
+});
+
+// links
+app.get("/links", function (req, res, next) {
+  res.sendFile(path.join(__dirname, '../dist/index.html'));
+});
+
+
 app.get('/__/login/google', function (req, res, next) {
   res.redirect(googAuth.getGoogleAuthUrl() + '&approval_prompt=force')
 });
@@ -100,18 +111,18 @@ app.get(
     googAuth.handleOAuth2Callback(req)
       //retrieve userinfo from google
       .then((userinfo) => {
-      userInfo = userinfo;    
+        userInfo = userinfo;
         if (userInfo.hd == null) {
           userInfo.hd = userInfo.email;
         }
-      logger.info('user_login', {'userInfo':userInfo.hd});
+        logger.info('user_login', { 'userInfo': userInfo.hd });
         return orgService.getOrgByName(userInfo.hd);
       })
       //retrieve org
       .then(orgEntities => {
         if (orgEntities.entities.length == 0) {
           //org doesn't exist
-        logger.info('org doesnt exist for user', userInfo);
+          logger.info('org doesnt exist for user', userInfo);
           return orgService.createOrg(userInfo.hd, 'google')
             .then((orgEntity) => {
               return getUser(res, orgEntity, userInfo, userInfo.refresh_token);
@@ -124,12 +135,12 @@ app.get(
       })
       //retrieve user
       .then((data) => {
-      logger.info('routing to 301'+ getRouteUrl());
+        logger.info('routing to 301' + getRouteUrl());
         res.redirect(301, getRouteUrl());
       })
       //error
       .catch(err => {
-      logger.error('routing error', err);
+        logger.error('routing error', err);
         //return err
       });
   });
@@ -152,43 +163,42 @@ app.get("/:gourl", setRouteUrl, auth.isLoggedIn, function (req, res, next) {
     next();
   }
 
-  var sc = SC.spellChecker();
 
   // retrieve actual url
   let linkService = new LinkService();
+  let orgId = cookie.getOrgIdFromCookie(req)
 
-  // let gourls = linkService.getGourls(cookie.getOrgIdFromCookie(req));
-  linkService.getGourls(cookie.getOrgIdFromCookie(req))
-    .then(shortNames => {
-      let gourls = shortNames;
-      sc.setDict(gourls);
-      console.log('gourls', gourls)
-      routeGoUrl = sc.correct(routeGoUrl);
-      console.log('corrected', routeGoUrl)
 
-    }).then(() =>
-      linkService.getLinkByGoLink(routeGoUrl, cookie.getOrgIdFromCookie(req))
-
-    )
-    .then(linkEntities => {
-      if (linkEntities.entities.length > 0) {
-        //retrieve the first one
-        let linkEntity = linkEntities.entities[0];
-      logger.info("fetch_URL", linkEntity);
-
-        if (linkEntity.url) {
-          res.redirect(301, linkEntity.url);
-        } else {
-        logger.info("url_is_empty, redirecting to links page");
-          res.redirect('/__/links');
-        }
-      } else {
-      logger.info("no_url_found, redirecting to links page");
+  linkService.getLinkByGoLink(routeGoUrl, orgId)
+    .then(linkEntities => { // gourl not found. attempt to find a close one.
+      if (linkEntities.entities.length == 0) {
+        logger.info("no_url_found, attempt to auto-correct");
+        var sc = SC.spellChecker();
+        linkService.getGourls(orgId)
+          .then(shortNames => {
+            let gourls = shortNames;
+            sc.setDict(gourls);
+            logger.info('gourls', gourls)
+            routeGoUrl = sc.correct(routeGoUrl);
+            logger.info('corrected to ', routeGoUrl)
+          }).then(() => {
+            if (routeGoUrl) {
+              linkService.getLinkByGoLink(routeGoUrl, orgId)
+                .then(linkEntities => res.redirect(301, linkEntities.entities[0].url));
+            } else {
+              logger.info("no_url_found, redirecting to links page");
+              res.redirect('/__/links');
+            }
+          })
+      } else if (!linkEntities.entities[0].url) {
+        logger.info("empty_url, redirecting to links page");
         res.redirect('/__/links');
+      } else { 
+        res.redirect(301, linkEntities.entities[0].url);
       }
     })
     .catch(err => {
-    logger.error (err);
+      logger.error(err);
       //error condition
       //route to error page
     })
@@ -235,7 +245,7 @@ function setRouteUrl(req, res, next) {
  * 
  * @param http response
  * @param orgEntity
- * @param userinfo returned by Google
+ * @param response userinfo.email returned by Google
  * @param tokens returned by Google
  * @return user entity
  * 
@@ -247,11 +257,11 @@ function getUser(res, orgEntity, response, refresh_token) {
       'email',
       response.email)
       .then((userData) => {
-        if (userData.entities.length > 0) {  
+        if (userData.entities.length > 0) {
           //user exists
           //update user
           let userEntity = userData.entities[0];
-          logger.info('user exist', {'userId' :userEntity.userId});
+          logger.info('user exist', { 'userId': userEntity.userId });
           userService.updateUser(
             userEntity.id,
             userEntity.orgId,
