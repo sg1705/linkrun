@@ -159,10 +159,8 @@ app.get("/:gourl", setRouteUrl, auth.isLoggedIn, function (req, res, next) {
 
 
   linkService.getLinkByGoLink(routeGoUrl, orgId)
-    .then(linkEntities => {
-      if (linkEntities.entities.length > 0 && linkEntities.entities[0].url) {
-        res.redirect(301, linkEntities.entities[0].url);
-      } else {  // gourl not found. attempt to find a close one.
+    .then(linkEntities => { // gourl not found. attempt to find a close one.
+      if (linkEntities.entities.length == 0) {
         logger.info("no_url_found, attempt to auto-correct");
         var sc = SC.spellChecker();
         linkService.getGourls(orgId)
@@ -181,6 +179,11 @@ app.get("/:gourl", setRouteUrl, auth.isLoggedIn, function (req, res, next) {
               res.redirect('/__/links');
             }
           })
+      } else if (!linkEntities.entities[0].url) {
+        logger.info("empty_url, redirecting to links page");
+        res.redirect('/__/links');
+      } else { 
+        res.redirect(301, linkEntities.entities[0].url);
       }
     })
     .catch(err => {
