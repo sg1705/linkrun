@@ -4,7 +4,7 @@ import { Link } from '../model/link';
 
 @Injectable()
 export class LinkService {
-  private apiUrl: string = '/__/api/users';
+  private apiUrl: string = '/__/api/linksv2';
 
   constructor(private http: Http) { }
 

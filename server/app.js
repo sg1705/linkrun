@@ -147,7 +147,7 @@ app.get(
 
 // users
 app.use('/__/api/users', require('./model/user.api'));
-app.use('/__/linksv2', require('./api/link.api'));
+app.use('/__/api/linksv2', require('./api/link.api'));
 
 //Views
 app.set('views', path.join(__dirname, 'views'));
