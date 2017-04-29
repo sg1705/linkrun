@@ -50,8 +50,19 @@ class Link {
     return this.getModel().readByColumns('gourl', linkName, 'orgId', orgId);
   }
 
+  /**
+   * Returns a Set of all the short links
+   */
   getGourls(orgId){
-    return this.getModel().getColumn('gourl', 'orgId', orgId);
+    return this.getModel().filterByColumn('gourl', 'orgId', orgId);
+  }
+
+
+  /**
+   * Retrieve a link for given user
+   */
+  getLinksByUser(userId) {
+    return this.getModel().readByColumn('userId', userId);
   }
 
   /**

@@ -11,21 +11,6 @@ import { MaterialModule} from './material/material.module';
 
 import { LinkListComponent } from './link-list/link-list.component';
 
-export let ROUTES = [
-  {
-    path: 'login',
-    component: LoginComponent
-  },
-  {
-    path: 'form',
-    component: FormComponent
-  },
-  {
-    path: 'links',
-    component: LinkListComponent
-  }]
-
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -38,7 +23,18 @@ export let ROUTES = [
     FormsModule,
     HttpModule,
     MaterialModule,
-    RouterModule.forRoot([ROUTES])    
+    RouterModule.forRoot([  {
+    path: 'login',
+    component: LoginComponent
+  },
+  {
+    path: 'form',
+    component: FormComponent
+  },
+  {
+    path: 'links',
+    component: LinkListComponent
+  }])    
   ],
   providers: [],
   bootstrap: [AppComponent]
