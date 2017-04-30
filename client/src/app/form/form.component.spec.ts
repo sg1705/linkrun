@@ -105,6 +105,7 @@ describe('FormComponent', () => {
         //check for route url
         console.log(router.url);
         console.log(location);
+        expect(router.navigateByUrl).toHaveBeenCalledTimes(1);
       })
   });
 
@@ -118,9 +119,14 @@ describe('FormComponent', () => {
 
 
 class RouterStub {
-  navigateByUrl(url: string):Promise<Boolean> { 
-    return new Promise((resolve, reject) => {
-      resolve(true);
-    })
-  }
+
+  navigateByUrl = jasmine.createSpy('navigateByUrl').and.callFake(
+    (url) => Promise.resolve(true));
+
+
+  // navigateByUrl(url: string):Promise<Boolean> { 
+  //   return new Promise((resolve, reject) => {
+  //     resolve(true);
+  //   })
+  // }
 }
