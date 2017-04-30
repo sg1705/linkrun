@@ -21,7 +21,7 @@
     "googleCallbackUri"  : "/__/oauthcallback/google"
   },
   "ga":{
-    "GA_TRACKING_ID" : "UA-98314063-1"
+    "GA_TRACKING_ID" : "UA-98286839-1"
   },
   "COOKIE_NAME" : "xsession"
 }
