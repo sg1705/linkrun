@@ -16,6 +16,7 @@ var auth = require('./auth.js');
 var googAuth = require('./googleauth.js');
 var logger = require('./model/logger.js');
 var SC = require('./model/spell-checker.js');
+const got = require('got');
 
 /**
  * Setup Express
@@ -50,6 +51,47 @@ if (process.env.NODE_ENV === 'staging') {
 
 if (process.env.GCLOUD_PROJECT) {
   require('@google/cloud-debug').start();
+}
+
+const GA_TRACKING_ID = process.env.GA_TRACKING_ID;
+
+function trackEvent(category, action, label, value, cb) {
+  const data = {
+    // API Version.
+    v: '1',
+    // Tracking ID / Property ID.
+    tid: GA_TRACKING_ID,
+    // Anonymous Client Identifier. Ideally, this should be a UUID that
+    // is associated with particular user, device, or browser instance.
+    cid: '555',
+    // Event hit type.
+    t: 'event',
+    // Event category.
+    ec: category,
+    // Event action.
+    ea: action,
+    // Event label.
+    el: label,
+    // Event value.
+    ev: value
+  };
+
+  return got.post('http://www.google-analytics.com/collect', {
+    body: data
+  });
+}
+
+function trackRedirection(res, success, orgId, routeGoUrl) {
+  // Event value must be numeric.
+  trackEvent('gourl', 'redirection ' + (success ? 'success' : 'fail'), orgId + '_' + routeGoUrl, '100')
+    .then(() => {
+      console.log('success='+success)
+      res.status(200).send('Event tracked.').end();
+    })
+    // This sample treats an event tracking error as a fatal error. Depending
+    // on your application's needs, failing to track an event may not be
+    // considered an error.
+    .catch(err => console.log);
 }
 
 /**
@@ -174,16 +216,21 @@ app.get("/:gourl", setRouteUrl, auth.isLoggedIn, function (req, res, next) {
             if (routeGoUrl) {
               linkService.getLinkByGoLink(routeGoUrl, orgId)
                 .then(linkEntities => res.redirect(301, linkEntities.entities[0].url));
+              trackRedirection(res, true, orgId, routeGoUrl)
             } else {
+              trackRedirection(res, false, orgId, routeGoUrl)
               logger.info("no_url_found, redirecting to links page");
               res.redirect('/__/links');
             }
           })
       } else if (!linkEntities.entities[0].url) {
+        trackRedirection(res, false, orgId, routeGoUrl)
         logger.info("empty_url, redirecting to links page");
         res.redirect('/__/links');
-      } else { 
+      } else {
         res.redirect(301, linkEntities.entities[0].url);
+        trackRedirection(res, true, orgId, routeGoUrl)
+
       }
     })
     .catch(err => {
