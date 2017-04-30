@@ -134,7 +134,6 @@ class ModelService {
                 entity,
                 (err) => {
                     data.id = entity.key.id;
-                    console.log('data.id', data);
                     if (err) {
                         reject(err);
                     } else {
