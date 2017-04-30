@@ -119,6 +119,7 @@ class ModelService {
         let kind = this.kind;
         return new Promise((resolve, reject) => {
             let key;
+            data['updatedAt'] = new Date();
             if (id) {
                 key = ds.key([kind, parseInt(id, 10)]);
             } else {
@@ -133,6 +134,7 @@ class ModelService {
                 entity,
                 (err) => {
                     data.id = entity.key.id;
+                    console.log('data.id', data);
                     if (err) {
                         reject(err);
                     } else {

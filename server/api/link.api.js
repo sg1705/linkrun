@@ -47,7 +47,6 @@ router.post('/create', (req, res, next) => {
     url:    url,
     description: desc
   }
-  console.log(newLink);
   linkService.createLink(orgId, userId, link, url, desc).then(entity => {
     res.json(entity);
   })

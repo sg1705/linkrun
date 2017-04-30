@@ -108,6 +108,7 @@ function list (limit, token, orgId, cb) {
 // [START update]
 function update (id, data, cb) {
   let key;
+  data['updatedAt'] = new Date();
   if (id) {
     key = ds.key([kind, parseInt(id, 10)]);
   } else {
