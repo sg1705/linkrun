@@ -7,7 +7,6 @@ import {MdButtonModule} from '@angular/material';
 import {MdListModule} from '@angular/material';
 import {MdGridListModule} from '@angular/material';
 import {MdTabsModule} from '@angular/material';
-import { UserService } from '../services/user.service';
 import { LinkService } from '../services/link.service';
 import { Link } from '../model/link';
 
@@ -15,7 +14,7 @@ import { Link } from '../model/link';
   selector: 'app-form',
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.css'],
-  providers: [UserService, LinkService],
+  providers: [LinkService],
 })
 export class FormComponent implements OnInit {
 
@@ -36,13 +35,14 @@ export class FormComponent implements OnInit {
   ngOnInit() {
   }
 
-  onSubmit(l) {
-    console.log(l);
-    this.linkService.createLink(new Link(0, l.link, l.url, l.description))
-    .then(link => {
-      console.log('link created', link);
-      this.router.navigateByUrl('/links');
-    })
+  onSubmit(l):Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      this.linkService.createLink(new Link(0, l.link, l.url, l.description))
+      .then(link => {
+        console.log('link created', link);
+        resolve(this.router.navigateByUrl('/links'));
+      })
+    });
   }
 
 }
