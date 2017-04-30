@@ -127,6 +127,17 @@ app.get("/login", function (req, res, next) {
   res.sendFile(path.join(__dirname, '../dist/index.html'));
 });
 
+// links
+app.get("/form", function (req, res, next) {
+  res.sendFile(path.join(__dirname, '../dist/index.html'));
+});
+
+// links
+app.get("/links", function (req, res, next) {
+  res.sendFile(path.join(__dirname, '../dist/index.html'));
+});
+
+
 app.get('/__/login/google', function (req, res, next) {
   res.redirect(googAuth.getGoogleAuthUrl() + '&approval_prompt=force')
 });
@@ -178,6 +189,7 @@ app.get(
 
 // users
 app.use('/__/api/users', require('./model/user.api'));
+app.use('/__/api/linksv2', require('./api/link.api'));
 
 //Views
 app.set('views', path.join(__dirname, 'views'));
@@ -228,9 +240,8 @@ app.get("/:gourl", setRouteUrl, auth.isLoggedIn, function (req, res, next) {
         logger.info("empty_url, redirecting to links page");
         res.redirect('/__/links');
       } else {
-        res.redirect(301, linkEntities.entities[0].url);
         trackRedirection(res, true, orgId, routeGoUrl)
-
+        res.redirect(301, linkEntities.entities[0].url);
       }
     })
     .catch(err => {
@@ -281,7 +292,7 @@ function setRouteUrl(req, res, next) {
  * 
  * @param http response
  * @param orgEntity
- * @param userinfo returned by Google
+ * @param response userinfo.email returned by Google
  * @param tokens returned by Google
  * @return user entity
  * 

@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node server/app.js",
     "dev": "nodemon server/app.js",
-    "build:prod": "cd client && ng build -prod"
+    "build:prod": "cd client && ng build -prod",
+    "build:staging": "cd client && ng build -prod"
   },
   "private": true,
   "dependencies": {

@@ -94,7 +94,6 @@ function list (limit, token, orgId, cb) {
       cb(err);
       return;
     }
-    console.log('entities', entities);
     const hasMore = nextQuery.moreResults !== Datastore.NO_MORE_RESULTS ? nextQuery.endCursor : false;
     cb(null, entities.map(fromDatastore), hasMore);
     
@@ -108,6 +107,7 @@ function list (limit, token, orgId, cb) {
 // [START update]
 function update (id, data, cb) {
   let key;
+  data['updatedAt'] = new Date();
   if (id) {
     key = ds.key([kind, parseInt(id, 10)]);
   } else {

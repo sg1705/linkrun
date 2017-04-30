@@ -49,16 +49,16 @@ class User {
   /**
    * Retrieve a user.
    */
-  getUser(uid) {
-    return this.getModel().read(uid);
+  getUser(userId) {
+    return this.getModel().read(userId);
   }
 
   /**
    * Delete a user.
    */
-  deleteUser(uid) {
-    logger.info("deleting user", uid);
-    return this.getModel().delete(uid);
+  deleteUser(userId) {
+    logger.info("deleting user", userId);
+    return this.getModel().delete(userId);
   }
 
   /**

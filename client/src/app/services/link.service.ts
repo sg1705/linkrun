@@ -1,0 +1,41 @@
+import { Injectable } from '@angular/core';
+import { Http, Response } from '@angular/http';
+import { Link } from '../model/link';
+
+@Injectable()
+export class LinkService {
+  private apiUrl: string = '/__/api/linksv2';
+
+  constructor(private http: Http) { }
+
+  /**
+   * Return all links for the user
+   */
+  getLinks(): Promise<Array<Link>> {
+      return this.http.get(this.apiUrl)
+        .toPromise().then(res => {
+          var data = res.json();
+          var links = new Array<Link>();
+          for (var entity of data) {
+            var link = new Link(entity['id'], entity['gourl'], entity['url'], entity['description']);
+            links.push(link);
+          }
+          return links;
+        })
+  }
+
+  createLink(link:Link): Promise<Link> {
+    return this.http.post(this.apiUrl+'/create', {
+      'link': link.link,
+      'url': link.url,
+      'description': link.description
+    }).toPromise().then(res => {
+      let resBody = res.json();
+      console.log(resBody);
+      let linkObj = new Link(resBody['id'], resBody['gourl'], resBody['url'], resBody['description'])
+      return linkObj;
+    })
+
+  }
+}
+

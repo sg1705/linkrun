@@ -1,0 +1,56 @@
+
+'use strict';
+
+const express = require('express');
+const bodyParser = require('body-parser');
+const config = require('config');
+const LinkService = require(`../model/link.js`);
+const cookieService = require('../cookie.js');
+const Datastore = require('@google-cloud/datastore');
+
+const linkService = new LinkService();
+const router = express.Router();
+
+// Automatically parse request body as JSON
+router.use(bodyParser.json());
+
+/**
+ * GET /api/links
+ *
+ * Retrieves all links for the user
+ */
+router.get('/', (req, res, next) => {
+  //get user from cookie
+  var userId = cookieService.getXsession(req).userId;
+  var orgId = cookieService.getXsession(req).orgId;
+  linkService.getLinksByUser(userId).then(links => {
+    res.json(links['entities']);
+  }).catch(err => {
+      logger.error(err);
+      return;    
+  })
+});
+
+router.post('/create', (req, res, next) => {
+  //get user from cookie
+  var userId = cookieService.getXsession(req).userId;
+  var orgId = cookieService.getXsession(req).orgId;
+  var link = req.body['link'];
+  var url = req.body['url'];
+  var desc = req.body['description'];
+  var newLink = {
+    userId: userId,
+    orgId:  orgId,
+    link:   link,
+    url:    url,
+    description: desc
+  }
+  linkService.createLink(orgId, userId, link, url, desc).then(entity => {
+    res.json(entity);
+  })
+  
+});
+
+
+
+module.exports = router;
