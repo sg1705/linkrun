@@ -81,19 +81,6 @@ function trackEvent(category, action, label, value, cb) {
   });
 }
 
-function trackRedirection(res, success, orgId, routeGoUrl) {
-  // Event value must be numeric.
-  trackEvent('gourl', 'redirection ' + (success ? 'success' : 'fail'), orgId + '_' + routeGoUrl, '100')
-    .then(() => {
-      console.log('success='+success)
-      res.status(200).send('Event tracked.').end();
-    })
-    // This sample treats an event tracking error as a fatal error. Depending
-    // on your application's needs, failing to track an event may not be
-    // considered an error.
-    .catch(err => logger.error(err));
-}
-
 /**
  * No cache
  */
@@ -226,21 +213,21 @@ app.get("/:gourl", setRouteUrl, auth.isLoggedIn, function (req, res, next) {
             logger.info('corrected to ', routeGoUrl)
           }).then(() => {
             if (routeGoUrl) {
-              trackRedirection(res, true, orgId, routeGoUrl)              
+              trackEvent('gourl', 'redirection sucess', orgId + '_' + routeGoUrl, '100')
               linkService.getLinkByGoLink(routeGoUrl, orgId)
                 .then(linkEntities => res.redirect(301, linkEntities.entities[0].url));
             } else {
-              trackRedirection(res, false, orgId, routeGoUrl)
+              trackEvent('gourl', 'redirection fail', orgId + '_' + routeGoUrl, '100')
               logger.info("no_url_found, redirecting to links page");
               res.redirect('/__/links');
             }
           })
       } else if (!linkEntities.entities[0].url) {
-        trackRedirection(res, false, orgId, routeGoUrl)
+        trackEvent('gourl', 'redirection fail', orgId + '_' + routeGoUrl, '100')
         logger.info("empty_url, redirecting to links page");
         res.redirect('/__/links');
       } else {
-        trackRedirection(res, true, orgId, routeGoUrl)
+        trackEvent('gourl', 'redirection sucess', orgId + '_' + routeGoUrl, '100')
         res.redirect(301, linkEntities.entities[0].url);
       }
     })
