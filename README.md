@@ -41,4 +41,8 @@ have run the command `gcloud auth application-default login`, your identity can 
 5. Confirm using `gcloud config list`
 6. Run `gcloud app deploy`
 
+# Test Google analytics tracking
+
+1. To test locally: On linux, do export GA_TRACKING_ID=UA-98314063-1. On windows Powershell type $env:GA_TRACKING_ID="UA-98314063-1". For more details, see https://cloud.google.com/appengine/docs/flexible/nodejs/integrating-with-analytics
+2. To see real time tracking result, go to google analytics site and click Real Time.
 
