@@ -38,7 +38,6 @@ class ModelService {
     }
 
     fromDatastore(obj) {
-        console.log(obj[Datastore.KEY]);
         obj.id = obj[Datastore.KEY].id;
         return obj;
     }
