@@ -1,33 +1,67 @@
-import { async, fakeAsync, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, fakeAsync, ComponentFixture, TestBed, inject } from '@angular/core/testing';
+import { BaseRequestOptions, Http, HttpModule, Response, ResponseOptions } from '@angular/http';
+import { MockBackend, MockConnection } from '@angular/http/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { SpyLocation } from '@angular/common/testing';
+import { Router } from "@angular/router";
+
 import { MaterialModule} from '../material/material.module';
 import { FormBuilder,FormGroup} from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormComponent } from './form.component';
+import { LinkListComponent } from '../link-list/link-list.component';
+import { Link } from '../model/link';
 import { LinkService } from '../services/link.service';
 import { LinkServiceSpy } from '../services/link.service.spec';
 
 describe('FormComponent', () => {
   let component: FormComponent;
   let fixture: ComponentFixture<FormComponent>;
+  let router: Router;
+  let location: Location;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ FormComponent ],
-      imports: [MaterialModule, ReactiveFormsModule]
+      declarations: [ 
+        FormComponent,
+        LinkListComponent
+      ],
+      imports: [MaterialModule, ReactiveFormsModule,
+        RouterTestingModule.withRoutes([
+          {
+            path: 'form',
+            component: FormComponent
+          },
+          {
+            path: 'links',
+            component: LinkListComponent
+          }          
+        ])
+      ]
     })
     .overrideComponent(FormComponent, {
       set: {
-        providers: [
-          { provide: LinkService, useClass: LinkServiceSpy }
-        ]
+      providers: [
+        LinkService,
+        MockBackend,
+        { provide: Router, useClass: RouterStub },
+        { provide: Location, useClass: SpyLocation },
+        BaseRequestOptions,
+        {
+          provide: Http,
+          useFactory: (backend, options) => new Http(backend, options),
+          deps: [MockBackend, BaseRequestOptions]                    
+        }]
       }
     }).compileComponents();
-
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(FormComponent);
     component = fixture.componentInstance;
+    router          = TestBed.get(Router);
+    location        = fixture.debugElement.injector.get(Location);
+    router.initialNavigation();
     fixture.detectChanges();
   });
 
@@ -45,15 +79,48 @@ describe('FormComponent', () => {
 
 
   it('form value should update from form changes', fakeAsync(() => {
-    updateForm('testLink', 'testUrl');
+    updateForm('testLink', 'testUrl', 'testDescription');
     expect(component.linkFormGroup.value['link']).toEqual('testLink');
     expect(component.linkFormGroup.value['url']).toEqual('testUrl');
   }));
 
+  it('pass the form values to backend', () => {
+      // update form
+      updateForm('testLink', 'testUrl', 'testDescription');
+      let mockLink = new Link(0, 'testLink', 'testUrl', 'testDescription');
 
-  function updateForm(link, url) {
+      let mockBackend = fixture.debugElement.injector.get(MockBackend);
+      //respond to a mock connection
+      mockBackend.connections.subscribe(conn => {
+        let submittedLink = JSON.parse(conn.request.getBody());
+        expect(submittedLink['link']).toEqual('testLink');
+        expect(submittedLink['url']).toEqual('testUrl');
+        expect(submittedLink['description']).toEqual('testDescription');
+        conn.mockRespond(new Response(new ResponseOptions({ body: JSON.stringify(mockLink) })));
+      });
+
+      //submit form
+      fixture.componentInstance.onSubmit(fixture.componentInstance.linkFormGroup.value);
+      fixture.whenStable().then(() => {
+        //check for route url
+        console.log(router.url);
+        console.log(location);
+      })
+  });
+
+  function updateForm(link, url, description) {
     component.linkFormGroup.controls['link'].setValue(link);
     component.linkFormGroup.controls['url'].setValue(url);
+    component.linkFormGroup.controls['description'].setValue(description);
   }
 
 });
+
+
+class RouterStub {
+  navigateByUrl(url: string):Promise<Boolean> { 
+    return new Promise((resolve, reject) => {
+      resolve(true);
+    })
+  }
+}

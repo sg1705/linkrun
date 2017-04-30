@@ -30,8 +30,10 @@ export class LinkService {
       'url': link.url,
       'description': link.description
     }).toPromise().then(res => {
-      console.log(res);
-      return null;
+      let resBody = res.json();
+      console.log(resBody);
+      let linkObj = new Link(resBody['id'], resBody['gourl'], resBody['url'], resBody['description'])
+      return linkObj;
     })
 
   }
