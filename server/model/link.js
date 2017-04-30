@@ -17,6 +17,7 @@ class Link {
 
   /**
    * Create a new link.
+   * First check whether the link exists or not
    */
 createLink(orgId, userId, gourl, url, description) {
   return new Promise((resolve, reject) => {
@@ -40,9 +41,11 @@ createLink(orgId, userId, gourl, url, description) {
 
   /**
    * Update an existing link.
+   * First check whether the link is owned by userId
    */
   updateLink(id, orgId, userId, gourl, url, description) {
-    this.getModel().read(id).then(entity => {
+    return new Promise((resolve, reject) => {
+      this.getModel().read(id).then(entity => {
       if(entity.userId == userId) {
         var linkData = {};
         linkData["orgId"] = orgId;
@@ -51,17 +54,16 @@ createLink(orgId, userId, gourl, url, description) {
         linkData["url"] = url;
         linkData["description"] = description;
         logger.debug("updating_link", linkData);
-        return this.getModel().update (id, linkData);
+        resolve(this.getModel().update (id, linkData));
       } else {
-         logger.error("acl_warning. Link is not owned by requested user ",  entity.userId);
-         return new Promise((resolve, reject) => {
-                    reject("acl_warning. Link is not owned by requested user");
-            });
-      }});   
+        logger.error("unauthorized_update_links ",  {'userId' :entity.userId, 'linkId' :entity.id });
+        reject("unauthorized_update_links");
+      }});  
+    }); 
   }
 
   /**
-   * Retrieve a link.
+   * Retrieve a link by linkName and orgId
    */
   getLinkByGoLink(linkName, orgId) {
     return this.getModel().readByColumns('gourl', linkName, 'orgId', orgId);
@@ -76,7 +78,7 @@ createLink(orgId, userId, gourl, url, description) {
 
 
   /**
-   * Retrieve a link for given user
+   * Retrieve a link for a given user
    */
   getLinksByUser(userId) {
     return this.getModel().readByColumn('userId', userId);
@@ -84,18 +86,19 @@ createLink(orgId, userId, gourl, url, description) {
 
   /**
    * Delete a link.
+   * First check whether the link is owned by userId
    */
   deleteLink(userId, linkId) {
+     return new Promise((resolve, reject) => {
      this.getModel().read(linkId).then(entity => {
       if(entity.userId == userId) {
         logger.log("deleting_link", linkId);
-        return this.getModel().delete(linkId);
+        resolve(this.getModel().delete(linkId));
       } else {
-        logger.error("acl_error. Link is not owned by requested user ",  entity.userId);
-        return new Promise((resolve, reject) => {
-                    reject("acl_warning. Link is not owned by requested user");
-        });
+        logger.error("unauthorized_delete_links ",  entity.userId);
+        reject("unauthorized_delete_links");
       }}); 
+     });
   }
 
   /**
