@@ -35,12 +35,14 @@ export class FormComponent implements OnInit {
   ngOnInit() {
   }
 
-  onSubmit(l) {
-    this.linkService.createLink(new Link(0, l.link, l.url, l.description))
-    .then(link => {
-      console.log('link created', link);
-      this.router.navigateByUrl('/links');
-    })
+  onSubmit(l):Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      this.linkService.createLink(new Link(0, l.link, l.url, l.description))
+      .then(link => {
+        console.log('link created', link);
+        resolve(this.router.navigateByUrl('/links'));
+      })
+    });
   }
 
 }

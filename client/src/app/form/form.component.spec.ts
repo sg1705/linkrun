@@ -59,9 +59,8 @@ describe('FormComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(FormComponent);
     component = fixture.componentInstance;
-    router          = TestBed.get(Router);
+    router          = fixture.debugElement.injector.get(Router);
     location        = fixture.debugElement.injector.get(Location);
-    router.initialNavigation();
     fixture.detectChanges();
   });
 
@@ -100,13 +99,12 @@ describe('FormComponent', () => {
       });
 
       //submit form
-      fixture.componentInstance.onSubmit(fixture.componentInstance.linkFormGroup.value);
-      fixture.whenStable().then(() => {
-        //check for route url
-        console.log(router.url);
-        console.log(location);
-        expect(router.navigateByUrl).toHaveBeenCalledTimes(1);
-      })
+      fixture.componentInstance.onSubmit(fixture.componentInstance.linkFormGroup.value).then(done => {        
+          //check for route url
+          console.log(router);
+          console.log(location);
+          expect(router.navigateByUrl).toHaveBeenCalledTimes(1);
+      });
   });
 
   function updateForm(link, url, description) {
@@ -121,7 +119,8 @@ describe('FormComponent', () => {
 class RouterStub {
 
   navigateByUrl = jasmine.createSpy('navigateByUrl').and.callFake(
-    (url) => Promise.resolve(true));
+    (url) => Promise.resolve(url).then(url => {
+    }));
 
 
   // navigateByUrl(url: string):Promise<Boolean> { 
