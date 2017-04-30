@@ -31,7 +31,17 @@ have run the command `gcloud auth application-default login`, your identity can 
 ([see|https://developers.google.com/identity/protocols/application-default-credentials])
 
 
-# Deploying on Google Cloud
+# Deploying on Google Cloud Staging
+
+1. Build for product `npm install && cd client && npm install && cd .. && npm run build:staging`
+2. Change the environment variable in app.yaml to `staging`
+3. List projects `gcloud config list`
+4. Set Project `gcloud config set project gae-test-157202`
+4. Set application `gcloud auth application-default login`
+5. Confirm using `gcloud config list`
+6. Run `gcloud app deploy`
+
+# Deploying on Google Cloud Production
 
 1. Build for product `npm install && cd client && npm install && cd .. && npm run build:prod`
 2. Change the environment variable in app.yaml to `production`
