@@ -2,6 +2,7 @@ import { async, TestBed, inject } from '@angular/core/testing';
 import { BaseRequestOptions, Http, HttpModule, Response, ResponseOptions } from '@angular/http';
 import { MockBackend } from '@angular/http/testing';
 import { UserService } from './user.service';
+import { User } from '../model/user';
 
 describe('UserService', () => {
   beforeEach(() => {
@@ -52,3 +53,20 @@ describe('UserService', () => {
     ));
   })
 });
+
+export class UserServiceSpy {
+  testUser = new User(
+    5715921523965952,
+    5704147139559424,
+    "Saurabh",
+    "Gupta",
+    "https://lh5.googleusercontent.com/-EKWz1QcfjGg/AAAAAAAAAAI/AAAAAAAAEdM/rQpQ4Z44pRA/photo.jpg",
+    "sg1705@gmail.com",
+  )
+
+  getCurrentUser = jasmine.createSpy('getCurrentUser').and.callFake(
+    () => Promise
+      .resolve(true)
+      .then(() => Object.assign({}, this.testUser))
+  );
+}

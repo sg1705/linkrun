@@ -1,7 +1,7 @@
 
 'use strict';
 
-const config = require('config');
+const config     = require('config');
 var logger       = require('./logger.js');
 
 class Link {
@@ -18,24 +18,24 @@ class Link {
   /**
    * Create a new link.
    */
-  createLink(orgId, userId, gourl, url, description) {
-    this.getModel().readByColumns('gourl', gourl, 'orgId', orgId).then (linkEntities => {
-       if (linkEntities.entities.length == 0) {
-          var linkData = {};
-          linkData["orgId"] = orgId;
-          linkData["userId"] = userId;
-          linkData["gourl"] = gourl;
-          linkData["url"] = url;
-          linkData["description"] = description;
-          logger.log("creating_link", linkData);
-          return this.getModel().create(linkData);
-        } else {
-            logger.log("link_already_exists ", entity.gourl);
-            return new Promise((resolve, reject) => {
-                    reject("link_already_exists");
-            });
-        }  
-       });
+createLink(orgId, userId, gourl, url, description) {
+  return new Promise((resolve, reject) => {
+    this.getModel().readByColumns('gourl', gourl, 'orgId', orgId).then(linkEntities => {
+      if (linkEntities.entities.length == 0) {
+        var linkData = {};
+        linkData["orgId"] = orgId;
+        linkData["userId"] = userId;
+        linkData["gourl"] = gourl;
+        linkData["url"] = url;
+        linkData["description"] = description;
+        logger.debug("creating_link", linkData);
+        resolve(this.getModel().create(linkData));
+      } else {
+          logger.debug("link_already_exists ", entity.gourl);
+          reject("link_already_exists");
+      }  
+    });
+   })
   }
 
   /**
@@ -50,7 +50,7 @@ class Link {
         linkData["gourl"] = gourl;
         linkData["url"] = url;
         linkData["description"] = description;
-        logger.log("updating_link", linkData);
+        logger.debug("updating_link", linkData);
         return this.getModel().update (id, linkData);
       } else {
          logger.error("acl_warning. Link is not owned by requested user ",  entity.userId);
@@ -67,8 +67,19 @@ class Link {
     return this.getModel().readByColumns('gourl', linkName, 'orgId', orgId);
   }
 
+  /**
+   * Returns a Set of all the short links
+   */
   getGourls(orgId){
-    return this.getModel().getColumn('gourl', 'orgId', orgId);
+    return this.getModel().filterByColumn('gourl', 'orgId', orgId);
+  }
+
+
+  /**
+   * Retrieve a link for given user
+   */
+  getLinksByUser(userId) {
+    return this.getModel().readByColumn('userId', userId);
   }
 
   /**

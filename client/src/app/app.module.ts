@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule }   from '@angular/router';
 
@@ -8,23 +8,7 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { FormComponent } from './form/form.component';
 import { MaterialModule} from './material/material.module';
-
 import { LinkListComponent } from './link-list/link-list.component';
-
-export let ROUTES = [
-  {
-    path: 'login',
-    component: LoginComponent
-  },
-  {
-    path: 'form',
-    component: FormComponent
-  },
-  {
-    path: 'links',
-    component: LinkListComponent
-  }]
-
 
 @NgModule({
   declarations: [
@@ -35,10 +19,21 @@ export let ROUTES = [
   ],
   imports: [
     BrowserModule,
-    FormsModule,
+    ReactiveFormsModule,
     HttpModule,
     MaterialModule,
-    RouterModule.forRoot([ROUTES])    
+    RouterModule.forRoot([  {
+      path: 'login',
+      component: LoginComponent
+    },
+    {
+      path: 'form',
+      component: FormComponent
+    },
+    {
+      path: 'links',
+      component: LinkListComponent
+  }])    
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -2,6 +2,7 @@ import { TestBed, async, ComponentFixture } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpModule } from '@angular/http';
 import { Router } from "@angular/router";
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { MaterialModule} from './material/material.module';
@@ -9,6 +10,7 @@ import { FormComponent } from './form/form.component';
 import { LinkListComponent } from './link-list/link-list.component';
 
 import { UserService } from './services/user.service';
+import { UserServiceSpy } from './services/user.service.spec';
 import { User } from './model/user';
 
 
@@ -29,6 +31,7 @@ describe('AppComponent', () => {
       ],
       imports: [
         MaterialModule,
+        ReactiveFormsModule,
         RouterTestingModule.withRoutes([
           {
             path: 'form',
@@ -100,27 +103,4 @@ describe('AppComponent', () => {
       expect(router.url).toContain('/link');
     })
   })
-
-
-
-
 });
-
-
-
-export class UserServiceSpy {
-  testUser = new User(
-    5715921523965952,
-    5704147139559424,
-    "Saurabh",
-    "Gupta",
-    "https://lh5.googleusercontent.com/-EKWz1QcfjGg/AAAAAAAAAAI/AAAAAAAAEdM/rQpQ4Z44pRA/photo.jpg",
-    "sg1705@gmail.com",
-  )
-
-  getCurrentUser = jasmine.createSpy('getCurrentUser').and.callFake(
-    () => Promise
-      .resolve(true)
-      .then(() => Object.assign({}, this.testUser))
-  );
-}

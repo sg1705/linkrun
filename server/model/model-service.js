@@ -192,6 +192,16 @@ class ModelService {
         });
     }
 
+    /**
+     * Return values by filtering for two columns
+     * 
+     * @param first column name
+     * @param first column value
+     * @param second column name
+     * @param second column value
+     * 
+     * @return list of all the values
+     */
     readByColumns(c1, v1, c2, v2) {
         let ds = this.ds;
         let kind = this.kind;
@@ -214,11 +224,19 @@ class ModelService {
         });
     }
 
-    getColumn(c, c2, v2) {
+    /**
+     * Returns all the values in a given columns
+     * 
+     * @param name of column to be returned
+     * @param filter on the column to be returned
+     * @param value of the filter for the column
+     * 
+     * @return set of all the values
+     */
+    filterByColumn(c, c2, v2) {
         let ds = this.ds;
         let kind = this.kind;
         const q = ds.createQuery([kind])
-            // .select([c])
             .filter(c2, "=", v2)
         const shortNames = new Set();
         return ds.runQuery(q)

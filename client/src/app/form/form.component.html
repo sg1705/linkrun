@@ -1,25 +1,26 @@
 
-<md-grid-list cols="1" rowHeight="100px">
-  <md-grid-tile>
-    <md-input-container>
-      <input mdInput placeholder="Link">
-    </md-input-container>
-  </md-grid-tile>
+<form [formGroup]="linkFormGroup" (ngSubmit)="onSubmit(linkFormGroup.value)">
+  <md-grid-list cols="1" rowHeight="100px" >
+    <md-grid-tile>
+      <md-input-container>
+        <input [formControl]="linkFormGroup.controls['link']" name="link" mdInput placeholder="Link">
+      </md-input-container>
+    </md-grid-tile>
 
-  <md-grid-tile>
-    <md-input-container>
-      <input mdInput placeholder="URL">
-    </md-input-container>
-  </md-grid-tile>
+    <md-grid-tile>
+      <md-input-container>
+        <input [formControl]="linkFormGroup.controls['url']"  name="url" mdInput placeholder="URL">
+      </md-input-container>
+    </md-grid-tile>
 
-  <md-grid-tile>
-    <md-input-container>
-      <textarea mdInput placeholder="Description"></textarea>
-    </md-input-container>
-  </md-grid-tile>
-  <md-grid-tile>
-    <button md-raised-button>Cancel</button>
-    <button md-raised-button>Submit</button>  
-  </md-grid-tile>
-</md-grid-list>
-
+    <md-grid-tile>
+      <md-input-container>
+        <textarea  [formControl]="linkFormGroup.controls['description']" name="description" mdInput placeholder="Description"></textarea>
+      </md-input-container>
+    </md-grid-tile>
+    <md-grid-tile>
+      <button md-raised-button>Cancel</button>
+      <button md-raised-button type="submit">Submit</button>  
+    </md-grid-tile>
+  </md-grid-list>
+</form>
