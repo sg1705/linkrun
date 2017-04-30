@@ -5,7 +5,7 @@ const config     = require('config');
 var logger       = require('./logger.js');
 
 class Link {
-
+  
   constructor() {
     var ModelService = require(`./model-service.js`);
     this.modelService = new ModelService('Link'); 
@@ -46,20 +46,21 @@ createLink(orgId, userId, gourl, url, description) {
   updateLink(id, orgId, userId, gourl, url, description) {
     return new Promise((resolve, reject) => {
       this.getModel().read(id).then(entity => {
-      if(entity.userId == userId) {
-        var linkData = {};
-        linkData["orgId"] = orgId;
-        linkData["userId"] = userId;
-        linkData["gourl"] = gourl.trim();
-        linkData["url"] = url.trim();
-        linkData["description"] = description;
-        logger.debug("updating_link", linkData);
-        resolve(this.getModel().update (id, linkData));
-      } else {
-        logger.error("unauthorized_update_links ",  {'userId' :entity.userId, 'linkId' :entity.id });
-        reject("unauthorized_update_links");
-      }});  
-    }); 
+        if(entity.userId == userId) {
+          var linkData = {};
+          linkData["orgId"] = orgId;
+          linkData["userId"] = userId;
+          linkData["gourl"] = gourl.trim();
+          linkData["url"] = url.trim();
+          linkData["description"] = description;
+          logger.debug("updating_link", linkData);
+          resolve(this.getModel().update (id, linkData));
+        } else {
+          logger.error("unauthorized_update_links ",  {'userId' :entity.userId, 'linkId' :entity.id });
+          reject("unauthorized_update_links");
+        }
+      });  
+    })
   }
 
   /**
@@ -90,15 +91,16 @@ createLink(orgId, userId, gourl, url, description) {
    */
   deleteLink(userId, linkId) {
      return new Promise((resolve, reject) => {
-     this.getModel().read(linkId).then(entity => {
-      if(entity.userId == userId) {
-        logger.log("deleting_link", linkId);
-        resolve(this.getModel().delete(linkId));
-      } else {
-        logger.error("unauthorized_delete_links ",  entity.userId);
-        reject("unauthorized_delete_links");
-      }}); 
-     });
+      this.getModel().read(linkId).then(entity => {
+        if(entity.userId == userId) {
+          logger.log("deleting_link", linkId);
+          resolve(this.getModel().delete(linkId));
+        } else {
+          logger.error("unauthorized_delete_links ",  entity.userId);
+          reject("unauthorized_delete_links");
+        }
+      }); 
+     })
   }
 
   /**
