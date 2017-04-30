@@ -53,7 +53,7 @@ if (process.env.GCLOUD_PROJECT) {
   require('@google/cloud-debug').start();
 }
 
-const GA_TRACKING_ID = process.env.GA_TRACKING_ID;
+const GA_TRACKING_ID = config.get('ga.GA_TRACKING_ID');
 
 function trackEvent(category, action, label, value, cb) {
   const data = {

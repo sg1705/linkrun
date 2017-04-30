@@ -3,5 +3,4 @@ runtime: nodejs
 env: flex
 env_variables:
   NODE_ENV: 'staging'
-  GA_TRACKING_ID: UA-98314063-1
 # [END app_yaml]
