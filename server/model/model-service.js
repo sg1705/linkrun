@@ -138,7 +138,6 @@ class ModelService {
                     } else {
                         resolve(data);
                     }
-                    // cb(err, err ? null : data);
                 }
             );
         })

@@ -14,7 +14,7 @@ class Logger {
     // Selects the log to write to
     this.log = loggingClient.log('link.run');
     // The metadata associated with the entry
-    this.metadata = { resource: { type: 'global' } };
+    this.metadata = { resource: { "type": "gae_app"} };
  }
 
  logOnConsole(msg, detail) {
