@@ -26,8 +26,8 @@ createLink(orgId, userId, gourl, url, description) {
         var linkData = {};
         linkData["orgId"] = orgId;
         linkData["userId"] = userId;
-        linkData["gourl"] = gourl;
-        linkData["url"] = url;
+        linkData["gourl"] = gourl.trim();
+        linkData["url"] = url.trim();
         linkData["description"] = description;
         logger.debug("creating_link", linkData);
         resolve(this.getModel().create(linkData));
@@ -50,8 +50,8 @@ createLink(orgId, userId, gourl, url, description) {
         var linkData = {};
         linkData["orgId"] = orgId;
         linkData["userId"] = userId;
-        linkData["gourl"] = gourl;
-        linkData["url"] = url;
+        linkData["gourl"] = gourl.trim();
+        linkData["url"] = url.trim();
         linkData["description"] = description;
         logger.debug("updating_link", linkData);
         resolve(this.getModel().update (id, linkData));
