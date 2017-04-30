@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { FormBuilder,FormGroup} from '@angular/forms';
 import {MdInputModule} from '@angular/material';
 import {MdToolbarModule} from '@angular/material';
@@ -21,7 +22,10 @@ export class FormComponent implements OnInit {
   linkFormGroup: FormGroup;
   submitted = false;
 
-  constructor(fb: FormBuilder, private linkService: LinkService) {
+  constructor(
+    fb: FormBuilder, 
+    private linkService: LinkService,
+    private router: Router ) {
       this.linkFormGroup = fb.group({
         'link': '',
         'url' : '',
@@ -34,8 +38,10 @@ export class FormComponent implements OnInit {
 
   onSubmit(l) {
     console.log(l);
-    this.linkService.createLink(new Link(0, l.link, l.url, l.decription)).then(link => {
-      console.log('link is', link);
+    this.linkService.createLink(new Link(0, l.link, l.url, l.description))
+    .then(link => {
+      console.log('link created', link);
+      this.router.navigateByUrl('/links');
     })
   }
 

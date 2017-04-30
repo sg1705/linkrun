@@ -3,7 +3,8 @@ import { MaterialModule} from '../material/material.module';
 import { FormBuilder,FormGroup} from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormComponent } from './form.component';
-import { LinkService, LinkServiceSpy } from '../services/link.service';
+import { LinkService } from '../services/link.service';
+import { LinkServiceSpy } from '../services/link.service.spec';
 
 describe('FormComponent', () => {
   let component: FormComponent;
@@ -56,5 +57,3 @@ describe('FormComponent', () => {
   }
 
 });
-
-

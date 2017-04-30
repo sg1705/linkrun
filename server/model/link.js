@@ -1,7 +1,7 @@
 
 'use strict';
 
-const config = require('config');
+const config     = require('config');
 var logger       = require('./logger.js');
 
 class Link {
@@ -25,7 +25,7 @@ class Link {
     linkData["gourl"] = gourl;
     linkData["url"] = url;
     linkData["description"] = description;
-    logger.log("creating_link", linkData);
+    logger.debug("creating_link", linkData);
     return this.getModel().create(linkData);
   }
 
@@ -39,7 +39,7 @@ class Link {
     linkData["gourl"] = gourl;
     linkData["url"] = url;
     linkData["description"] = description;
-    logger.log("updating_link", linkData);
+    logger.debug("updating_link", linkData);
     return this.getModel().update (id, linkData);
   }
 

@@ -9,7 +9,8 @@ import { MaterialModule} from './material/material.module';
 import { FormComponent } from './form/form.component';
 import { LinkListComponent } from './link-list/link-list.component';
 
-import { UserService, UserServiceSpy } from './services/user.service';
+import { UserService } from './services/user.service';
+import { UserServiceSpy } from './services/user.service.spec';
 import { User } from './model/user';
 
 

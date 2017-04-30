@@ -3,6 +3,7 @@ export class Link {
   link:         string;
   url:          string;
   description:  string;
+  
   constructor(id, link, url, description) {
     this.id = id;
     this.url = url;

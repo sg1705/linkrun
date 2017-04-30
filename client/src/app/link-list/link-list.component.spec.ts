@@ -1,7 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { Link } from '../model/link';
-import { LinkService, LinkServiceSpy } from '../services/link.service';
+import { LinkService } from '../services/link.service';
+import { LinkServiceSpy } from '../services/link.service.spec';
 import { LinkListComponent } from './link-list.component';
 import { MaterialModule } from '../material/material.module';
 

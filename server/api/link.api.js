@@ -34,8 +34,24 @@ router.get('/', (req, res, next) => {
 });
 
 router.post('/create', (req, res, next) => {
-  console.log(req.body);
-  res.json(req.body);
+  //get user from cookie
+  var userId = cookieService.getXsession(req).userId;
+  var orgId = cookieService.getXsession(req).orgId;
+  var link = req.body['link'];
+  var url = req.body['url'];
+  var desc = req.body['description'];
+  var newLink = {
+    userId: userId,
+    orgId:  orgId,
+    link:   link,
+    url:    url,
+    description: desc
+  }
+  console.log(newLink);
+  linkService.createLink(orgId, userId, link, url, desc).then(entity => {
+    res.json(entity);
+  })
+  
 });
 
 

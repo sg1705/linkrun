@@ -63,6 +63,7 @@ describe('LinkService', () => {
         
         service.createLink(new Link(mockLink.id, mockLink.link, mockLink.url, mockLink.description)).then(link => {
           expect(link.url).toEqual(mockLink.url);
+          expect(link.description).toEqual(mockLink.description);
         });
       }))
     ));
@@ -71,3 +72,11 @@ describe('LinkService', () => {
   })
 });
 
+export class LinkServiceSpy {
+  testLink = new Link(5715921523965952, 'google', 'http://www.google.com', 'description');
+  getLinks = jasmine.createSpy('getLinks').and.callFake(
+    () => Promise
+      .resolve(true)
+      .then(() => Object.assign({}, this.testLink))
+  );
+}

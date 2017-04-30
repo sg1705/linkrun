@@ -37,11 +37,3 @@ export class LinkService {
   }
 }
 
-export class LinkServiceSpy {
-  testLink = new Link(5715921523965952, 'google', 'http://www.google.com', 'description');
-  getLinks = jasmine.createSpy('getLinks').and.callFake(
-    () => Promise
-      .resolve(true)
-      .then(() => Object.assign({}, this.testLink))
-  );
-}
