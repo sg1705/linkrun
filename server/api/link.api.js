@@ -33,4 +33,11 @@ router.get('/', (req, res, next) => {
   })
 });
 
+router.post('/create', (req, res, next) => {
+  console.log(req.body);
+  res.json(req.body);
+});
+
+
+
 module.exports = router;

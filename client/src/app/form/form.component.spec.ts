@@ -1,9 +1,9 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, fakeAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MaterialModule} from '../material/material.module';
-
+import { FormBuilder,FormGroup} from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { FormComponent } from './form.component';
-import { UserService } from '../services/user.service';
-import { UserServiceSpy } from '../app.component.spec'
+import { LinkService, LinkServiceSpy } from '../services/link.service';
 
 describe('FormComponent', () => {
   let component: FormComponent;
@@ -12,12 +12,12 @@ describe('FormComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [ FormComponent ],
-      imports: [MaterialModule]
+      imports: [MaterialModule, ReactiveFormsModule]
     })
     .overrideComponent(FormComponent, {
       set: {
         providers: [
-          { provide: UserService, useClass: UserServiceSpy }
+          { provide: LinkService, useClass: LinkServiceSpy }
         ]
       }
     }).compileComponents();
@@ -34,7 +34,7 @@ describe('FormComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should have three input fields', () => {
+  it('should have two input fields', () => {
     expect(fixture.nativeElement.querySelectorAll('input').length).toEqual(2);
   })
 
@@ -43,5 +43,18 @@ describe('FormComponent', () => {
   })
 
 
+  it('form value should update from form changes', fakeAsync(() => {
+    updateForm('testLink', 'testUrl');
+    expect(component.linkFormGroup.value['link']).toEqual('testLink');
+    expect(component.linkFormGroup.value['url']).toEqual('testUrl');
+  }));
+
+
+  function updateForm(link, url) {
+    component.linkFormGroup.controls['link'].setValue(link);
+    component.linkFormGroup.controls['url'].setValue(url);
+  }
 
 });
+
+

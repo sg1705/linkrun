@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { Link } from '../model/link';
-import { LinkService } from '../services/link.service';
+import { LinkService, LinkServiceSpy } from '../services/link.service';
 import { LinkListComponent } from './link-list.component';
 import { MaterialModule } from '../material/material.module';
 
@@ -50,11 +50,3 @@ describe('LinkListComponent', () => {
 });
 
 
-export class LinkServiceSpy {
-  testLink = new Link(5715921523965952, 'google', 'http://www.google.com');
-  getLinks = jasmine.createSpy('getLinks').and.callFake(
-    () => Promise
-      .resolve(true)
-      .then(() => Object.assign({}, this.testLink))
-  );
-}
