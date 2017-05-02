@@ -65,7 +65,6 @@ export class FormComponent implements OnInit {
         })
       });
     }
-
     return new Promise((resolve, reject) => {
       this.linkService.createLink(new Link(0, l.link, l.url, l.description))
       .then(link => {

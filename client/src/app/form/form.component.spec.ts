@@ -117,17 +117,9 @@ describe('FormComponent', () => {
 
 
 class RouterStub {
-
   url = '/link/create';
   navigateByUrl = jasmine.createSpy('navigateByUrl').and.callFake(
     (url) => Promise.resolve(url).then(url => {
       this.url = url;
     }));
-
-
-  // navigateByUrl(url: string):Promise<Boolean> { 
-  //   return new Promise((resolve, reject) => {
-  //     resolve(true);
-  //   })
-  // }
 }
