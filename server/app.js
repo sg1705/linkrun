@@ -72,7 +72,10 @@ function nocache(req, res, next) {
  * Static Home pageExpress Routes
  */
 app.use('/_/', express.static(path.join(__dirname, '../static')));
-
+app.use('/opensearch.xml', function (req, res, next) {
+  // res.contentType("application/opensearchdescription+xml");
+  res.sendFile(path.join(__dirname, '../static/opensearch.xml'));
+});
 
 /**
  * Go to the url requested
