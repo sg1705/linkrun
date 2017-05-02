@@ -24,6 +24,9 @@ export class LinkService {
         })
   }
 
+  /**
+   * Create link
+   */
   createLink(link:Link): Promise<Link> {
     return this.http.post(this.apiUrl+'/create', {
       'link': link.link,
@@ -31,11 +34,34 @@ export class LinkService {
       'description': link.description
     }).toPromise().then(res => {
       let resBody = res.json();
-      console.log(resBody);
       let linkObj = new Link(resBody['id'], resBody['gourl'], resBody['url'], resBody['description'])
       return linkObj;
     })
-
   }
+
+  updateLink(link:Link): Promise<Link> {
+    return this.http.post(this.apiUrl+'/update/' + link.id, {
+      'id': link.id,
+      'link': link.link,
+      'url': link.url,
+      'description': link.description
+    }).toPromise().then(res => {
+      let resBody = res.json();
+      let linkObj = new Link(resBody['id'], resBody['gourl'], resBody['url'], resBody['description'])
+      return linkObj;
+    })
+  }
+
+
+
+  getLink(linkId): Promise<Link> {
+      return this.http.get(this.apiUrl + '/link/'+linkId)
+        .toPromise().then(res => {
+          var entity = res.json();
+          var link = new Link(entity['id'], entity['gourl'], entity['url'], entity['description']);
+          return link;
+        })
+  }
+
 }
 

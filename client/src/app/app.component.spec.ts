@@ -34,7 +34,7 @@ describe('AppComponent', () => {
         ReactiveFormsModule,
         RouterTestingModule.withRoutes([
           {
-            path: 'form',
+            path: 'link/create',
             component: FormComponent
           },
           {
@@ -90,7 +90,7 @@ describe('AppComponent', () => {
 
     fixture.whenStable().then(() => {
       fixture.detectChanges();
-      expect(router.url).toContain('/form');
+      expect(router.url).toContain('/link/create');
     })
   })
 
@@ -100,7 +100,7 @@ describe('AppComponent', () => {
 
     fixture.whenStable().then(() => {
       fixture.detectChanges();
-      expect(router.url).toContain('/link');
+      expect(router.url).toContain('/links');
     })
   })
 });

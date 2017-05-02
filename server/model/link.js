@@ -64,6 +64,14 @@ createLink(orgId, userId, gourl, url, description) {
   }
 
   /**
+   * Retrieve a link
+   */
+  getLink(linkId) {
+    return this.getModel().read(linkId);
+  }
+
+
+  /**
    * Retrieve a link by linkName and orgId
    */
   getLinkByGoLink(linkName, orgId) {
