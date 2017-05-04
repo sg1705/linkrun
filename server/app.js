@@ -55,7 +55,7 @@ if (process.env.GCLOUD_PROJECT) {
 
 const GA_TRACKING_ID = config.get('ga.GA_TRACKING_ID');
 
-function trackEvent(category, action, label, value, cb) {
+function trackEvent(client, category, action, label, value, cb) {
   const data = {
     // API Version.
     v: '1',
@@ -63,7 +63,7 @@ function trackEvent(category, action, label, value, cb) {
     tid: GA_TRACKING_ID,
     // Anonymous Client Identifier. Ideally, this should be a UUID that
     // is associated with particular user, device, or browser instance.
-    cid: '555',
+    cid: client,
     // Event hit type.
     t: 'event',
     // Event category.
@@ -197,6 +197,7 @@ app.get("/:gourl", setRouteUrl, auth.isLoggedIn, function (req, res, next) {
   // retrieve actual url
   let linkService = new LinkService();
   let orgId = cookie.getOrgIdFromCookie(req)
+  let userId = cookie.getUserIdFromCookie(req)
 
 
   linkService.getLinkByGoLink(routeGoUrl, orgId)
@@ -213,21 +214,21 @@ app.get("/:gourl", setRouteUrl, auth.isLoggedIn, function (req, res, next) {
             logger.info('corrected to ', routeGoUrl)
           }).then(() => {
             if (routeGoUrl) {
-              trackEvent('gourl', 'redirection sucess', orgId + '_' + routeGoUrl, '100')
+              trackEvent(userID, 'gourl', 'redirection sucess', orgId + '_' + routeGoUrl, '100')
               linkService.getLinkByGoLink(routeGoUrl, orgId)
                 .then(linkEntities => res.redirect(301, linkEntities.entities[0].url));
             } else {
-              trackEvent('gourl', 'redirection fail', orgId + '_' + routeGoUrl, '100')
+              trackEvent(userID, 'gourl', 'redirection fail', orgId + '_' + routeGoUrl, '100')
               logger.info("no_url_found, redirecting to links page");
               res.redirect('/__/links');
             }
           })
       } else if (!linkEntities.entities[0].url) {
-        trackEvent('gourl', 'redirection fail', orgId + '_' + routeGoUrl, '100')
+        trackEvent(userID, 'gourl', 'redirection fail', orgId + '_' + routeGoUrl, '100')
         logger.info("empty_url, redirecting to links page");
         res.redirect('/__/links');
       } else {
-        trackEvent('gourl', 'redirection sucess', orgId + '_' + routeGoUrl, '100')
+        trackEvent(userID, 'gourl', 'redirection sucess', orgId + '_' + routeGoUrl, '100')
         res.redirect(301, linkEntities.entities[0].url);
       }
     })
