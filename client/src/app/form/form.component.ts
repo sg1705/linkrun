@@ -48,6 +48,7 @@ export class FormComponent implements OnInit {
       this.linkService.getLink(this.linkId)
       .then(link => {
         this.linkFormGroup.controls['link'].setValue(link.link);
+        this.linkFormGroup.controls['link'].disable();
         this.linkFormGroup.controls['url'].setValue(link.url);
         this.linkFormGroup.controls['description'].setValue(link.description);
       })
@@ -58,7 +59,10 @@ export class FormComponent implements OnInit {
   onSubmit(l):Promise<boolean> {
     if (this.mode == 'edit') {
       return new Promise((resolve, reject) => {
-        this.linkService.updateLink(new Link(this.linkId, l.link, l.url, l.description))
+        var link = this.linkFormGroup.controls['link'].value;
+        var url = this.linkFormGroup.controls['url'].value;
+        var description = this.linkFormGroup.controls['description'].value;
+        this.linkService.updateLink(new Link(this.linkId, link, url, description))
         .then(link => {
           console.log('link updated', link);
           resolve(this.router.navigateByUrl('/links'));
