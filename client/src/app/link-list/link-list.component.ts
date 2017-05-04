@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {MdButtonModule} from '@angular/material';
 
 import { Link } from '../model/link';
 import { LinkService } from '../services/link.service';
@@ -23,6 +24,14 @@ export class LinkListComponent implements OnInit {
     })
     .catch(err => {
       console.log(err);
+    })
+  }
+
+  deleteLink(linkId) {
+    this.linkService.deleteLink(linkId).then(done => {
+      if (done) {
+        this.ngOnInit();
+      }
     })
   }
 

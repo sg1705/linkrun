@@ -41,6 +41,9 @@ if (process.env.NODE_ENV === 'production') {
   // app.use('/*.css',express.static(path.join(__dirname, '../dist')));  
 }
 
+const APP_HOME = '/__/app';
+
+
 /**
  * Setup Google Cloud monitoring
  */
@@ -98,31 +101,19 @@ function nocache(req, res, next) {
  * Static Home pageExpress Routes
  */
 app.use('/_/', express.static(path.join(__dirname, '../static')));
-
+app.use('/opensearch.xml', function (req, res, next) {
+  // res.contentType("application/opensearchdescription+xml");
+  res.sendFile(path.join(__dirname, '../static/opensearch.xml'));
+});
 
 /**
  * Go to the url requested
  */
 app.get("/", auth.isLoggedIn, function (req, res, next) {
   session.gourl = '/';
-  // res.sendFile(path.join(__dirname, '../dist/main.html'));
-  res.redirect('/__/links');
+  res.redirect(APP_HOME);
 });
 
-// links
-app.get("/login", function (req, res, next) {
-  res.sendFile(path.join(__dirname, '../dist/index.html'));
-});
-
-// links
-app.get("/form", function (req, res, next) {
-  res.sendFile(path.join(__dirname, '../dist/index.html'));
-});
-
-// links
-app.get("/links", function (req, res, next) {
-  res.sendFile(path.join(__dirname, '../dist/index.html'));
-});
 
 
 app.get('/__/login/google', function (req, res, next) {
@@ -174,16 +165,10 @@ app.get(
       });
   });
 
-// users
-app.use('/__/api/users', require('./model/user.api'));
-app.use('/__/api/linksv2', require('./api/link.api'));
+app.use('/__', auth.isLoggedIn, require('./routes/app-route.js'));
+app.use('/__/api', auth.isLoggedIn, require('./routes/api-route.js'));
 
-//Views
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
 
-app.use('/__/links', auth.isLoggedIn, require('./model/crud'));
-app.use('/__/api/links', require('./model/link.api'));
 
 app.get("/:gourl", setRouteUrl, auth.isLoggedIn, function (req, res, next) {
   let routeGoUrl = session.gourl;
@@ -221,14 +206,14 @@ app.get("/:gourl", setRouteUrl, auth.isLoggedIn, function (req, res, next) {
             } else {
               trackEvent(userId, 'gourl', 'redirect', 'no_url_found', '100')
               logger.info("no_url_found, redirecting to links page");
-              res.redirect('/__/links');
+              res.redirect(APP_HOME);
             }
           })
       } else if (!linkEntities.entities[0].url) {
         trackEvent(userId, 'gourl', 'redirect', 'empty_url', '100')
         logger.info("empty_url, redirecting to links page");
-        res.redirect('/__/links');
-      } else {
+        res.redirect(APP_HOME);
+      } else { 
         trackEvent(userId, 'gourl', 'redirect', linkEntities.entities[0].id, '100')
         res.redirect(301, linkEntities.entities[0].url);
       }
