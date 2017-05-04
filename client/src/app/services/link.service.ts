@@ -52,6 +52,16 @@ export class LinkService {
     })
   }
 
+  deleteLink(linkId): Promise<boolean> {
+    return this.http.post(this.apiUrl+'/delete/' + linkId, {'id': linkId,})
+    .toPromise()
+    .then(res => {
+      let resBody = res.json();
+      return resBody['done'];
+    })
+  }
+
+
 
 
   getLink(linkId): Promise<Link> {

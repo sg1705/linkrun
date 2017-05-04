@@ -61,6 +61,17 @@ router.post('/update/:id', (req, res, next) => {
   })  
 });
 
+router.post('/delete/:id', (req, res, next) => {
+  //get user from cookie
+  var userId = cookieService.getXsession(req).userId;
+  var orgId = cookieService.getXsession(req).orgId;
+  var linkId = req.params['id'];
+  linkService.deleteLink(userId, linkId).then(done => {
+    res.json({done: true});
+  })  
+});
+
+
 
 
 /**

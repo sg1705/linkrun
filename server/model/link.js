@@ -101,8 +101,8 @@ createLink(orgId, userId, gourl, url, description) {
      return new Promise((resolve, reject) => {
       this.getModel().read(linkId).then(entity => {
         if(entity.userId == userId) {
-          logger.log("deleting_link", linkId);
-          resolve(this.getModel().delete(linkId));
+          logger.debug("deleting_link", linkId);
+          resolve(this.getModel()._delete(linkId));
         } else {
           logger.error("unauthorized_delete_links ",  entity.userId);
           reject("unauthorized_delete_links");
