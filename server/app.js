@@ -199,7 +199,6 @@ app.get("/:gourl", setRouteUrl, auth.isLoggedIn, function (req, res, next) {
   let orgId = cookie.getOrgIdFromCookie(req)
   let userId = cookie.getUserIdFromCookie(req)
 
-
   linkService.getLinkByGoLink(routeGoUrl, orgId)
     .then(linkEntities => { // gourl not found. attempt to find a close one.
       if (linkEntities.entities.length == 0) {
@@ -214,21 +213,21 @@ app.get("/:gourl", setRouteUrl, auth.isLoggedIn, function (req, res, next) {
             logger.info('corrected to ', routeGoUrl)
           }).then(() => {
             if (routeGoUrl) {
-              trackEvent(userID, 'gourl', 'redirection sucess', orgId + '_' + routeGoUrl, '100')
+              trackEvent(userId, 'gourl', 'redirection sucess', orgId + '_' + routeGoUrl, '100')
               linkService.getLinkByGoLink(routeGoUrl, orgId)
                 .then(linkEntities => res.redirect(301, linkEntities.entities[0].url));
             } else {
-              trackEvent(userID, 'gourl', 'redirection fail', orgId + '_' + routeGoUrl, '100')
+              trackEvent(userId, 'gourl', 'redirection fail', orgId + '_' + routeGoUrl, '100')
               logger.info("no_url_found, redirecting to links page");
               res.redirect('/__/links');
             }
           })
       } else if (!linkEntities.entities[0].url) {
-        trackEvent(userID, 'gourl', 'redirection fail', orgId + '_' + routeGoUrl, '100')
+        trackEvent(userId, 'gourl', 'redirection fail', orgId + '_' + routeGoUrl, '100')
         logger.info("empty_url, redirecting to links page");
         res.redirect('/__/links');
       } else {
-        trackEvent(userID, 'gourl', 'redirection sucess', orgId + '_' + routeGoUrl, '100')
+        trackEvent(userId, 'gourl', 'redirection sucess', orgId + '_' + routeGoUrl, '100')
         res.redirect(301, linkEntities.entities[0].url);
       }
     })

@@ -41,5 +41,6 @@ function getXsession(req) {
 module.exports = {
     setCookie: setCookie,
     getOrgIdFromCookie: getOrgIdFromCookie,
+    getUserIdFromCookie: getUserIdFromCookie,    
     getXsession: getXsession
 };
