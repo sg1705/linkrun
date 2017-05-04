@@ -22,18 +22,13 @@ import { LinkListComponent } from './link-list/link-list.component';
     ReactiveFormsModule,
     HttpModule,
     MaterialModule,
-    RouterModule.forRoot([  {
-      path: 'login',
-      component: LoginComponent
-    },
-    {
-      path: 'form',
-      component: FormComponent
-    },
-    {
-      path: 'links',
-      component: LinkListComponent
-  }])    
+    RouterModule.forRoot([  
+      { path: 'login', component: LoginComponent },
+      { path: 'link/create',component: FormComponent },
+      { path: 'link/edit/:id',component: FormComponent },
+      { path: 'links', component: LinkListComponent },
+      { path: '',  redirectTo: '/links', pathMatch: 'full'}
+    ])    
   ],
   providers: [],
   bootstrap: [AppComponent]

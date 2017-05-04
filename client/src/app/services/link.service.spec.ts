@@ -54,6 +54,23 @@ describe('LinkService', () => {
         id: 0 };
 
 
+    it('gets link for a given id', async(
+      inject([LinkService, MockBackend], ((service: LinkService, mockBackend: MockBackend) => {
+        //respond to a mock connection
+        mockBackend.connections.subscribe(conn => {
+          conn.mockRespond(new Response(new ResponseOptions({ body: JSON.stringify(mockResponse[0]) })));
+        });
+        
+        service.getLink(5722467590995968).then(link => {
+          console.log(link);
+          expect(link.id).toEqual(5722467590995968);
+          expect(link.link).toEqual('fsdfds');
+        });
+      }))
+    ));
+
+
+
     it('make post requests', async(
       inject([LinkService, MockBackend], ((service: LinkService, mockBackend: MockBackend) => {
         //respond to a mock connection
@@ -67,8 +84,6 @@ describe('LinkService', () => {
         });
       }))
     ));
-
-
   })
 });
 
@@ -79,4 +94,5 @@ export class LinkServiceSpy {
       .resolve(true)
       .then(() => Object.assign({}, this.testLink))
   );
+
 }

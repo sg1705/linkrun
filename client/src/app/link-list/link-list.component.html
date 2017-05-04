@@ -5,6 +5,12 @@
     <p md-line>
       <span> {{link.url}} </span>
     </p>
+    <p>
+      <a routerLink="/link/edit/{{link.id}}">Edit</a>
+      </p>
+      <p>
+      <button (click)="deleteLink(link.id)" md-button>Delete</button>
+    </p>
   </md-list-item>
 </md-list>
 </div>

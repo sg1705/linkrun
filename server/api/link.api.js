@@ -15,8 +15,6 @@ const router = express.Router();
 router.use(bodyParser.json());
 
 /**
- * GET /api/links
- *
  * Retrieves all links for the user
  */
 router.get('/', (req, res, next) => {
@@ -47,9 +45,52 @@ router.post('/create', (req, res, next) => {
   }
   linkService.createLink(orgId, userId, link, url, desc).then(entity => {
     res.json(entity);
-  })
-  
+  })  
 });
+
+router.post('/update/:id', (req, res, next) => {
+  //get user from cookie
+  var userId = cookieService.getXsession(req).userId;
+  var orgId = cookieService.getXsession(req).orgId;
+  var linkId = req.params['id'];
+  var link = req.body['link'];
+  var url = req.body['url'];
+  var desc = req.body['description'];
+  linkService.updateLink(linkId, orgId, userId, link, url, desc).then(entity => {
+    res.json(entity);
+  })  
+});
+
+router.post('/delete/:id', (req, res, next) => {
+  //get user from cookie
+  var userId = cookieService.getXsession(req).userId;
+  var orgId = cookieService.getXsession(req).orgId;
+  var linkId = req.params['id'];
+  linkService.deleteLink(userId, linkId).then(done => {
+    res.json({done: true});
+  })  
+});
+
+
+
+
+/**
+ * Retrieves a link for the given linkid
+ */
+router.get('/link/:id', (req, res, next) => {
+  //get user from cookie
+  var userId = cookieService.getXsession(req).userId;
+  var orgId = cookieService.getXsession(req).orgId;
+  //get link id
+  var linkId = req.params['id'];
+  linkService.getLink(linkId).then(link => {
+    res.json(link);
+  }).catch(err => {
+      logger.error(err);
+      return;    
+  })
+});
+
 
 
 

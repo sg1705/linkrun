@@ -165,7 +165,7 @@ class ModelService {
                         message: 'Not found'
                     });
                 }
-                resolve(entity);
+                resolve(this.fromDatastore(entity));
             });
         })
     }
