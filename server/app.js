@@ -156,8 +156,10 @@ app.get("/:gourl", setRouteUrl, auth.isLoggedIn, function (req, res, next) {
 
 
   linkService.getLinkByGoLink(routeGoUrl, orgId)
-    .then(linkEntities => { // gourl not found. attempt to find a close one.
+    .then(linkEntities => { 
+      
       if (linkEntities.entities.length == 0) {
+        // gourl not found. attempt to find a close one.
         logger.info("no_url_found, attempt to auto-correct");
         var sc = SC.spellChecker();
         linkService.getGourls(orgId)
@@ -165,20 +167,21 @@ app.get("/:gourl", setRouteUrl, auth.isLoggedIn, function (req, res, next) {
             let gourls = shortNames;
             sc.setDict(gourls);
             logger.info('gourls', gourls)
-            routeGoUrl = sc.correct(routeGoUrl);
-            logger.info('corrected to ', routeGoUrl)
-          }).then(() => {
-            if (routeGoUrl) {
-              linkService.getLinkByGoLink(routeGoUrl, orgId)
+            let correctedRouteGoUrl = sc.correct(routeGoUrl);
+            logger.info('corrected to ', correctedRouteGoUrl)
+            return correctedRouteGoUrl;
+          }).then((correctedRouteGoUrl) => {
+            if (correctedRouteGoUrl) {
+              linkService.getLinkByGoLink(correctedRouteGoUrl, orgId)
                 .then(linkEntities => res.redirect(301, linkEntities.entities[0].url));
             } else {
               logger.info("no_url_found, redirecting to links page");
-              res.redirect(APP_HOME);
+              res.redirect(APP_HOME + '/link/create?link=' + routeGoUrl);
             }
           })
       } else if (!linkEntities.entities[0].url) {
         logger.info("empty_url, redirecting to links page");
-        res.redirect(APP_HOME);
+        res.redirect(APP_HOME + '/link/create?link=' + routeGoUrl);
       } else { 
         res.redirect(301, linkEntities.entities[0].url);
       }
