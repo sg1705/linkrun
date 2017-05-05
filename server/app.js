@@ -191,9 +191,8 @@ app.get("/:gourl", setRouteUrl, auth.isLoggedIn, function (req, res, next) {
         var sc = SC.spellChecker();
         linkService.getGourls(orgId)
           .then(shortNames => {
-            let gourls = shortNames;
-            sc.setDict(gourls);
-            logger.info('gourls', gourls)
+            sc.setDict(shortNames);
+            logger.info('Short Names', shortNames)
             routeGoUrl = sc.correct(routeGoUrl);
             logger.info('corrected to ', routeGoUrl)
           }).then(() => {
@@ -201,20 +200,20 @@ app.get("/:gourl", setRouteUrl, auth.isLoggedIn, function (req, res, next) {
               linkService.getLinkByGoLink(routeGoUrl, orgId)
                 .then(linkEntities => {
                   res.redirect(301, linkEntities.entities[0].url);
-                  trackEvent(userId, 'gourl', 'redirect', linkEntities.entities[0].id, '100')
+                  trackEvent(userId, 'Link', 'redirect', linkEntities.entities[0].id, '100')
                 });
             } else {
-              trackEvent(userId, 'gourl', 'redirect', 'no_url_found', '100')
+              trackEvent(userId, 'Link', 'redirect', 'no_url_found', '100')
               logger.info("no_url_found, redirecting to links page");
               res.redirect(APP_HOME);
             }
           })
       } else if (!linkEntities.entities[0].url) {
-        trackEvent(userId, 'gourl', 'redirect', 'empty_url', '100')
+        trackEvent(userId, 'Link', 'redirect', 'empty_url', '100')
         logger.info("empty_url, redirecting to links page");
         res.redirect(APP_HOME);
       } else { 
-        trackEvent(userId, 'gourl', 'redirect', linkEntities.entities[0].id, '100')
+        trackEvent(userId, 'Link', 'redirect', linkEntities.entities[0].id, '100')
         res.redirect(301, linkEntities.entities[0].url);
       }
     })
