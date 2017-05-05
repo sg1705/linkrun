@@ -3,11 +3,14 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { HttpModule } from '@angular/http';
 import { Router } from "@angular/router";
 import { ReactiveFormsModule } from '@angular/forms';
+import { BaseRequestOptions, Http, Response, ResponseOptions } from '@angular/http';
+import { MockBackend, MockConnection } from '@angular/http/testing';
 
 import { AppComponent } from './app.component';
 import { MaterialModule} from './material/material.module';
 import { FormComponent } from './form/form.component';
 import { LinkListComponent } from './link-list/link-list.component';
+import { LoginComponent } from './login/login.component';
 
 import { UserService } from './services/user.service';
 import { UserServiceSpy } from './services/user.service.spec';
@@ -27,6 +30,7 @@ describe('AppComponent', () => {
       declarations: [
         AppComponent,
         FormComponent,
+        LoginComponent,
         LinkListComponent
       ],
       imports: [
@@ -47,7 +51,14 @@ describe('AppComponent', () => {
     .overrideComponent(AppComponent, {
       set: {
         providers: [
-          { provide: UserService, useClass: UserServiceSpy }
+          { provide: UserService, useClass: UserServiceSpy },
+          MockBackend,
+          BaseRequestOptions,
+          {
+            provide: Http,
+            useFactory: (backend, options) => new Http(backend, options),
+            deps: [MockBackend, BaseRequestOptions]                    
+          }
         ]
       }
     }).compileComponents();
