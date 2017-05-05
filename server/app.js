@@ -66,7 +66,9 @@ function trackEvent(client, category, action, label, value, cb) {
     tid: GA_TRACKING_ID,
     // Anonymous Client Identifier. Ideally, this should be a UUID that
     // is associated with particular user, device, or browser instance.
-    cid: client,
+    // cid: client,
+    uid: client,
+    
     // Event hit type.
     t: 'event',
     // Event category.
