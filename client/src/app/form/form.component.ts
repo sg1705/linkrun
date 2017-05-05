@@ -39,8 +39,6 @@ export class FormComponent implements OnInit {
       this.activateRoute.params.subscribe(params => {
         this.linkId = params['id'];
       })
-
-
    }
 
   ngOnInit() {
