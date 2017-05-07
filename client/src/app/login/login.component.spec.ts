@@ -1,6 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { BaseRequestOptions, Http, HttpModule, Response, ResponseOptions } from '@angular/http';
+import { MockBackend, MockConnection } from '@angular/http/testing';
 
 import { LoginComponent } from './login.component';
+import { UserService } from '../services/user.service';
+import { User } from '../model/user';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
@@ -10,7 +14,19 @@ describe('LoginComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ LoginComponent ]
     })
-    .compileComponents();
+    .overrideComponent(LoginComponent, {
+      set: {
+      providers: [
+        UserService,
+        MockBackend,
+        BaseRequestOptions,
+        {
+          provide: Http,
+          useFactory: (backend, options) => new Http(backend, options),
+          deps: [MockBackend, BaseRequestOptions]                    
+        }]
+      }
+    }).compileComponents();
   }));
 
   beforeEach(() => {

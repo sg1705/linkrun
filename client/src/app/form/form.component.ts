@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder,FormGroup} from '@angular/forms';
 import {MdInputModule} from '@angular/material';
@@ -22,6 +22,9 @@ export class FormComponent implements OnInit {
   linkId: number = 0;
   mode:string = 'create';
 
+  @ViewChild('link') inputLink: ElementRef;
+  @ViewChild('url') inputUrl: ElementRef;
+
   constructor(
     fb: FormBuilder, 
     private linkService: LinkService,
@@ -36,11 +39,10 @@ export class FormComponent implements OnInit {
       this.activateRoute.params.subscribe(params => {
         this.linkId = params['id'];
       })
-
-
    }
 
   ngOnInit() {
+    this.inputLink.nativeElement.focus();
     if (this.router.url.indexOf('/link/edit') > -1) {
       //set edit mode
       this.mode = 'edit';
@@ -52,7 +54,15 @@ export class FormComponent implements OnInit {
         this.linkFormGroup.controls['url'].setValue(link.url);
         this.linkFormGroup.controls['description'].setValue(link.description);
       })
-
+    } else if (this.router.url.indexOf('/link/create') > -1) {
+      this.activateRoute.queryParams.subscribe(params => {
+        let link = params['link'];
+        console.log(link);
+        if (link != null) {
+          this.linkFormGroup.controls['link'].setValue(link);
+          this.inputUrl.nativeElement.focus();
+        }
+      });
     }
   }
 
