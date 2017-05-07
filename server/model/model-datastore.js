@@ -3,6 +3,7 @@
 
 const Datastore = require('@google-cloud/datastore');
 const config = require('config');
+var logger = require('./logger.js');
 
 // [START config]
 const ds = Datastore({
@@ -33,8 +34,8 @@ function setKind (kind_Name) {
 }
 
 function fromDatastore (obj) {
-  obj.data.id = obj.key.id;
-  return obj.data;
+  obj.id = obj[Datastore.KEY].id;
+  return obj;
 }
 
 // Translates from the application's format to the datastore's
@@ -95,6 +96,7 @@ function list (limit, token, orgId, cb) {
     }
     const hasMore = nextQuery.moreResults !== Datastore.NO_MORE_RESULTS ? nextQuery.endCursor : false;
     cb(null, entities.map(fromDatastore), hasMore);
+    
   });
 }
 // [END list]
@@ -105,6 +107,7 @@ function list (limit, token, orgId, cb) {
 // [START update]
 function update (id, data, cb) {
   let key;
+  data['updatedAt'] = new Date();
   if (id) {
     key = ds.key([kind, parseInt(id, 10)]);
   } else {
@@ -133,7 +136,7 @@ function create (data, cb) {
       return;
     }
     if(entities.length > 0) {
-        console.log("link_already_exist; overwriting_link:" + entities[0].id);
+        logger.info("link_already_exist; overwriting_link:" + entities[0].id);
         update(entities[0].id, data, cb);
      } else {
         update(null, data, cb);

@@ -20,7 +20,7 @@ router.use(bodyParser.json());
  * Retrieve a page of links (up to ten at a time).
  */
 router.get('/', (req, res, next) => {
-  getModel().list(10, req.query.pageToken, (err, entities, cursor) => {
+  getModel().list(10, req.query.pageToken, 'orgId', (err, entities, cursor) => {
     if (err) {
       next(err);
       return;

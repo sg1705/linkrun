@@ -6,11 +6,13 @@
   "scripts": {
     "start": "node server/app.js",
     "dev": "nodemon server/app.js",
-    "build:prod": "cd client && ng build -prod"
+    "build:prod": "cd client && ng build -prod",
+    "build:staging": "cd client && ng build -prod"
   },
   "private": true,
   "dependencies": {
-    "@google-cloud/datastore": "^0.1.1",
+    "@google-cloud/datastore": "^1.0.0",
+    "@google-cloud/logging": "^1.0.0",
     "@google/cloud-debug": "^0.9.1",
     "@google/cloud-errors": "^0.1.1",
     "@google/cloud-trace": "^0.6.0",
@@ -21,11 +23,13 @@
     "express": "^4.14.1",
     "express-session": "^1.15.0",
     "googleapis": "^16.1.0",
-    "zone.js": "^0.7.2",
     "jade": "^1.11.0",
     "lodash": "^4.14.2",
     "nconf": "^0.8.4",
-    "prompt": "^1.0.0"
+    "prompt": "^1.0.0",
+    "zone.js": "^0.7.2",
+    "got": "6.7.1"
+    
   },
   "devDependencies": {
     "@types/jasmine": "2.5.38",
