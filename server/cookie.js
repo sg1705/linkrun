@@ -26,6 +26,13 @@ function getOrgIdFromCookie(req) {
   return xsession.orgId;
 }
 
+function getUserIdFromCookie(req) {
+  var xsession = req.signedCookies[COOKIE_NAME];
+  if (xsession == null)
+    return null;
+  return xsession.userId;
+}
+
 function getXsession(req) {
     return req.signedCookies[COOKIE_NAME];
 }
@@ -34,5 +41,6 @@ function getXsession(req) {
 module.exports = {
     setCookie: setCookie,
     getOrgIdFromCookie: getOrgIdFromCookie,
+    getUserIdFromCookie: getUserIdFromCookie,    
     getXsession: getXsession
 };

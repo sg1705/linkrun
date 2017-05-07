@@ -51,4 +51,3 @@ have run the command `gcloud auth application-default login`, your identity can 
 5. Confirm using `gcloud config list`
 6. Run `gcloud app deploy`
 
-
