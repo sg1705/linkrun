@@ -20,6 +20,8 @@
     "googleCallbackUrl"  : "http://link.run/__/oauthcallback/google",
     "googleCallbackUri"  : "/__/oauthcallback/google"
   },
-
+  "ga":{
+    "GA_TRACKING_ID" : "UA-98286839-1"
+  },
   "COOKIE_NAME" : "xsession"
 }
