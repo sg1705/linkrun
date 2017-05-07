@@ -61,9 +61,6 @@ export class LinkService {
     })
   }
 
-
-
-
   getLink(linkId): Promise<Link> {
       return this.http.get(this.apiUrl + '/link/'+linkId)
         .toPromise().then(res => {
@@ -72,6 +69,19 @@ export class LinkService {
           return link;
         })
   }
+
+  isLinkExists(linkName): Promise<boolean> {
+      return this.http.get(this.apiUrl + '/linkName/'+linkName)
+        .toPromise().then(res => {
+          var entities = res.json();
+          if (entities['entities'].length > 0) {
+            return true;
+          }
+          return false;
+        })
+  }
+
+
 
 }
 

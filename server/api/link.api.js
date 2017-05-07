@@ -92,6 +92,25 @@ router.get('/link/:id', (req, res, next) => {
 });
 
 
+/**
+ * Retrieves a link for the given link name
+ */
+router.get('/linkName/:name', (req, res, next) => {
+  //get user from cookie
+  var userId = cookieService.getXsession(req).userId;
+  var orgId = cookieService.getXsession(req).orgId;
+  //get link id
+  var linkName = req.params['name'];
+  linkService.getLinkByGoLink(linkName, orgId).then(entities => {
+    console.log(entities);
+    res.json(link);
+  }).catch(err => {
+      logger.error(err);
+      return;    
+  })
+});
+
+
 
 
 module.exports = router;
