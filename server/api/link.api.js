@@ -7,6 +7,7 @@ const config = require('config');
 const LinkService = require(`../model/link.js`);
 const cookieService = require('../cookie.js');
 const Datastore = require('@google-cloud/datastore');
+var   logger       = require('../model/logger.js');
 
 const linkService = new LinkService();
 const router = express.Router();
@@ -103,7 +104,7 @@ router.get('/linkName/:name', (req, res, next) => {
   var linkName = req.params['name'];
   linkService.getLinkByGoLink(linkName, orgId).then(entities => {
     console.log(entities);
-    res.json(link);
+    res.json(entities);
   }).catch(err => {
       logger.error(err);
       return;    
