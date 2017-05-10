@@ -1,15 +1,21 @@
 
-<form [formGroup]="linkFormGroup" (ngSubmit)="onSubmit(linkFormGroup.value)">
+<form [formGroup]="linkFormGroup" (ngSubmit)="onSubmit(linkFormGroup.value)" autocomplete="off">
   <md-grid-list cols="1" rowHeight="100px" >
     <md-grid-tile>
       <md-input-container>
-        <input #link [formControl]="linkFormGroup.controls['link']" name="link" mdInput 
+        <input #link  [formControl]="linkFormGroup.controls['link']" name="link" mdInput  linkNameValidator
           required minlength="2" placeholder="Link">
+          <md-error>
+            {{formErrors.link}}
+            </md-error>
       </md-input-container>
     </md-grid-tile>
     <md-grid-tile>
       <md-input-container>
         <input #url [formControl]="linkFormGroup.controls['url']"  name="url" mdInput placeholder="URL" required minlength="2">
+        <md-error>
+            {{formErrors.url}}
+        </md-error>        
       </md-input-container>
     </md-grid-tile>
 

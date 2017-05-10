@@ -9,13 +9,15 @@ import { LoginComponent } from './login/login.component';
 import { FormComponent } from './form/form.component';
 import { MaterialModule} from './material/material.module';
 import { LinkListComponent } from './link-list/link-list.component';
+import { LinkNameValidator } from './form/link.validator';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     FormComponent,
-    LinkListComponent
+    LinkListComponent,
+    LinkNameValidator
   ],
   imports: [
     BrowserModule,
