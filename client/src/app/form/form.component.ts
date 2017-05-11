@@ -10,7 +10,6 @@ import {MdTabsModule} from '@angular/material';
 import { LinkService } from '../services/link.service';
 import { Link } from '../model/link';
 import { LinkNameValidator } from './link.validator';
-// import { checkLinkName } from './link.validator';
 import { Observable } from 'rxjs/Rx';
 import 'rxjs/Rx';
 

@@ -1,16 +1,14 @@
-<div style="display:flex; justify-content: center">
 <md-list>
-  <md-list-item *ngFor="let link of links">
+  <md-list-item *ngFor="let link of links" style="border-bottom: 1px #dadada solid">
     <h3 md-line><a href="/{{link.link}}"> {{link.link}}</a> </h3>
     <p md-line>
       <span> {{link.url}} </span>
     </p>
     <p>
       <a routerLink="/link/edit/{{link.id}}">Edit</a>
-      </p>
-      <p>
+    </p>
+    <p>
       <button (click)="deleteLink(link.id)" md-button>Delete</button>
     </p>
   </md-list-item>
 </md-list>
-</div>
