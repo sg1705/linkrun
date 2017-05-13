@@ -38,7 +38,7 @@ class ModelService {
     }
 
     fromDatastore(obj) {
-        obj.id = obj[Datastore.KEY].id;
+        obj.id = parseInt(obj[Datastore.KEY].id, 10);
         return obj;
     }
 
