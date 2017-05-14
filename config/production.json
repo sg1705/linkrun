@@ -23,5 +23,8 @@
   "ga":{
     "GA_TRACKING_ID" : "UA-98286839-1"
   },
+  "static": {
+    "signInPage": "index-production"
+  },  
   "COOKIE_NAME" : "xsession"
 }
