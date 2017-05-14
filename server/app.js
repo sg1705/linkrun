@@ -16,7 +16,7 @@ var auth = require('./auth.js');
 var googAuth = require('./googleauth.js');
 var logger = require('./model/logger.js');
 var SC = require('./model/spell-checker.js');
-const got = require('got');
+var GA = require('./model/google-analytics-tracking.js')
 
 /**
  * Setup Express
@@ -54,36 +54,6 @@ if (process.env.NODE_ENV === 'staging') {
 
 if (process.env.GCLOUD_PROJECT) {
   require('@google/cloud-debug').start();
-}
-
-const GA_TRACKING_ID = config.get('ga.GA_TRACKING_ID');
-
-function trackEvent(client, category, action, label, value, cb) {
-  const data = {
-    // API Version.
-    v: '1',
-    // Tracking ID / Property ID.
-    tid: GA_TRACKING_ID,
-    // Anonymous Client Identifier. Ideally, this should be a UUID that
-    // is associated with particular user, device, or browser instance.
-    // cid: client,
-    uid: client,
-    
-    // Event hit type.
-    t: 'event',
-    // Event category.
-    ec: category,
-    // Event action.
-    ea: action,
-    // Event label.
-    el: label,
-    // Event value.
-    ev: value
-  };
-
-  return got.post('http://www.google-analytics.com/collect', {
-    body: data
-  });
 }
 
 /**
@@ -186,6 +156,7 @@ app.get("/:gourl", setRouteUrl, auth.isLoggedIn, function (req, res, next) {
 
   // retrieve actual url
   let linkService = new LinkService();
+  let ga = new GA();
   let orgId = cookie.getOrgIdFromCookie(req)
   let userId = cookie.getUserIdFromCookie(req)
 
@@ -210,20 +181,20 @@ app.get("/:gourl", setRouteUrl, auth.isLoggedIn, function (req, res, next) {
               .getLinkByGoLink(correctedRouteGoUrl, orgId)
               .then(linkEntities => {
                 res.redirect(301, linkEntities.entities[0].url);
-                trackEvent(userId, 'Link', 'redirect', linkEntities.entities[0].id, '100')
+                ga.trackEvent(userId, 'Link', 'redirect', linkEntities.entities[0].id, '100')
               });
             } else {
-              trackEvent(userId, 'Link', 'redirect', 'no_url_found', '100')
+              ga.trackEvent(userId, 'Link', 'redirect', 'no_url_found', '100')
               logger.info("no_url_found, redirecting to links page");
               res.redirect(APP_HOME + '/link/create?link=' + routeGoUrl);
             }
           })
       } else if (!linkEntities.entities[0].url) {
-        trackEvent(userId, 'Link', 'redirect', 'empty_url', '100')
+        ga.trackEvent(userId, 'Link', 'redirect', 'empty_url', '100')
         logger.info("empty_url, redirecting to links page");
         res.redirect(APP_HOME + '/link/create?link=' + routeGoUrl);
       } else { 
-        trackEvent(userId, 'Link', 'redirect', linkEntities.entities[0].id, '100')
+        ga.trackEvent(userId, 'Link', 'redirect', linkEntities.entities[0].id, '100')
         res.redirect(301, linkEntities.entities[0].url);
       }
     })

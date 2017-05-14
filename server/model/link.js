@@ -1,8 +1,10 @@
 
 'use strict';
+var GA = require('./google-analytics-tracking.js')
 
 const config     = require('config');
 var logger       = require('./logger.js');
+let ga = new GA();
 
 class Link {
   
@@ -30,9 +32,11 @@ createLink(orgId, userId, gourl, url, description) {
         linkData["url"] = url.trim();
         linkData["description"] = description;
         logger.debug("creating_link", linkData);
+        ga.trackEvent(userId, 'Link', 'create', linkData["gourl"], '100')      
         resolve(this.getModel().create(linkData));
       } else {
           logger.debug("link_already_exists ", entity.gourl);
+          ga.trackEvent(userId, 'Link', 'create', linkData["gourl"]+'_already_exists', '100')          
           reject("link_already_exists");
       }  
     });
@@ -54,9 +58,11 @@ createLink(orgId, userId, gourl, url, description) {
           linkData["url"] = url.trim();
           linkData["description"] = description;
           logger.debug("updating_link", linkData);
+          ga.trackEvent(userId, 'Link', 'update', linkData["gourl"], '100')              
           resolve(this.getModel().update (id, linkData));
         } else {
           logger.error("unauthorized_update_links ",  {'userId' :entity.userId, 'linkId' :entity.id });
+          ga.trackEvent(userId, 'Link', 'update', linkData["gourl"]+'_unauthorized', '100')                    
           reject("unauthorized_update_links");
         }
       });  
@@ -102,9 +108,10 @@ createLink(orgId, userId, gourl, url, description) {
       this.getModel().read(linkId).then(entity => {
         if(entity.userId == userId) {
           logger.debug("deleting_link", linkId);
+          ga.trackEvent(userId, 'Link', 'delete', linkId, '100')                        
           resolve(this.getModel()._delete(linkId));
         } else {
-          logger.error("unauthorized_delete_links ",  entity.userId);
+          ga.trackEvent(userId, 'Link', 'update', linkId+'_unauthorized', '100')                    
           reject("unauthorized_delete_links");
         }
       }); 
