@@ -111,6 +111,7 @@ createLink(orgId, userId, gourl, url, description) {
           ga.trackEvent(userId, 'Link', 'delete', linkId, '100')                        
           resolve(this.getModel()._delete(linkId));
         } else {
+          logger.error("unauthorized_delete_links ",  entity.userId);
           ga.trackEvent(userId, 'Link', 'update', linkId+'_unauthorized', '100')                    
           reject("unauthorized_delete_links");
         }
