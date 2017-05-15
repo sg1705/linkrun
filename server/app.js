@@ -262,7 +262,7 @@ function getUser(res, orgEntity, response, refresh_token) {
           //user exists
           //update user
           let userEntity = userData.entities[0];
-          logger.info('user exist', { 'userId': userEntity.userId });
+          logger.info('user exist', { 'userId': userEntity.id });
           userService.updateUser(
             userEntity.id,
             userEntity.orgId,
