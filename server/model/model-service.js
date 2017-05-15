@@ -132,7 +132,11 @@ class ModelService {
             ds.save(
                 entity,
                 (err) => {
-                    data.id = entity.key.id;
+                    if (entity.key.id) {
+                        data.id = parseInt(entity.key.id, 10);
+                    } else {
+                        reject('no key');
+                    }
                     if (err) {
                         reject(err);
                     } else {
@@ -157,14 +161,16 @@ class ModelService {
             const key = ds.key([kind, parseInt(id, 10)]);
             ds.get(key, (err, entity) => {
                 if (err) {
-                    reject(err);
+                    return reject(err);
                 }
                 if (!entity) {
-                    resolve({
+                    console.log('in resolve');
+                    return reject({
                         code: 404,
                         message: 'Not found'
                     });
                 }
+                console.log('Entity=',entity);
                 resolve(this.fromDatastore(entity));
             });
         })

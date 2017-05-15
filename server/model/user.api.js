@@ -41,7 +41,10 @@ router.get('/', (req, res, next) => {
     res.json(userData);
   }).catch(err => {
       console.log(err);
-      return;    
+      res.clearCookie("userId");
+      res.clearCookie("orgId");
+      res.json(err);
+      return;
   })
 });
 
