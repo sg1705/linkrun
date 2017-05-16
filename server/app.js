@@ -14,7 +14,6 @@ var LinkService = require('./model/link.js');
 var cookie = require('./cookie.js');
 var auth = require('./auth.js');
 var helper = require('./helper.js');
-// var googAuth = require('./googleauth.js');
 var logger = require('./model/logger.js');
 var SC = require('./model/spell-checker.js');
 const got = require('got');
