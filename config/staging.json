@@ -16,9 +16,9 @@
   },
 
   "oauthCallbacks": {
-    "googleCallbackUrl"  : "http://beta.link.run/__/oauthcallback/google",
-    "googleCallbackUri"  : "/__/oauthcallback/google"
+    "googleCallbackUrl"  : "http://beta.link.run/__/login/google/oauthcallback"
   },
+  
   "ga":{
     "GA_TRACKING_ID" : "UA-98314063-1"
   },  
