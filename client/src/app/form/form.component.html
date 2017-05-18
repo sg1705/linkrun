@@ -11,8 +11,8 @@
       </md-input-container>
     </md-grid-tile>
     <md-grid-tile>
-      <md-input-container>
-        <input #url [formControl]="linkFormGroup.controls['url']"  name="url" mdInput placeholder="URL" required minlength="2">
+      <md-input-container >
+        <input style="font-size: 12px" #url [formControl]="linkFormGroup.controls['url']"  name="url" mdInput placeholder="URL" required minlength="2">
         <md-error>
             {{formErrors.url}}
         </md-error>        
