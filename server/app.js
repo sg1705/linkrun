@@ -132,7 +132,7 @@ app.get("/:gourl", setRouteUrl, auth.isLoggedIn, function (req, res, next) {
               .getLinkByGoLink(correctedRouteGoUrl, orgId)
               .then(linkEntities => {
                 let url = linkEntities.entities[0].url;
-                if (!url.startsWith('https://') || url.startsWith('http://')) {
+                if (!(url.startsWith('https://') || url.startsWith('http://'))) {
                   url = 'http://' + url;
                 }
                 res.redirect(301, url);
@@ -150,7 +150,7 @@ app.get("/:gourl", setRouteUrl, auth.isLoggedIn, function (req, res, next) {
         res.redirect(APP_HOME + '/link/create?link=' + routeGoUrl);
       } else { 
         let url = linkEntities.entities[0].url;
-        if (!url.startsWith('https://') || url.startsWith('http://')) {
+        if (!(url.startsWith('https://') || url.startsWith('http://'))) {
           url = 'http://' + url;
         }        
         ga.trackEvent(userId, orgId, 'Link', 'redirect', linkEntities.entities[0].id, '100')
