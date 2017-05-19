@@ -4,7 +4,7 @@ var config = require('config');
 
 class GA {
 
-    trackEvent(client, category, action, label, value, cb) {
+    trackEvent(userId, orgId, category, action, label, value, cb) {
         let GA_TRACKING_ID = config.get('ga.GA_TRACKING_ID');
         const data = {
             // API Version.
@@ -13,8 +13,16 @@ class GA {
             tid: GA_TRACKING_ID,
             // Anonymous Client Identifier. Ideally, this should be a UUID that
             // is associated with particular user, device, or browser instance.
-            // cid: client,
-            uid: client,
+            cid: userId,
+            // uid: userId,
+            cd1: orgId, // org-id custom dimenstion
+
+            // client-id custom dimension. Custom dimension is easier to use and 
+            // has less restricitons than the built-in cid.
+            cd2: userId, 
+            
+            // user-id custom dimension
+            cd3: userId, 
 
             // Event hit type.
             t: 'event',
@@ -25,7 +33,8 @@ class GA {
             // Event label.
             el: label,
             // Event value.
-            ev: value
+            ev: value,
+            //custom dimension 
         };
 
         return got.post('http://www.google-analytics.com/collect', {

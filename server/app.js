@@ -181,20 +181,20 @@ app.get("/:gourl", setRouteUrl, auth.isLoggedIn, function (req, res, next) {
               .getLinkByGoLink(correctedRouteGoUrl, orgId)
               .then(linkEntities => {
                 res.redirect(301, linkEntities.entities[0].url);
-                ga.trackEvent(userId, 'Link', 'redirect', linkEntities.entities[0].id, '100')
+                ga.trackEvent(userId, orgId, 'Link', 'redirect', linkEntities.entities[0].id, '100')
               });
             } else {
-              ga.trackEvent(userId, 'Link', 'redirect', 'no_url_found', '100')
+              ga.trackEvent(userId, orgId, 'Link', 'redirect', 'no_url_found', '100')
               logger.info("no_url_found, redirecting to links page");
               res.redirect(APP_HOME + '/link/create?link=' + routeGoUrl);
             }
           })
       } else if (!linkEntities.entities[0].url) {
-        ga.trackEvent(userId, 'Link', 'redirect', 'empty_url', '100')
+        ga.trackEvent(userId, orgId, 'Link', 'redirect', 'empty_url', '100')
         logger.info("empty_url, redirecting to links page");
         res.redirect(APP_HOME + '/link/create?link=' + routeGoUrl);
       } else { 
-        ga.trackEvent(userId, 'Link', 'redirect', linkEntities.entities[0].id, '100')
+        ga.trackEvent(userId, orgId, 'Link', 'redirect', linkEntities.entities[0].id, '100')
         res.redirect(301, linkEntities.entities[0].url);
       }
     })
