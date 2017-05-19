@@ -17,7 +17,7 @@
   },
 
   "oauthCallbacks": {
-    "googleCallbackUrl"  : "http://link.run/__/login/google/oauthcallback"
+    "googleCallbackUrl"  : "https://link.run/__/login/google/oauthcallback"
   },
   
   "ga":{
