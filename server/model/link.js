@@ -103,7 +103,7 @@ createLink(orgId, userId, gourl, url, description) {
    * Delete a link.
    * First check whether the link is owned by userId
    */
-  deleteLink(userId, linkId) {
+  deleteLink(userId, orgId, linkId) {
      return new Promise((resolve, reject) => {
       this.getModel().read(linkId).then(entity => {
         if(entity.userId == userId) {
