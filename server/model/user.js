@@ -68,6 +68,63 @@ class User {
     return this.getModel().readByColumn (columnName, columnValue);
   }
 
+  /**
+   * Returns a user entity. If the user doesn't exist then it creates one
+   * 
+   * @param orgId
+   * @param email
+   * @param fName
+   * @param lName
+   * @param picture
+   * @param refresh_token
+   * @return user entity
+   * 
+   */
+  getOrCreateUserByEmail(orgId, email, fName, lName, picture, refresh_token) {
+    return new Promise((resolve, reject) => {
+      this.readByColumn(
+        'email',
+        email)
+        .then((userData) => {
+          if (userData.entities.length > 0) {
+            //user exists
+            //update user
+            let userEntity = userData.entities[0];
+            logger.info('user exist', { 'userId': userEntity.id });
+            this.updateUser(
+              userEntity.id,
+              userEntity.orgId,
+              refresh_token,
+              userEntity.email,
+              userEntity.fName,
+              userEntity.lName,
+              userEntity.picture)
+            .then((entity) => {
+              resolve(entity);
+            }).catch (err => {
+              reject(err);
+            })
+          } else {
+            //user doesn't exist create user
+            logger.info('user doesnt exist');
+            this.createUser(
+              orgId,
+              refresh_token,
+              email,
+              fName,
+              lName,
+              picture)
+            .then((entity) => {
+              resolve(entity);
+            }).catch(err => {
+              reject(err)
+            });
+          }
+        });
+    })
+  }
+
+
 }
 
 module.exports = User;

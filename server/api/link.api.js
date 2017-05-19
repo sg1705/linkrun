@@ -67,7 +67,7 @@ router.post('/delete/:id', (req, res, next) => {
   var userId = cookieService.getXsession(req).userId;
   var orgId = cookieService.getXsession(req).orgId;
   var linkId = req.params['id'];
-  linkService.deleteLink(userId, linkId).then(done => {
+  linkService.deleteLink(userId, orgId, linkId).then(done => {
     res.json({done: true});
   })  
 });

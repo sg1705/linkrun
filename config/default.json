@@ -16,11 +16,14 @@
   },
 
   "oauthCallbacks": {
-    "googleCallbackUrl"  : "http://localhost:8090/__/oauthcallback/google",
-    "googleCallbackUri"  : "/__/oauthcallback/google"
+    "googleCallbackUrl"  : "http://localhost:8090/__/login/google/oauthcallback"
   },
+  
   "ga":{
-    "GA_TRACKING_ID" : "UA-98314063-1"
+    "GA_TRACKING_ID" : "UA-99455967-1"
+  },
+  "static": {
+    "signInPage": "index-test"
   },
   "COOKIE_NAME" : "xsession"
 }
