@@ -20,7 +20,10 @@
   },
   
   "ga":{
-    "GA_TRACKING_ID" : "UA-98314063-1"
+    "GA_TRACKING_ID" : "UA-99455967-1"
+  },
+  "static": {
+    "signInPage": "index-test"
   },
   "COOKIE_NAME" : "xsession"
 }
