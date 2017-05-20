@@ -51,6 +51,7 @@ function authenticateUser(res, authMethod, orgName, email, fName, lName, picture
       })
       .then(userEntity => {
         //set cookie
+        console.log('setting cookie');
         cookie.setCookie(res, userEntity.id, userEntity.orgId);        
       })
       //retrieve user

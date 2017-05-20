@@ -4,11 +4,13 @@
     <p md-line style="color:#ababab">
       <span> {{link.url}} </span>
     </p>
-    <p>
-      <a routerLink="/link/edit/{{link.id}}">Edit</a>
-    </p>
-    <p>
-      <button (click)="deleteLink(link.id)" md-button>Delete</button>
-    </p>
+    <div style="display:flex" *ngIf="link.canEdit">
+      <div style="margin:auto">
+        <a routerLink="/link/edit/{{link.id}}">Edit</a>
+      </div>
+      <div>
+        <button (click)="deleteLink(link.id)" md-button>Delete</button>
+      </div>
+    </div>
   </md-list-item>
 </md-list>

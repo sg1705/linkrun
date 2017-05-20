@@ -93,7 +93,7 @@ export class FormComponent implements OnInit {
         var link = this.linkFormGroup.controls['link'].value;
         var url = this.linkFormGroup.controls['url'].value;
         var description = this.linkFormGroup.controls['description'].value;
-        this.linkService.updateLink(new Link(this.linkId, link, url, description))
+        this.linkService.updateLink(new Link(this.linkId, link, url, description, 0))
         .then(link => {
           console.log('link updated', link);
           resolve(this.router.navigateByUrl('/links'));
@@ -101,7 +101,7 @@ export class FormComponent implements OnInit {
       });
     }
     return new Promise((resolve, reject) => {
-      this.linkService.createLink(new Link(0, l.link, l.url, l.description))
+      this.linkService.createLink(new Link(0, l.link, l.url, l.description,0))
       .then(link => {
         console.log('link created', link);
         resolve(this.router.navigateByUrl('/links'));

@@ -91,6 +91,14 @@ createLink(orgId, userId, gourl, url, description) {
     return this.getModel().filterByColumn('gourl', 'orgId', orgId);
   }
 
+  /**
+   * Returns a list of all the short links for given orgId
+   */
+  getLinksByOrgId(orgId){
+    return this.getModel().readByColumn('orgId', orgId);
+  }
+
+
 
   /**
    * Retrieve a link for a given user
