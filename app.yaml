@@ -1,6 +1,10 @@
 # [START app_yaml]
 runtime: nodejs
 env: flex
+handlers:  
+- url: /.*
+  script: app.js
+  secure: always   
 env_variables:
   NODE_ENV: 'staging'
 # [END app_yaml]
