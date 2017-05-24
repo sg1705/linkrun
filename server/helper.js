@@ -14,7 +14,7 @@ function getRouteUrl() {
 
 function setRouteUrl(req, res, next) {
   session.gourl = req.params.gourl;
-  logger.info('invoking link:' + session.gourl);
+  logger.info('routed', {'link' : session.gourl});
   next();
 }
 

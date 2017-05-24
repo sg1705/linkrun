@@ -164,13 +164,11 @@ class ModelService {
                     return reject(err);
                 }
                 if (!entity) {
-                    console.log('in resolve');
                     return reject({
                         code: 404,
                         message: 'Not found'
                     });
                 }
-                console.log('Entity=',entity);
                 resolve(this.fromDatastore(entity));
             });
         })

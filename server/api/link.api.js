@@ -103,7 +103,6 @@ router.get('/linkName/:name', (req, res, next) => {
   //get link id
   var linkName = req.params['name'];
   linkService.getLinkByGoLink(linkName, orgId).then(entities => {
-    console.log(entities);
     res.json(entities);
   }).catch(err => {
       logger.error(err);

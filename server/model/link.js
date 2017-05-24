@@ -31,7 +31,7 @@ createLink(orgId, userId, gourl, url, description) {
         linkData["gourl"] = gourl.trim().toLowerCase();
         linkData["url"] = url.trim();
         linkData["description"] = description;
-        logger.debug("creating_link", linkData);
+        logger.info("creating_link", linkData);
         ga.trackEvent(userId, orgId, 'Link', 'create', linkData["gourl"], '100')      
         resolve(this.getModel().create(linkData));
       } else {
@@ -57,7 +57,7 @@ createLink(orgId, userId, gourl, url, description) {
           linkData["gourl"] = gourl.trim().toLowerCase();
           linkData["url"] = url.trim();
           linkData["description"] = description;
-          logger.debug("updating_link", linkData);
+          logger.info("updating_link", linkData);
           ga.trackEvent(userId, orgId, 'Link', 'update', linkData["gourl"], '100')              
           resolve(this.getModel().update (id, linkData));
         } else {
@@ -107,7 +107,7 @@ createLink(orgId, userId, gourl, url, description) {
      return new Promise((resolve, reject) => {
       this.getModel().read(linkId).then(entity => {
         if(entity.userId == userId) {
-          logger.debug("deleting_link", linkId);
+          logger.info("deleting_link", {'link' : linkId});
           ga.trackEvent(userId, orgId, 'Link', 'delete', linkId, '100')                        
           resolve(this.getModel()._delete(linkId));
         } else {
