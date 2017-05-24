@@ -5,6 +5,12 @@ var google       = require('googleapis');
 var oauth2       = google.oauth2('v2');
 var OAuth2       = google.auth.OAuth2;
 var logger       = require('./model/logger.js')
+var auth         = require('./auth.js');
+
+const express    = require('express');
+const router     = express.Router();
+
+
 /**
  * Handles OAuth callback
  * 
@@ -50,14 +56,46 @@ function getGoogleAuthUrl() {
     );
     return oauth2Client.generateAuthUrl({
     access_type: 'offline',
-    scope: ['https://www.googleapis.com/auth/userinfo.email']
+    scope: ['https://www.googleapis.com/auth/userinfo.email', 'https://www.googleapis.com/auth/userinfo.profile']
     });
 }
 
 
+/**
+ * /__/login/google
+ */
+router.get('/', function (req, res, next) {
+  res.redirect(getGoogleAuthUrl() + '&approval_prompt=force')
+});
 
+/**
+ * /__/login/google/oauthcallback
+ */
+router.get('/oauthcallback',
+  function (req, res, next) {
+    let userInfo = null;
+    handleOAuth2Callback(req)
+      //retrieve userinfo from google
+      .then((userinfo) => {
+        userInfo = userinfo;
+        if (userInfo.hd == null) {
+          userInfo.hd = userInfo.email;
+        }
+        logger.info('user_login', { 'userInfo': userInfo.hd });
+        return auth.authenticateUser(
+          res,
+          'google', 
+          userInfo.hd,
+          userInfo.email, 
+          userInfo.fName, 
+          userInfo.lName, 
+          userInfo.picture, 
+          userInfo.refresh_token);
+      })
+      .catch(err => {
+        logger.error('routing error', err);
+        //return err
+      });
+  });
 
-module.exports = {
-    handleOAuth2Callback: handleOAuth2Callback,
-    getGoogleAuthUrl: getGoogleAuthUrl
-};
+module.exports = router;

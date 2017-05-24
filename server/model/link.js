@@ -1,8 +1,10 @@
 
 'use strict';
+var GA = require('./google-analytics-tracking.js')
 
 const config     = require('config');
 var logger       = require('./logger.js');
+let ga = new GA();
 
 class Link {
   
@@ -26,13 +28,15 @@ createLink(orgId, userId, gourl, url, description) {
         var linkData = {};
         linkData["orgId"] = orgId;
         linkData["userId"] = userId;
-        linkData["gourl"] = gourl.trim();
+        linkData["gourl"] = gourl.trim().toLowerCase();
         linkData["url"] = url.trim();
         linkData["description"] = description;
         logger.debug("creating_link", linkData);
+        ga.trackEvent(userId, orgId, 'Link', 'create', linkData["gourl"], '100')      
         resolve(this.getModel().create(linkData));
       } else {
           logger.debug("link_already_exists ", entity.gourl);
+          ga.trackEvent(userId, orgId, 'Link', 'create', linkData["gourl"]+'_already_exists', '100')          
           reject("link_already_exists");
       }  
     });
@@ -50,13 +54,15 @@ createLink(orgId, userId, gourl, url, description) {
           var linkData = {};
           linkData["orgId"] = orgId;
           linkData["userId"] = userId;
-          linkData["gourl"] = gourl.trim();
+          linkData["gourl"] = gourl.trim().toLowerCase();
           linkData["url"] = url.trim();
           linkData["description"] = description;
           logger.debug("updating_link", linkData);
+          ga.trackEvent(userId, orgId, 'Link', 'update', linkData["gourl"], '100')              
           resolve(this.getModel().update (id, linkData));
         } else {
           logger.error("unauthorized_update_links ",  {'userId' :entity.userId, 'linkId' :entity.id });
+          ga.trackEvent(userId, orgId, 'Link', 'update', linkData["gourl"]+'_unauthorized', '100')                    
           reject("unauthorized_update_links");
         }
       });  
@@ -75,7 +81,7 @@ createLink(orgId, userId, gourl, url, description) {
    * Retrieve a link by linkName and orgId
    */
   getLinkByGoLink(linkName, orgId) {
-    return this.getModel().readByColumns('gourl', linkName, 'orgId', orgId);
+    return this.getModel().readByColumns('gourl', linkName.toLowerCase(), 'orgId', orgId);
   }
 
   /**
@@ -97,14 +103,16 @@ createLink(orgId, userId, gourl, url, description) {
    * Delete a link.
    * First check whether the link is owned by userId
    */
-  deleteLink(userId, linkId) {
+  deleteLink(userId, orgId, linkId) {
      return new Promise((resolve, reject) => {
       this.getModel().read(linkId).then(entity => {
         if(entity.userId == userId) {
           logger.debug("deleting_link", linkId);
+          ga.trackEvent(userId, orgId, 'Link', 'delete', linkId, '100')                        
           resolve(this.getModel()._delete(linkId));
         } else {
           logger.error("unauthorized_delete_links ",  entity.userId);
+          ga.trackEvent(userId, orgId, 'Link', 'update', linkId+'_unauthorized', '100')                    
           reject("unauthorized_delete_links");
         }
       }); 

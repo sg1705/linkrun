@@ -1,6 +1,6 @@
 {
   "db": {
-    "GCLOUD_PROJECT": "gae-test-157202",
+    "GCLOUD_PROJECT": "beta-linkrun",
     "DATA_BACKEND": "datastore"
   },
 
@@ -10,17 +10,20 @@
 
   "oauthCredentials": {
     "google": {
-        "id": "960987803647-8vlrh7jbk9e43v7huhsnc5h7qi7gv0ra.apps.googleusercontent.com",
-        "secret": "pqFLDPkJ_GAFFHN6_cXzUOeB"
+        "id": "106821081585-q0igdb16nf51g7272vd83s6ao3plnfbh.apps.googleusercontent.com",
+        "secret": "M_Wm9g4EGna0kK7ZQQZpDXar"
     }
   },
 
   "oauthCallbacks": {
-    "googleCallbackUrl"  : "http://localhost:8090/__/oauthcallback/google",
-    "googleCallbackUri"  : "/__/oauthcallback/google"
+    "googleCallbackUrl"  : "http://localhost:8090/__/login/google/oauthcallback"
   },
+  
   "ga":{
-    "GA_TRACKING_ID" : "UA-98314063-1"
+    "GA_TRACKING_ID" : "UA-99455967-1"
+  },
+  "static": {
+    "signInPage": "index-test"
   },
   "COOKIE_NAME" : "xsession"
 }

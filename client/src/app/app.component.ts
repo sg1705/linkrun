@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { LoginComponent } from './login/login.component';
 import { UserService } from './services/user.service';
 
 @Component({
@@ -12,6 +13,10 @@ export class AppComponent {
   constructor(private userService: UserService) {
     this.userService.getCurrentUser().then(user => {
       console.debug('logged in user', user);
+      if (!user.id) {
+        window.location.href = '/_/';
+      }
+      
     })
   }
 

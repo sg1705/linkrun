@@ -1,10 +1,17 @@
-<md-toolbar>
-    <span style="width: 300px">Link.run</span>
 
-    <button #mylinks routerLink="/links" md-button>My Links</button>
-    <button #form routerLink="/link/create" md-button>New Link</button>  
-
+<md-toolbar color="primary" class="toolbar">
+    <div style="display:flex; justify-content:space-between; width:100%; align-items: center">
+        <div>
+            <span style="width: 300px">Link.run</span>
+        </div>
+        <div>
+            <button #mylinks routerLink="/links" md-button>My Links</button>
+            <button #form routerLink="/link/create" md-button>New Link</button>  
+        </div>
+        <app-login></app-login>
+        </div>
 </md-toolbar>
-<div style="width:500px">
+
+<div style="width:800px; margin:auto">
     <router-outlet></router-outlet>
 </div>

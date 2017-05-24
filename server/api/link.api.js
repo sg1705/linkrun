@@ -7,6 +7,7 @@ const config = require('config');
 const LinkService = require(`../model/link.js`);
 const cookieService = require('../cookie.js');
 const Datastore = require('@google-cloud/datastore');
+var   logger       = require('../model/logger.js');
 
 const linkService = new LinkService();
 const router = express.Router();
@@ -66,7 +67,7 @@ router.post('/delete/:id', (req, res, next) => {
   var userId = cookieService.getXsession(req).userId;
   var orgId = cookieService.getXsession(req).orgId;
   var linkId = req.params['id'];
-  linkService.deleteLink(userId, linkId).then(done => {
+  linkService.deleteLink(userId, orgId, linkId).then(done => {
     res.json({done: true});
   })  
 });
@@ -85,6 +86,25 @@ router.get('/link/:id', (req, res, next) => {
   var linkId = req.params['id'];
   linkService.getLink(linkId).then(link => {
     res.json(link);
+  }).catch(err => {
+      logger.error(err);
+      return;    
+  })
+});
+
+
+/**
+ * Retrieves a link for the given link name
+ */
+router.get('/linkName/:name', (req, res, next) => {
+  //get user from cookie
+  var userId = cookieService.getXsession(req).userId;
+  var orgId = cookieService.getXsession(req).orgId;
+  //get link id
+  var linkName = req.params['name'];
+  linkService.getLinkByGoLink(linkName, orgId).then(entities => {
+    console.log(entities);
+    res.json(entities);
   }).catch(err => {
       logger.error(err);
       return;    

@@ -11,9 +11,9 @@ Linkrun is a large Angular2 app running on a nodejs server.
 Two terminal windows need to be open to run the development environment.
 
 ### Set Google Cloud Project
-1. Make sure `gcloud auth` is using your @gluemesh.com account
+1. Make sure `gcloud auth` is using your admin@link.run account
 2. List projects `gcloud config list`
-3. Set Project `gcloud config set project gae-test-157202`
+3. Set Project `gcloud config set project beta-linkrun`
 4. Set application `gcloud auth application-default login`
 5. Confirm using `gcloud config list`
 
@@ -36,7 +36,7 @@ have run the command `gcloud auth application-default login`, your identity can 
 1. Build for product `npm install && cd client && npm install && cd .. && npm run build:staging`
 2. Change the environment variable in app.yaml to `staging`
 3. List projects `gcloud config list`
-4. Set Project `gcloud config set project gae-test-157202`
+4. Set Project `gcloud config set project beta-linkrun`
 4. Set application `gcloud auth application-default login`
 5. Confirm using `gcloud config list`
 6. Run `gcloud app deploy`
@@ -46,7 +46,7 @@ have run the command `gcloud auth application-default login`, your identity can 
 1. Build for product `npm install && cd client && npm install && cd .. && npm run build:prod`
 2. Change the environment variable in app.yaml to `production`
 3. List projects `gcloud config list`
-4. Set Project `gcloud config set project linkrun-production`
+4. Set Project `gcloud config set project prod-linkrun`
 4. Set application `gcloud auth application-default login`
 5. Confirm using `gcloud config list`
 6. Run `gcloud app deploy`
