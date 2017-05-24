@@ -8,7 +8,7 @@ import {MdGridListModule} from '@angular/material';
 import {MdTabsModule} from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MdButton} from '@angular/material';
-
+import { MdIconModule } from '@angular/material';
 
 @NgModule({
   imports: [
@@ -19,6 +19,7 @@ import {MdButton} from '@angular/material';
     MdListModule,
     MdGridListModule,
     MdTabsModule,
+    MdIconModule
   ],
   exports: [
     BrowserAnimationsModule,

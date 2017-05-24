@@ -54,7 +54,6 @@ function authenticateUser(res, authMethod, orgName, email, fName, lName, picture
       //retrieve user
       .then((data) => {
         logger.info('routing to 301' + helper.getRouteUrl());
-        console.log('routing');
         res.redirect(301, helper.getRouteUrl());
         resolve(true)
       })
