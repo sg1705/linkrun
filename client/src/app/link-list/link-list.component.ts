@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {MdButtonModule} from '@angular/material';
+import { MdButtonModule } from '@angular/material';
+import { MdIcon } from '@angular/material';
 
 import { Link } from '../model/link';
 import { LinkService } from '../services/link.service';
@@ -11,7 +12,7 @@ import { User } from '../model/user';
   selector: 'app-link-list',
   templateUrl: './link-list.component.html',
   styleUrls: ['./link-list.component.css'],
-  providers: [LinkService, UserService]
+  providers: [LinkService, UserService],
 })
 export class LinkListComponent implements OnInit {
 

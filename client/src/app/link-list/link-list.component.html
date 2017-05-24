@@ -1,16 +1,15 @@
 <md-list>
   <md-list-item *ngFor="let link of links" style="border-bottom: 1px #dadada solid">
     <h3 md-line  ><a href="/{{link.link}}"> {{link.link}}</a> </h3>
-    <p md-line style="color:#ababab">
+    <!--<p md-line style="color:#ababab">
       <span> {{link.url}} </span>
-    </p>
+    </p>-->
     <div style="display:flex" *ngIf="link['canEdit']">
-      <div style="margin:auto">
-        <a routerLink="/link/edit/{{link.id}}">Edit</a>
+      <div style="color:#ababab">
+        <a routerLink="/link/edit/{{link.id}}" style="color:#ababab"><span class="material-icons">edit</span></a>
       </div>
-      <div>
-        <md-icon svgIcon="thumbs-up"></md-icon>
-        <button (click)="deleteLink(link.id)" md-button>Delete</button>
+      <div style="color:#ababab">
+        <a (click)="deleteLink(link.id)" style="cursor:pointer"><span class="material-icons">delete</span></a>
       </div>
     </div>
   </md-list-item>
