@@ -1,6 +1,6 @@
 {
   "db": {
-    "GCLOUD_PROJECT": "linkrun-production",
+    "GCLOUD_PROJECT": "prod-linkrun",
     "DATA_BACKEND": "datastore"
   },
 
@@ -11,13 +11,13 @@
 
   "oauthCredentials": {
     "google": {
-        "id": "327801700235-sg1u5256frrav0g9revuu153i5qkubkk.apps.googleusercontent.com",
-        "secret": "l-DZX6QSp-ck5PnchBlSROgh"
+        "id": "635298643416-jolk8frb406gktsuabbuob9lettk5lg9.apps.googleusercontent.com",
+        "secret": "tt1G5eD549phXXboBF_bSxp-"
     }
   },
 
   "oauthCallbacks": {
-    "googleCallbackUrl"  : "http://link.run/__/login/google/oauthcallback"
+    "googleCallbackUrl"  : "https://link.run/__/login/google/oauthcallback"
   },
   
   "ga":{

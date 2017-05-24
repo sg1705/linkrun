@@ -131,7 +131,11 @@ app.get("/:gourl", setRouteUrl, auth.isLoggedIn, function (req, res, next) {
               linkService
               .getLinkByGoLink(correctedRouteGoUrl, orgId)
               .then(linkEntities => {
-                res.redirect(301, linkEntities.entities[0].url);
+                let url = linkEntities.entities[0].url;
+                if (!(url.startsWith('https://') || url.startsWith('http://'))) {
+                  url = 'http://' + url;
+                }
+                res.redirect(301, url);
                 ga.trackEvent(userId, orgId, 'Link', 'redirect', linkEntities.entities[0].id, '100')
               });
             } else {
@@ -145,8 +149,12 @@ app.get("/:gourl", setRouteUrl, auth.isLoggedIn, function (req, res, next) {
         logger.info("empty_url, redirecting to links page");
         res.redirect(APP_HOME + '/link/create?link=' + routeGoUrl);
       } else { 
+        let url = linkEntities.entities[0].url;
+        if (!(url.startsWith('https://') || url.startsWith('http://'))) {
+          url = 'http://' + url;
+        }        
         ga.trackEvent(userId, orgId, 'Link', 'redirect', linkEntities.entities[0].id, '100')
-        res.redirect(301, linkEntities.entities[0].url);
+        res.redirect(301, url);
       }
     })
     .catch(err => {

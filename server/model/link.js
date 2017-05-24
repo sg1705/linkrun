@@ -28,7 +28,7 @@ createLink(orgId, userId, gourl, url, description) {
         var linkData = {};
         linkData["orgId"] = orgId;
         linkData["userId"] = userId;
-        linkData["gourl"] = gourl.trim();
+        linkData["gourl"] = gourl.trim().toLowerCase();
         linkData["url"] = url.trim();
         linkData["description"] = description;
         logger.debug("creating_link", linkData);
@@ -54,7 +54,7 @@ createLink(orgId, userId, gourl, url, description) {
           var linkData = {};
           linkData["orgId"] = orgId;
           linkData["userId"] = userId;
-          linkData["gourl"] = gourl.trim();
+          linkData["gourl"] = gourl.trim().toLowerCase();
           linkData["url"] = url.trim();
           linkData["description"] = description;
           logger.debug("updating_link", linkData);
@@ -81,7 +81,7 @@ createLink(orgId, userId, gourl, url, description) {
    * Retrieve a link by linkName and orgId
    */
   getLinkByGoLink(linkName, orgId) {
-    return this.getModel().readByColumns('gourl', linkName, 'orgId', orgId);
+    return this.getModel().readByColumns('gourl', linkName.toLowerCase(), 'orgId', orgId);
   }
 
   /**
