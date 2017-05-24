@@ -4,11 +4,12 @@
     <p md-line style="color:#ababab">
       <span> {{link.url}} </span>
     </p>
-    <div style="display:flex" *ngIf="link.canEdit">
+    <div style="display:flex" *ngIf="link['canEdit']">
       <div style="margin:auto">
         <a routerLink="/link/edit/{{link.id}}">Edit</a>
       </div>
       <div>
+        <md-icon svgIcon="thumbs-up"></md-icon>
         <button (click)="deleteLink(link.id)" md-button>Delete</button>
       </div>
     </div>
