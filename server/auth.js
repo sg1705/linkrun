@@ -18,12 +18,10 @@ function isLoggedIn(req, res, next) {
 function isUserIdSetInCookie(req) {
   var xsession = cookie.getXsession(req);
   if (xsession == null) {
-    logger.info('xsession is null');
     return false;
   }
   var userId = xsession.userId;  
   if (userId != null) {
-    logger.debug('userId_from_cookie', {'userId': userId})
     return true;
   }
   logger.info('UserId is not set in Session');

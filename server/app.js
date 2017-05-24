@@ -116,15 +116,14 @@ app.get("/:gourl", setRouteUrl, auth.isLoggedIn, function (req, res, next) {
       
       if (linkEntities.entities.length == 0) {
         // gourl not found. attempt to find a close one.
-        logger.info("no_url_found, attempt to auto-correct");
+        logger.info("no_url_found", "attempt to auto-correct");
         var sc = SC.spellChecker();
         linkService.getGourls(orgId)
           .then(shortNames => {
             let gourls = shortNames;
             sc.setDict(gourls);
-            logger.info('gourls', gourls)
             let correctedRouteGoUrl = sc.correct(routeGoUrl);
-            logger.info('corrected to ', correctedRouteGoUrl)
+            logger.info('corrected_route_to', {'link' :correctedRouteGoUrl})
             return correctedRouteGoUrl;
           }).then((correctedRouteGoUrl) => {
             if (correctedRouteGoUrl) {
@@ -140,13 +139,13 @@ app.get("/:gourl", setRouteUrl, auth.isLoggedIn, function (req, res, next) {
               });
             } else {
               ga.trackEvent(userId, orgId, 'Link', 'redirect', 'no_url_found', '100')
-              logger.info("no_url_found, redirecting to links page");
+              logger.info("no_route_found", {'link' : correctedRouteGoUrl});
               res.redirect(APP_HOME + '/link/create?link=' + routeGoUrl);
             }
           })
       } else if (!linkEntities.entities[0].url) {
         ga.trackEvent(userId, orgId, 'Link', 'redirect', 'empty_url', '100')
-        logger.info("empty_url, redirecting to links page");
+        logger.info("empty_url", "redirecting to links page");
         res.redirect(APP_HOME + '/link/create?link=' + routeGoUrl);
       } else { 
         let url = linkEntities.entities[0].url;
@@ -195,7 +194,7 @@ function getRouteUrl() {
 
 function setRouteUrl(req, res, next) {
   session.gourl = req.params.gourl;
-  logger.info('invoking link:' + session.gourl);
+  logger.info('routing_link:', {'link' :session.gourl});
   next();
 }
 

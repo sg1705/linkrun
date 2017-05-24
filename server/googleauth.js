@@ -81,7 +81,7 @@ router.get('/oauthcallback',
         if (userInfo.hd == null) {
           userInfo.hd = userInfo.email;
         }
-        logger.info('user_login', { 'userInfo': userInfo.hd });
+        logger.info('user_login', { 'org': userInfo.hd });
         return auth.authenticateUser(
           res,
           'google', 
