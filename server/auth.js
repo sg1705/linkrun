@@ -51,13 +51,11 @@ function authenticateUser(res, authMethod, orgName, email, fName, lName, picture
       })
       .then(userEntity => {
         //set cookie
-        console.log('setting cookie');
         cookie.setCookie(res, userEntity.id, userEntity.orgId);        
       })
       //retrieve user
       .then((data) => {
         logger.info('routing to 301' + helper.getRouteUrl());
-        console.log('routing');
         res.redirect(301, helper.getRouteUrl());
         resolve(true)
       })
