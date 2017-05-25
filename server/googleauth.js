@@ -78,6 +78,7 @@ router.get('/oauthcallback',
       //retrieve userinfo from google
       .then((userinfo) => {
         userInfo = userinfo;
+        console.log('userinfo from google', userInfo);
         if (userInfo.hd == null) {
           userInfo.hd = userInfo.email;
         }
@@ -88,8 +89,8 @@ router.get('/oauthcallback',
           'google', 
           userInfo.hd,
           userInfo.email, 
-          userInfo.fName, 
-          userInfo.lName, 
+          userInfo.given_name, 
+          userInfo.family_name, 
           userInfo.picture, 
           userInfo.refresh_token);
       })
