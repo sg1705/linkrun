@@ -90,7 +90,6 @@ app.use('/__/api', auth.isLoggedIn, require('./routes/api-route.js'));
 
 
 app.get("/:gourl", helper.setRouteUrl, auth.isLoggedIn, function (req, res, next) {
-  // console.log('from params',req.params['gourl']);
   let routeGoUrl = req.params.gourl;
   if (routeGoUrl == null) {
     //error condition
