@@ -11,6 +11,7 @@ var https = require('https');
  */
 function isLoggedIn(req, res, next) {
   if (isUserIdSetInCookie(req)) {
+    helper.clearRouteUrl(res);
     return next();
   }
   if (process.env.NODE_ENV == 'production') {
@@ -33,7 +34,7 @@ function isUserIdSetInCookie(req) {
   return false;
 }
 
-function authenticateUser(res, authMethod, orgName, email, fName, lName, picture, refresh_token) {
+function authenticateUser(res,req, authMethod, orgName, email, fName, lName, picture, refresh_token) {
   return new Promise((resolve, reject) => {
     let orgService = new OrgService();
     let userService = new UserService();
@@ -58,8 +59,10 @@ function authenticateUser(res, authMethod, orgName, email, fName, lName, picture
       })
       //retrieve user
       .then((data) => {
-        logger.info('routing to 301' + helper.getRouteUrl());
-        res.redirect(301, helper.getRouteUrl());
+        let routeUrl = helper.getRouteUrl(req);
+        logger.info('routing to 301' + routeUrl);
+        helper.clearRouteUrl(res);
+        res.redirect(301, routeUrl);
         resolve(true)
       })
       //error

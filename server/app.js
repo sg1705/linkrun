@@ -5,7 +5,6 @@ var config = require('config');
 var path = require('path');
 var express = require('express');
 var bodyParser = require('body-parser');
-var session = require('express-session');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var UserService = require('./model/user.js');
@@ -24,11 +23,6 @@ var GA = require('./model/google-analytics-tracking.js')
 var app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(session({
-  resave: true,
-  saveUninitialized: true,
-  secret: 'my_precious'
-}));
 app.use(cookieParser('my-precious'));
 const COOKIE_NAME = 'xsession';
 /**
@@ -84,7 +78,6 @@ app.use('/opensearch.xml', function (req, res, next) {
  * Go to the url requested
  */
 app.get("/", auth.isLoggedIn, function (req, res, next) {
-  session.gourl = '/';
   res.redirect(APP_HOME);
 });
 
@@ -96,21 +89,19 @@ app.use('/__/api', auth.isLoggedIn, require('./routes/api-route.js'));
 
 
 
-app.get("/:gourl", setRouteUrl, auth.isLoggedIn, function (req, res, next) {
-  let routeGoUrl = session.gourl;
+app.get("/:gourl", helper.setRouteUrl, auth.isLoggedIn, function (req, res, next) {
+  let routeGoUrl = req.params.gourl;
   if (routeGoUrl == null) {
     //error condition
     logger.error('link is null');
     next();
   }
-
-
   // retrieve actual url
   let linkService = new LinkService();
   let ga = new GA();
   let orgId = cookie.getOrgIdFromCookie(req)
   let userId = cookie.getUserIdFromCookie(req)
-
+  
   linkService.getLinkByGoLink(routeGoUrl, orgId)
     .then(linkEntities => { 
       
@@ -180,22 +171,6 @@ if (module === require.main) {
     var port = server.address().port;
     logger.debug('app_running_on_port ' + port);
   });
-}
-
-function getRouteUrl() {
-  var routeUrl = '/';
-  if ((session.gourl == null) || (session.gourl == '/')) {
-    routeUrl = '/';
-  } else {
-    routeUrl = '/' + session.gourl;
-  }
-  return routeUrl;
-}
-
-function setRouteUrl(req, res, next) {
-  session.gourl = req.params.gourl;
-  logger.info('routing_link:', {'link' :session.gourl});
-  next();
 }
 
 module.exports = app;
