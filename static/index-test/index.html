@@ -40,7 +40,134 @@
         </script>        
 
 
-        <link rel="import" href="../index-body.html">
 
     </head>
+
+    <!-- ========== BODY ==========
+    .light-header: for light colored header
+    .dark-header: for dark colored header
+    ==========  ========== -->
+    <body class="light-header animsition">
+
+        <!-- ========== NAVIGATION ========== -->
+    	<nav class="navbar yamm navbar-fixed-top" role="navigation">
+    		<div class="container-fluid">
+    			<div class="navbar-header">
+    				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+    					<span class="sr-only">Toggle navigation</span>
+    					<span class="icon-bar"></span>
+    					<span class="icon-bar"></span>
+    					<span class="icon-bar"></span>
+    				</button> <!-- end navbar-toggle -->
+    				<a class="navbar-brand" href="index.html">
+    					<!--<img src="images/light-logo.svg" alt="SoftEase Logo" class="light-logo">-->
+    					<!--<img src="images/dark-logo.svg" alt="SoftEase Logo" class="dark-logo">-->
+                        <img src="images/link.run White Logo.png" alt="linkrun Logo" class="light-logo">
+                        <img src="images/link.run Blue Logo.png" alt="linkrun Logo" class="dark-logo">
+    				</a> <!-- end navbar-brand -->
+    			</div> <!-- end navbar-header -->
+
+    			<div id="navbar" class="navbar-collapse collapse">
+    				<ul class="nav navbar-nav pull-right">
+    					<li class="nav-btn-wrap">
+                            <span class="nav-btn">
+                                <a style="background:#eaeaea; display: flex;justify-content: space-between;" class="btn se-btn-black btn-rounded" onclick="window.location.href='/__/login/google'">
+                            
+    <div style="margin:auto; width:40px; display:flex; margin-left:-10px">
+        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="18px" height="18px" viewBox="0 0 48 48" class="abcRioButtonSvg"><g><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path><path fill="none" d="M0 0h48v48H0z"></path></g></svg>
+    </div>
+    <div style="margin:auto; text-transform: none">
+        <span style="font-size: 16px; color: #777777;">Login with Google</span>
+    </div>
+        </a></span>
+                        </li>
+    				</ul> <!-- end navbar-nav -->
+
+    			</div> <!--end nav-collapse -->
+    		</div> <!-- end container -->
+    	</nav>
+
+        <!-- ========== HEADER ========== -->
+        <header class="header main-header parallax-bg" data-parallax="scroll" data-image-src="images/bg-img-3.jpg" data-speed="0.4" >
+            <div class="primary-trans-bg">
+                <div class="container">
+                    <!-- For centering the content vertically -->
+                    <div class="outer">
+                        <div class="inner text-center">
+                            <h1 class="white-color">link.run/[mylink]</h1>
+                            <h5 class="">Content at your fingertips</h5>
+                            <!--<a href="#" class="btn se-btn-white btn-rounded">Use it for free</a>-->
+                        </div> <!-- end inner -->
+                    </div> <!-- end outer -->
+                </div> <!-- end container -->
+            </div> <!-- end primary-trans-bg -->
+        </header>
+
+        <!-- ========== OFFER SECTION ========== -->
+        <section class="se-section offer-section gray-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <p><!--<span class="badge">FREE</span>--> Better way to access your content on cloud with links that make sense. No longer searching for links buried in messages, websites etc. <!-- <a href="#" class="learn-more">Learn More</a>--></p>
+                    </div>
+                </div> <!-- end row -->
+            </div> <!-- end container -->
+        </section>
+
+        <!-- ========== STEPS ========== -->
+        <section class="se-section se-steps">
+            <div class="container">
+                <div class="row text-center" >
+                    <h3 class="underline mtn">It's as ease as 1 - 2 - 3!</h3>
+                </div> <!-- end row -->
+
+                <div class="row" style="flex-direction: row;
+                                        display: flex;
+                                        justify-content: space-around;">
+                    <div class="col-md-4 col-sm-4 one-step text-center">
+                        <h4>Authenticate</h4>
+                        <p>Use company G-Suite account to authenticate</p>
+                    </div>
+
+                    <div class="col-md-4 col-sm-4 one-step text-center">
+                        <h4>Create Links</h4>
+                        <p>Use simple form to create rememberable links to long URLs</p>
+                    </div>
+
+                    <div class="col-md-4 col-sm-4 one-step text-center">
+                        <h4>Use Links</h4>
+                        <p>Access and share Link.run links within your company</p>
+                    </div>
+                </div> <!-- end row -->
+            </div> <!-- end container -->
+        </section>
+
+
+        <!-- ========== CTA SECTION ========== -->
+        <section class="se-section primary-bg">
+            <div class="container" style="display:flex; justify-content:center">
+                <div class="row text-center" style="width:250px">
+                    <a style="background:#eaeaea; display: flex;justify-content: space-between;" class="btn se-btn-black btn-rounded" onclick="window.location.href='/__/login/google'">
+                            
+    <div style="margin:auto; width:40px; display:flex; margin-left:-10px">
+        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="18px" height="18px" viewBox="0 0 48 48" class="abcRioButtonSvg"><g><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path><path fill="none" d="M0 0h48v48H0z"></path></g></svg>
+    </div>
+    <div style="margin:auto; text-transform: none">
+        <span style="font-size: 16px; color: #777777;">Login with Google</span>
+    </div>
+        </a>
+                </div> <!-- end row -->
+            </div> <!-- end container -->
+        </section>
+
+    	<script src="scripts/vendor.js"></script>
+
+        <!-- ========== MINIFIED PLUGINS JS ========== -->
+    	<script src="scripts/plugins.js"></script>
+
+    	<script src="scripts/main.js"></script>
+
+        <script src="https://apis.google.com/js/platform.js" async defer></script>
+    </body>
+
 </html>

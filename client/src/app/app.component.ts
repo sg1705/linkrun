@@ -1,10 +1,10 @@
+/// <reference path="../../node_modules/@types/google.analytics/index.d.ts" />
+
 import { Component } from '@angular/core';
 import { LoginComponent } from './login/login.component';
 import { UserService } from './services/user.service';
 import { Router, NavigationEnd } from "@angular/router";
 import {GoogleAnalyticsEventsService} from "./services/google-analytics-events.service";
-// Declare ga function as ambient
-declare let ga: Function;
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -22,13 +22,13 @@ export class AppComponent {
 
     })
     
-    // ga('create', 'UA-99455967-1', 'auto');
-    // this.router.events.subscribe(event => {
-    //   if (event instanceof NavigationEnd) {
-    //     ga('set', 'page', event.urlAfterRedirects);
-    //     ga('send', 'pageview');
-    //   }
-    // });
+    ga('create', 'UA-99455967-1', 'auto');
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        ga('set', 'page', event.urlAfterRedirects);
+        ga('send', 'pageview');
+      }
+    });
 
   }
 

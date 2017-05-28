@@ -1,6 +1,6 @@
+/// <reference path="../../../node_modules/@types/google.analytics/index.d.ts" />
+
 import { Injectable } from '@angular/core';
-// Declare ga function as ambient
-declare let ga: Function;
 @Injectable()
 export class GoogleAnalyticsEventsService {
 

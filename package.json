@@ -29,9 +29,9 @@
     "prompt": "^1.0.0",
     "zone.js": "^0.7.2",
     "got": "6.7.1"
-    
   },
   "devDependencies": {
+    "@types/google.analytics": "0.0.33",
     "@types/jasmine": "2.5.38",
     "@types/node": "^6.0.42",
     "jasmine-core": "2.5.2",
