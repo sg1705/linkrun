@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 
-import {MdInputModule, MdError} from '@angular/material';
+import {MdInputModule} from '@angular/material';
 import {MdToolbarModule} from '@angular/material';
 import {MdButtonModule} from '@angular/material';
 import {MdListModule} from '@angular/material';
