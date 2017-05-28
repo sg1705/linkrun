@@ -5,6 +5,7 @@ var logger = require('./model/logger.js');
 var UserService = require('./model/user.js');
 var OrgService = require('./model/org.js');
 var helper = require('./helper.js');
+var https = require('https');
 /**
  * Check if user is logged in
  */
@@ -12,7 +13,11 @@ function isLoggedIn(req, res, next) {
   if (isUserIdSetInCookie(req)) {
     return next();
   }
-  res.redirect('/_/');
+  if (process.env.NODE_ENV == 'production') {
+    res.redirect('https://link.run'+ '/_/');
+  } else {
+    res.redirect('/_/');
+  }
 }
 
 function isUserIdSetInCookie(req) {
