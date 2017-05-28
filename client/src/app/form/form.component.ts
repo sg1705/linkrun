@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder,FormGroup, Validators, AbstractControl } from '@angular/forms';
-import {MdInputModule, MdError} from '@angular/material';
+import {MdInputModule} from '@angular/material';
 import {MdToolbarModule} from '@angular/material';
 import {MdButtonModule} from '@angular/material';
 import {MdListModule} from '@angular/material';
