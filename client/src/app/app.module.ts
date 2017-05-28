@@ -2,14 +2,15 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-import { RouterModule }   from '@angular/router';
+import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { FormComponent } from './form/form.component';
-import { MaterialModule} from './material/material.module';
+import { MaterialModule } from './material/material.module';
 import { LinkListComponent } from './link-list/link-list.component';
 import { LinkNameValidator } from './form/link.validator';
+import { GoogleAnalyticsEventsService } from "./services/google-analytics-events.service";
 
 @NgModule({
   declarations: [
@@ -24,15 +25,17 @@ import { LinkNameValidator } from './form/link.validator';
     ReactiveFormsModule,
     HttpModule,
     MaterialModule,
-    RouterModule.forRoot([  
+    RouterModule.forRoot([
       { path: 'login', component: LoginComponent },
-      { path: 'link/create',component: FormComponent },
-      { path: 'link/edit/:id',component: FormComponent },
+      { path: 'link/create', component: FormComponent },
+      { path: 'link/edit/:id', component: FormComponent },
       { path: 'links', component: LinkListComponent },
-      { path: '',  redirectTo: '/links', pathMatch: 'full'}
-    ])    
+      { path: '', redirectTo: '/links', pathMatch: 'full' }
+    ])
   ],
-  providers: [],
+  providers: [
+    GoogleAnalyticsEventsService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
