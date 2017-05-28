@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder,FormGroup, Validators, AbstractControl } from '@angular/forms';
-import {MdInputModule, MdError} from '@angular/material';
+import {MdInputModule} from '@angular/material';
 import {MdToolbarModule} from '@angular/material';
 import {MdButtonModule} from '@angular/material';
 import {MdListModule} from '@angular/material';
@@ -24,6 +24,7 @@ export class FormComponent implements OnInit {
   linkFormGroup: FormGroup;
   linkId: number = 0;
   mode:string = 'create';
+  formTitle:string = 'Create New Link';
 
   @ViewChild('link') inputLink: ElementRef;
   @ViewChild('url') inputUrl: ElementRef;
@@ -49,6 +50,7 @@ export class FormComponent implements OnInit {
     if (this.router.url.indexOf('/link/edit') > -1) {
       //set edit mode
       this.mode = 'edit';
+      this.formTitle = 'Edit Link';
       // get the link
       this.linkService.getLink(this.linkId)
       .then(link => {

@@ -95,10 +95,10 @@ class User {
               userEntity.id,
               userEntity.orgId,
               refresh_token,
-              userEntity.email,
-              userEntity.fName,
-              userEntity.lName,
-              userEntity.picture)
+              email,
+              fName,
+              lName,
+              picture)
             .then((entity) => {
               resolve(entity);
             }).catch (err => {
