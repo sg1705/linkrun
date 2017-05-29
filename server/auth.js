@@ -5,7 +5,6 @@ var logger = require('./model/logger.js');
 var UserService = require('./model/user.js');
 var OrgService = require('./model/org.js');
 var helper = require('./helper.js');
-var https = require('https');
 /**
  * Check if user is logged in
  */
