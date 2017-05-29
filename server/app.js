@@ -50,18 +50,9 @@ if (process.env.GCLOUD_PROJECT) {
   require('@google/cloud-debug').start();
 }
 
-/**
- * No cache
- */
-app.get('/*', nocache);
+// apply no cache headers
+app.get('/*', helper.noCache);
 
-//caching strategy is to not cache
-function nocache(req, res, next) {
-  res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
-  res.header('Expires', '-1');
-  res.header('Pragma', 'no-cache');
-  next();
-}
 
 /**
  * Static Home pageExpress Routes
@@ -82,11 +73,9 @@ app.get("/", auth.isLoggedIn, function (req, res, next) {
 });
 
 
-
 app.use('/__/login/google', require('./googleauth.js'));
 app.use('/__', auth.isLoggedIn, require('./routes/app-route.js'));
 app.use('/__/api', auth.isLoggedIn, require('./routes/api-route.js'));
-
 
 
 app.get("/:gourl", helper.setRouteUrl, auth.isLoggedIn, function (req, res, next) {
