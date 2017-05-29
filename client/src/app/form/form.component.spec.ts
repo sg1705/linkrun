@@ -12,6 +12,7 @@ import { FormComponent } from './form.component';
 import { LinkListComponent } from '../link-list/link-list.component';
 import { Link } from '../model/link';
 import { LinkService } from '../services/link.service';
+import { UserService } from '../services/user.service';
 import { LinkServiceSpy } from '../services/link.service.spec';
 
 describe('FormComponent', () => {
@@ -43,6 +44,7 @@ describe('FormComponent', () => {
       set: {
       providers: [
         LinkService,
+        UserService,
         MockBackend,
         { provide: Router, useClass: RouterStub },
         { provide: Location, useClass: SpyLocation },
