@@ -7,6 +7,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var path = require('path');
 var cookieParser = require('cookie-parser');
+var helmet = require('helmet')
 var UserService = require('./model/user.js');
 var OrgService = require('./model/org.js');
 var LinkService = require('./model/link.js');
@@ -24,6 +25,22 @@ var app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser('my-precious'));
+
+app.use(helmet());
+if (process.env.NODE_ENV == 'production') {
+  app.use(helmet.hsts({
+    maxAge: 5184000,
+    includeSubDomains: false,
+    setIf: function (req, res) {
+        if (req.secure) {
+          return true
+        } else {
+          return false
+        }
+      }    
+    }))
+}
+
 const COOKIE_NAME = 'xsession';
 /**
  * Setup Google Cloud monitoring
