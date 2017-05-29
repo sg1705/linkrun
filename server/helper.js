@@ -9,7 +9,7 @@ var logger = require('./model/logger.js');
  */
 //caching strategy is to not cache
 function noCache(req, res, next) {
-  if ((req.url.endsWith('bundle.js') || req.url.endsWith('css.js')) && (process.env.NODE_ENV)) {
+  if ((req.url.endsWith('bundle.js') || req.url.endsWith('bundle.css')) && (process.env.NODE_ENV)) {
     console.log('request url is:', req.url);
     res.header('Cache-Control','public, max-age=31536000');
   } else {
