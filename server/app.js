@@ -50,6 +50,19 @@ if (process.env.GCLOUD_PROJECT) {
   require('@google/cloud-debug').start();
 }
 
+//route to https if production
+app.use(function(req, res, next){
+  if (process.env.NODE_ENV === 'production') {
+    if (!req.secure) {
+      res.redirect('https://link.run' + req.url);
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
+})
+
 // apply no cache headers
 app.get('/*', helper.noCache);
 

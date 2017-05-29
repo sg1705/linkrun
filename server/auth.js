@@ -14,11 +14,7 @@ function isLoggedIn(req, res, next) {
     helper.clearRouteUrl(res);
     return next();
   }
-  if (process.env.NODE_ENV == 'production') {
-    res.redirect('https://link.run'+ '/_/');
-  } else {
-    res.redirect('/_/');
-  }
+  res.redirect('/_/');
 }
 
 function isUserIdSetInCookie(req) {
