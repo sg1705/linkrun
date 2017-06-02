@@ -11,7 +11,7 @@
     <md-grid-tile>
       <md-input-container>
         <input #link   [formControl]="linkFormGroup.controls['link']" name="link" mdInput  linkNameValidator
-          required minlength="2" placeholder="Link">
+          required minlength="2" placeholder="Friendly name">
           <md-error>
             {{formErrors.link}}
             </md-error>
