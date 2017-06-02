@@ -18,6 +18,7 @@ export class LinkService {
           var links = new Array<Link>();
           for (var entity of data) {
             var link = new Link(entity['id'], entity['gourl'], entity['url'], entity['description']);
+            link.setUserId(entity['userId']);
             links.push(link);
           }
           return links;
@@ -34,7 +35,8 @@ export class LinkService {
       'description': link.description
     }).toPromise().then(res => {
       let resBody = res.json();
-      let linkObj = new Link(resBody['id'], resBody['gourl'], resBody['url'], resBody['description'])
+      let linkObj = new Link(resBody['id'], resBody['gourl'], resBody['url'], resBody['description']);
+      linkObj.setUserId(resBody['userId']);
       return linkObj;
     })
   }
@@ -47,7 +49,8 @@ export class LinkService {
       'description': link.description
     }).toPromise().then(res => {
       let resBody = res.json();
-      let linkObj = new Link(resBody['id'], resBody['gourl'], resBody['url'], resBody['description'])
+      let linkObj = new Link(resBody['id'], resBody['gourl'], resBody['url'], resBody['description'] );
+      linkObj.setUserId(resBody['userId']);
       return linkObj;
     })
   }
@@ -66,6 +69,7 @@ export class LinkService {
         .toPromise().then(res => {
           var entity = res.json();
           var link = new Link(entity['id'], entity['gourl'], entity['url'], entity['description']);
+          link.setUserId(entity['userId']);
           return link;
         })
   }
