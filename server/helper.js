@@ -2,6 +2,28 @@
 
 var logger = require('./model/logger.js');
 
+
+
+/**
+ * Caching function
+ */
+//caching strategy is to not cache
+function noCache(req, res, next) {
+  if ((req.url.endsWith('bundle.js') || req.url.endsWith('bundle.css')) && (process.env.NODE_ENV)) {
+    console.log('request url is:', req.url);
+    res.header('Cache-Control','public, max-age=31536000');
+  } else {
+    res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+    res.header('Expires', '-1');
+    res.header('Pragma', 'no-cache');
+  }
+  next();
+}
+
+
+/**
+ * Route functions
+ */
 function getRouteUrl(req) {
   var routeUrl = '/';
   if ((routeUrlFromCookie(req) == null) || (routeUrlFromCookie(req) == '/')) {
@@ -35,5 +57,7 @@ function clearRouteUrl(res) {
 module.exports = {
     setRouteUrl: setRouteUrl,
     getRouteUrl: getRouteUrl,
-    clearRouteUrl: clearRouteUrl
+    clearRouteUrl: clearRouteUrl,
+
+    noCache: noCache
 };

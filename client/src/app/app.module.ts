@@ -10,6 +10,7 @@ import { FormComponent } from './form/form.component';
 import { MaterialModule } from './material/material.module';
 import { LinkListComponent } from './link-list/link-list.component';
 import { LinkNameValidator } from './form/link.validator';
+import { UserService } from './services/user.service';
 import { GoogleAnalyticsEventsService } from "./services/google-analytics-events.service";
 
 @NgModule({
@@ -33,6 +34,7 @@ import { GoogleAnalyticsEventsService } from "./services/google-analytics-events
       { path: '', redirectTo: '/links', pathMatch: 'full' }
     ])
   ],
+  providers: [UserService],
   providers: [
     GoogleAnalyticsEventsService
   ],

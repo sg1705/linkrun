@@ -12,7 +12,7 @@ import { User } from '../model/user';
   selector: 'app-link-list',
   templateUrl: './link-list.component.html',
   styleUrls: ['./link-list.component.css'],
-  providers: [LinkService, UserService],
+  providers: [LinkService],
 })
 export class LinkListComponent implements OnInit {
 
