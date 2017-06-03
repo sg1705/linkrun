@@ -19,10 +19,10 @@ export class AppComponent {
       if (!user.id) {
         window.location.href = '/_/';
       }
-      ga('set', 'userId', user.id); // Set the user ID using signed-in user_id.
       ga('create', 'UA-99455967-1', 'auto');
       this.router.events.subscribe(event => {
         if (event instanceof NavigationEnd) {
+          ga('set', 'userId', user.id); // Set the user ID using signed-in user_id.          
           ga('set', 'page', event.urlAfterRedirects);
           ga('send', 'pageview');
         }
