@@ -14,7 +14,7 @@ class GA {
             // Anonymous Client Identifier. Ideally, this should be a UUID that
             // is associated with particular user, device, or browser instance.
             cid: userId,
-            // uid: userId,
+            uid: userId,
             cd1: orgId, // org-id custom dimenstion
 
             // client-id custom dimension. Custom dimension is easier to use and 

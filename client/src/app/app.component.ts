@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
 import { LoginComponent } from './login/login.component';
 import { UserService } from './services/user.service';
 import { Router, NavigationEnd } from "@angular/router";
-import {GoogleAnalyticsEventsService} from "./services/google-analytics-events.service";
+import { GoogleAnalyticsEventsService } from "./services/google-analytics-events.service";
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -19,16 +19,16 @@ export class AppComponent {
       if (!user.id) {
         window.location.href = '/_/';
       }
-
+      ga('set', 'userId', user.id); // Set the user ID using signed-in user_id.
+      ga('create', 'UA-99455967-1', 'auto');
+      this.router.events.subscribe(event => {
+        if (event instanceof NavigationEnd) {
+          ga('set', 'page', event.urlAfterRedirects);
+          ga('send', 'pageview');
+        }
+      });
     })
-    
-    ga('create', 'UA-99455967-1', 'auto');
-    this.router.events.subscribe(event => {
-      if (event instanceof NavigationEnd) {
-        ga('set', 'page', event.urlAfterRedirects);
-        ga('send', 'pageview');
-      }
-    });
+
 
   }
 
