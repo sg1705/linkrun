@@ -29,8 +29,8 @@ import { UserService } from './services/user.service';
       { path: 'login', component: LoginComponent },
       { path: 'link/create',component: FormComponent },
       { path: 'link/edit/:id',component: FormComponent },
-      { path: 'links', component: LinkListComponent },
-      { path: '',  redirectTo: '/links', pathMatch: 'full'}
+      // { path: 'links', component: LinkListComponent },
+      { path: '',  redirectTo: '/link/create', pathMatch: 'full'}
     ])    
   ],
   providers: [UserService],
