@@ -34,8 +34,8 @@ import { GoogleAnalyticsEventsService } from "./services/google-analytics-events
       { path: '', redirectTo: '/links', pathMatch: 'full' }
     ])
   ],
-  providers: [UserService],
   providers: [
+    UserService,
     GoogleAnalyticsEventsService
   ],
   bootstrap: [AppComponent]
