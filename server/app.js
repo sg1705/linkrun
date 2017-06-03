@@ -7,6 +7,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var path = require('path');
 var cookieParser = require('cookie-parser');
+var helmet = require('helmet')
 var UserService = require('./model/user.js');
 var OrgService = require('./model/org.js');
 var LinkService = require('./model/link.js');
@@ -24,6 +25,22 @@ var app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser('my-precious'));
+
+app.use(helmet());
+if (process.env.NODE_ENV == 'production') {
+  app.use(helmet.hsts({
+    maxAge: 5184000,
+    includeSubDomains: false,
+    setIf: function (req, res) {
+        if (req.secure) {
+          return true
+        } else {
+          return false
+        }
+      }    
+    }))
+}
+
 const COOKIE_NAME = 'xsession';
 /**
  * Setup Google Cloud monitoring
@@ -50,18 +67,27 @@ if (process.env.GCLOUD_PROJECT) {
   require('@google/cloud-debug').start();
 }
 
-/**
- * No cache
- */
-app.get('/*', nocache);
-
-//caching strategy is to not cache
-function nocache(req, res, next) {
-  res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
-  res.header('Expires', '-1');
-  res.header('Pragma', 'no-cache');
-  next();
+//set proxy
+if ((process.env.NODE_ENV === 'production') || (process.env.NODE_ENV === 'staging')) {
+  app.set('trust proxy', true);
 }
+
+//route to https if production
+app.use(function(req, res, next){
+  if (process.env.NODE_ENV === 'production') {
+    if (!req.secure) {
+      res.redirect('https://link.run' + req.url);
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
+})
+
+// apply no cache headers
+app.get('/*', helper.noCache);
+
 
 /**
  * Static Home pageExpress Routes
@@ -82,11 +108,9 @@ app.get("/", auth.isLoggedIn, function (req, res, next) {
 });
 
 
-
 app.use('/__/login/google', require('./googleauth.js'));
 app.use('/__', auth.isLoggedIn, require('./routes/app-route.js'));
 app.use('/__/api', auth.isLoggedIn, require('./routes/api-route.js'));
-
 
 
 app.get("/:gourl", helper.setRouteUrl, auth.isLoggedIn, function (req, res, next) {
