@@ -32,7 +32,6 @@ router.get('/', (req, res, next) => {
     //create user object
     var userData = {};
     userData['id'] = entity[Datastore.KEY].id;
-    console.log(entity[Datastore.KEY].id);
     userData["orgId"] = entity['orgId'];
     userData["email"] = entity['email'];
     userData["fName"] = entity['fName'];

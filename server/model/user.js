@@ -27,7 +27,7 @@ class User {
     userData["fName"] = fName;
     userData["lName"] = lName;
     userData["picture"] = picture;
-    logger.info("creating user", userData);
+    logger.info("creating_user", {'userId':uid, 'orgId':orgId});
     return this.getModel().create(userData);
   }
 
@@ -42,7 +42,7 @@ class User {
     userData["fName"] = fName;
     userData["lName"] = lName;
     userData["picture"] = picture;
-    logger.info("updating user", userData);
+    logger.info("updating user", {'userId':uid, 'orgId':orgId});
     return this.getModel().update (uid, userData);
   }
 

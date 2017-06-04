@@ -39,7 +39,7 @@ describe('LinkService', () => {
         });
         
         service.getLinks().then(links => {
-          console.log(links);
+          console.log("links",links);
           expect(links[0].id).toEqual(5722467590995968);
         });
       }))
@@ -62,7 +62,7 @@ describe('LinkService', () => {
         });
         
         service.getLink(5722467590995968).then(link => {
-          console.log(link);
+          console.log("link",link);
           expect(link.id).toEqual(5722467590995968);
           expect(link.link).toEqual('fsdfds');
         });

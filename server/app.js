@@ -151,6 +151,7 @@ app.get("/:gourl", helper.setRouteUrl, auth.isLoggedIn, function (req, res, next
                 }
                 res.redirect(301, url);
                 ga.trackEvent(userId, orgId, 'Link', 'redirect', linkEntities.entities[0].id, '100')
+                logger.info("routing_link", {'link' : linkEntities.entities[0]});
               });
             } else {
               ga.trackEvent(userId, orgId, 'Link', 'redirect', 'no_url_found', '100')
@@ -168,6 +169,7 @@ app.get("/:gourl", helper.setRouteUrl, auth.isLoggedIn, function (req, res, next
           url = 'http://' + url;
         }        
         ga.trackEvent(userId, orgId, 'Link', 'redirect', linkEntities.entities[0].id, '100')
+        logger.info("routing_link", {'link' : linkEntities.entities[0]});
         res.redirect(301, url);
       }
     })
