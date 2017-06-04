@@ -9,6 +9,7 @@ import {MdTabsModule} from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MdButton} from '@angular/material';
 import { MdIconModule } from '@angular/material';
+import {MdDialog, MdDialogRef} from '@angular/material';
 
 @NgModule({
   imports: [
