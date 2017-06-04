@@ -26,12 +26,7 @@ export class LinkListComponent implements OnInit {
     this.userService.getCurrentUser().then(user => {
       this.user = user;
     }).then(_ => {
-      this.linkService.getLinks().then(links => {
-        this.links = links;
-        links.forEach(link => {
-          link['canEdit'] = (link.userId == this.user.id);
-        });
-      })
+      this.refreshList();
     })
     .catch(err => {
       console.log(err);
@@ -44,6 +39,15 @@ export class LinkListComponent implements OnInit {
         this.ngOnInit();
       }
     })
+  }
+
+  refreshList() {
+      return this.linkService.getLinks().then(links => {
+        this.links = links;
+        links.forEach(link => {
+          link['canEdit'] = (link.userId == this.user.id);
+        });
+      })
   }
 
 }

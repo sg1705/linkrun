@@ -94,8 +94,9 @@
                     <!-- For centering the content vertically -->
                     <div class="outer">
                         <div class="inner text-center">
-                            <h1 class="white-color">link.run/[mylink]</h1>
-                            <h5 class="">Content at your fingertips</h5>
+                            <h1 class="white-color"><span style="color: rgb(206, 206, 206);">Link.run/</span><span class="typed">holidays</span></h1>
+                            <h2 class="white-color">Friendly names for your links</h2>
+                            <p class="white-color" style="font-size: 20px;">Private to your company</p>
                             <!--<a href="#" class="btn se-btn-white btn-rounded">Use it for free</a>-->
                         </div> <!-- end inner -->
                     </div> <!-- end outer -->
@@ -168,6 +169,18 @@
     	<script src="scripts/main.js"></script>
 
         <script src="https://apis.google.com/js/platform.js" async defer></script>
+
+        <script src="typed.min.js"></script>
+        <script>
+        document.addEventListener('DOMContentLoaded', function(){
+            Typed.new('.typed', {
+                strings: ["holidays^500", "401k^500", "benefits", "bug-bash^500",],
+                typeSpeed: 100,
+                loop: true
+            });
+        });
+        </script>
+        
     </body>
 
 </html>
