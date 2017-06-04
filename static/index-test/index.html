@@ -10,7 +10,7 @@
         <link rel="search" type="application/opensearchdescription+xml" title="Link.run" href="/opensearch.xml" />
 
         <!-- ========== PAGE TITLE ========== -->
-        <title>Link.run Index Page</title>
+        <title>Link.run</title>
 
         <!-- ========== META TAGS ========== -->
         <meta name="description" content="Link.run Index Page">
@@ -94,8 +94,9 @@
                     <!-- For centering the content vertically -->
                     <div class="outer">
                         <div class="inner text-center">
-                            <h1 class="white-color">link.run/[mylink]</h1>
-                            <h5 class="">Content at your fingertips</h5>
+                            <h1 class="white-color"><span style="color: rgb(206, 206, 206);">Link.run/</span><span class="typed">holidays</span></h1>
+                            <h2 class="white-color">Friendly names for your links</h2>
+                            <p class="white-color" style="font-size: 20px;">Private to your company</p>
                             <!--<a href="#" class="btn se-btn-white btn-rounded">Use it for free</a>-->
                         </div> <!-- end inner -->
                     </div> <!-- end outer -->
@@ -104,15 +105,15 @@
         </header>
 
         <!-- ========== OFFER SECTION ========== -->
-        <section class="se-section offer-section gray-section">
+        <!--<section class="se-section offer-section gray-section">
             <div class="container">
                 <div class="row">
                     <div class="col-md-12 text-center">
-                        <p><!--<span class="badge">FREE</span>--> Better way to access your content on cloud with links that make sense. No longer searching for links buried in messages, websites etc. <!-- <a href="#" class="learn-more">Learn More</a>--></p>
+                        <p>Better way to access your content on cloud with links that make sense. No longer searching for links buried in messages, websites etc.</p>
                     </div>
-                </div> <!-- end row -->
-            </div> <!-- end container -->
-        </section>
+                </div>
+            </div>
+        </section>-->
 
         <!-- ========== STEPS ========== -->
         <section class="se-section se-steps">
@@ -168,6 +169,17 @@
     	<script src="scripts/main.js"></script>
 
         <script src="https://apis.google.com/js/platform.js" async defer></script>
+
+        <script src="typed.min.js"></script>
+        <script>
+        document.addEventListener('DOMContentLoaded', function(){
+            Typed.new('.typed', {
+                strings: ["holidays^500", "401k^500", "benefits", "bug-bash^500",],
+                typeSpeed: 100,
+                loop: true
+            });
+        });
+        </script>
     </body>
 
 </html>

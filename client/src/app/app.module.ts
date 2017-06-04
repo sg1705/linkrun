@@ -10,6 +10,7 @@ import { FormComponent } from './form/form.component';
 import { MaterialModule} from './material/material.module';
 import { LinkListComponent } from './link-list/link-list.component';
 import { LinkNameValidator } from './form/link.validator';
+import { UserService } from './services/user.service';
 
 @NgModule({
   declarations: [
@@ -28,11 +29,11 @@ import { LinkNameValidator } from './form/link.validator';
       { path: 'login', component: LoginComponent },
       { path: 'link/create',component: FormComponent },
       { path: 'link/edit/:id',component: FormComponent },
-      { path: 'links', component: LinkListComponent },
-      { path: '',  redirectTo: '/links', pathMatch: 'full'}
+      // { path: 'links', component: LinkListComponent },
+      { path: '',  redirectTo: '/link/create', pathMatch: 'full'}
     ])    
   ],
-  providers: [],
+  providers: [UserService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

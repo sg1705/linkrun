@@ -22,7 +22,7 @@ router.get('/', (req, res, next) => {
   //get user from cookie
   var userId = cookieService.getXsession(req).userId;
   var orgId = cookieService.getXsession(req).orgId;
-  linkService.getLinksByUser(userId).then(links => {
+  linkService.getLinksByOrgId(orgId).then(links => {
     res.json(links['entities']);
   }).catch(err => {
       logger.error(err);
@@ -103,7 +103,6 @@ router.get('/linkName/:name', (req, res, next) => {
   //get link id
   var linkName = req.params['name'];
   linkService.getLinkByGoLink(linkName, orgId).then(entities => {
-    console.log(entities);
     res.json(entities);
   }).catch(err => {
       logger.error(err);

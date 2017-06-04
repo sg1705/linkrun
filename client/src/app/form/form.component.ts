@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder,FormGroup, Validators, AbstractControl } from '@angular/forms';
-import {MdInputModule, MdError} from '@angular/material';
+import {MdInputModule} from '@angular/material';
 import {MdToolbarModule} from '@angular/material';
 import {MdButtonModule} from '@angular/material';
 import {MdListModule} from '@angular/material';
@@ -10,6 +10,8 @@ import {MdTabsModule} from '@angular/material';
 import { LinkService } from '../services/link.service';
 import { Link } from '../model/link';
 import { LinkNameValidator } from './link.validator';
+import { LinkListComponent } from '../link-list/link-list.component';
+
 import { Observable } from 'rxjs/Rx';
 import 'rxjs/Rx';
 
@@ -24,12 +26,14 @@ export class FormComponent implements OnInit {
   linkFormGroup: FormGroup;
   linkId: number = 0;
   mode:string = 'create';
+  formTitle:string = 'Create Short Link';
 
   @ViewChild('link') inputLink: ElementRef;
   @ViewChild('url') inputUrl: ElementRef;
+  @ViewChild('linkList') linkList: LinkListComponent;
 
   constructor(
-    fb: FormBuilder, 
+    private fb: FormBuilder, 
     private linkService: LinkService,
     private router: Router,
     private activateRoute: ActivatedRoute ) {
@@ -49,6 +53,7 @@ export class FormComponent implements OnInit {
     if (this.router.url.indexOf('/link/edit') > -1) {
       //set edit mode
       this.mode = 'edit';
+      this.formTitle = 'Edit Short Link';
       // get the link
       this.linkService.getLink(this.linkId)
       .then(link => {
@@ -96,19 +101,26 @@ export class FormComponent implements OnInit {
         this.linkService.updateLink(new Link(this.linkId, link, url, description))
         .then(link => {
           console.log('link updated', link);
-          resolve(this.router.navigateByUrl('/links'));
+          this.reset();
+          resolve(this.router.navigateByUrl('/link/create'));
+        })
+      });
+    } else {
+      return new Promise((resolve, reject) => {     
+        this.linkService.createLink(new Link(0, l.link, l.url, l.description))
+        .then(link => {
+          console.log('link created', link);
+          this.reset();
+          resolve(this.router.navigateByUrl('/link/create'));
         })
       });
     }
-    return new Promise((resolve, reject) => {
-      this.linkService.createLink(new Link(0, l.link, l.url, l.description))
-      .then(link => {
-        console.log('link created', link);
-        resolve(this.router.navigateByUrl('/links'));
-      })
-    });
   }
 
+  private reset() {
+    this.linkList.refreshList();
+    this.linkFormGroup.reset();
+  }
 
   validationMessages = {
     'link': {

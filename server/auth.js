@@ -10,6 +10,7 @@ var helper = require('./helper.js');
  */
 function isLoggedIn(req, res, next) {
   if (isUserIdSetInCookie(req)) {
+    helper.clearRouteUrl(res);
     return next();
   }
   res.redirect('/_/');
@@ -18,19 +19,17 @@ function isLoggedIn(req, res, next) {
 function isUserIdSetInCookie(req) {
   var xsession = cookie.getXsession(req);
   if (xsession == null) {
-    logger.info('xsession is null');
     return false;
   }
   var userId = xsession.userId;  
   if (userId != null) {
-    logger.debug('userId_from_cookie', {'userId': userId})
     return true;
   }
   logger.info('UserId is not set in Session');
   return false;
 }
 
-function authenticateUser(res, authMethod, orgName, email, fName, lName, picture, refresh_token) {
+function authenticateUser(res,req, authMethod, orgName, email, fName, lName, picture, refresh_token) {
   return new Promise((resolve, reject) => {
     let orgService = new OrgService();
     let userService = new UserService();
@@ -55,9 +54,10 @@ function authenticateUser(res, authMethod, orgName, email, fName, lName, picture
       })
       //retrieve user
       .then((data) => {
-        logger.info('routing to 301' + helper.getRouteUrl());
-        console.log('routing');
-        res.redirect(301, helper.getRouteUrl());
+        let routeUrl = helper.getRouteUrl(req);
+        logger.info('routing to 301' + routeUrl);
+        helper.clearRouteUrl(res);
+        res.redirect(301, routeUrl);
         resolve(true)
       })
       //error

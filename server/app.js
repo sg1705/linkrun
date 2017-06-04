@@ -5,9 +5,9 @@ var config = require('config');
 var path = require('path');
 var express = require('express');
 var bodyParser = require('body-parser');
-var session = require('express-session');
 var path = require('path');
 var cookieParser = require('cookie-parser');
+var helmet = require('helmet')
 var UserService = require('./model/user.js');
 var OrgService = require('./model/org.js');
 var LinkService = require('./model/link.js');
@@ -24,12 +24,23 @@ var GA = require('./model/google-analytics-tracking.js')
 var app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(session({
-  resave: true,
-  saveUninitialized: true,
-  secret: 'my_precious'
-}));
 app.use(cookieParser('my-precious'));
+
+app.use(helmet());
+if (process.env.NODE_ENV == 'production') {
+  app.use(helmet.hsts({
+    maxAge: 5184000,
+    includeSubDomains: false,
+    setIf: function (req, res) {
+        if (req.secure) {
+          return true
+        } else {
+          return false
+        }
+      }    
+    }))
+}
+
 const COOKIE_NAME = 'xsession';
 /**
  * Setup Google Cloud monitoring
@@ -56,18 +67,27 @@ if (process.env.GCLOUD_PROJECT) {
   require('@google/cloud-debug').start();
 }
 
-/**
- * No cache
- */
-app.get('/*', nocache);
-
-//caching strategy is to not cache
-function nocache(req, res, next) {
-  res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
-  res.header('Expires', '-1');
-  res.header('Pragma', 'no-cache');
-  next();
+//set proxy
+if ((process.env.NODE_ENV === 'production') || (process.env.NODE_ENV === 'staging')) {
+  app.set('trust proxy', true);
 }
+
+//route to https if production
+app.use(function(req, res, next){
+  if (process.env.NODE_ENV === 'production') {
+    if (!req.secure) {
+      res.redirect('https://link.run' + req.url);
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
+})
+
+// apply no cache headers
+app.get('/*', helper.noCache);
+
 
 /**
  * Static Home pageExpress Routes
@@ -84,10 +104,8 @@ app.use('/opensearch.xml', function (req, res, next) {
  * Go to the url requested
  */
 app.get("/", auth.isLoggedIn, function (req, res, next) {
-  session.gourl = '/';
   res.redirect(APP_HOME);
 });
-
 
 
 app.use('/__/login/google', require('./googleauth.js'));
@@ -95,36 +113,32 @@ app.use('/__', auth.isLoggedIn, require('./routes/app-route.js'));
 app.use('/__/api', auth.isLoggedIn, require('./routes/api-route.js'));
 
 
-
-app.get("/:gourl", setRouteUrl, auth.isLoggedIn, function (req, res, next) {
-  let routeGoUrl = session.gourl;
+app.get("/:gourl", helper.setRouteUrl, auth.isLoggedIn, function (req, res, next) {
+  let routeGoUrl = req.params.gourl;
   if (routeGoUrl == null) {
     //error condition
     logger.error('link is null');
     next();
   }
-
-
   // retrieve actual url
   let linkService = new LinkService();
   let ga = new GA();
   let orgId = cookie.getOrgIdFromCookie(req)
   let userId = cookie.getUserIdFromCookie(req)
-
+  
   linkService.getLinkByGoLink(routeGoUrl, orgId)
     .then(linkEntities => { 
       
       if (linkEntities.entities.length == 0) {
         // gourl not found. attempt to find a close one.
-        logger.info("no_url_found, attempt to auto-correct");
+        logger.info("no_url_found", "attempt to auto-correct");
         var sc = SC.spellChecker();
         linkService.getGourls(orgId)
           .then(shortNames => {
             let gourls = shortNames;
             sc.setDict(gourls);
-            logger.info('gourls', gourls)
             let correctedRouteGoUrl = sc.correct(routeGoUrl);
-            logger.info('corrected to ', correctedRouteGoUrl)
+            logger.info('corrected_route_to', {'link' :correctedRouteGoUrl})
             return correctedRouteGoUrl;
           }).then((correctedRouteGoUrl) => {
             if (correctedRouteGoUrl) {
@@ -140,13 +154,13 @@ app.get("/:gourl", setRouteUrl, auth.isLoggedIn, function (req, res, next) {
               });
             } else {
               ga.trackEvent(userId, orgId, 'Link', 'redirect', 'no_url_found', '100')
-              logger.info("no_url_found, redirecting to links page");
+              logger.info("no_route_found", {'link' : correctedRouteGoUrl});
               res.redirect(APP_HOME + '/link/create?link=' + routeGoUrl);
             }
           })
       } else if (!linkEntities.entities[0].url) {
         ga.trackEvent(userId, orgId, 'Link', 'redirect', 'empty_url', '100')
-        logger.info("empty_url, redirecting to links page");
+        logger.info("empty_url", "redirecting to links page");
         res.redirect(APP_HOME + '/link/create?link=' + routeGoUrl);
       } else { 
         let url = linkEntities.entities[0].url;
@@ -181,22 +195,6 @@ if (module === require.main) {
     var port = server.address().port;
     logger.debug('app_running_on_port ' + port);
   });
-}
-
-function getRouteUrl() {
-  var routeUrl = '/';
-  if ((session.gourl == null) || (session.gourl == '/')) {
-    routeUrl = '/';
-  } else {
-    routeUrl = '/' + session.gourl;
-  }
-  return routeUrl;
-}
-
-function setRouteUrl(req, res, next) {
-  session.gourl = req.params.gourl;
-  logger.info('invoking link:' + session.gourl);
-  next();
 }
 
 module.exports = app;
