@@ -2,5 +2,5 @@
 runtime: nodejs
 env: flex  
 env_variables:
-  NODE_ENV: 'staging'
+  NODE_ENV: 'production'
 # [END app_yaml]
