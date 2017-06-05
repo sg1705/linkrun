@@ -28,11 +28,11 @@ import { GoogleAnalyticsEventsService } from "./services/google-analytics-events
     MaterialModule,
     RouterModule.forRoot([
       { path: 'login', component: LoginComponent },
-      { path: 'link/create', component: FormComponent },
-      { path: 'link/edit/:id', component: FormComponent },
-      { path: 'links', component: LinkListComponent },
-      { path: '', redirectTo: '/links', pathMatch: 'full' }
-    ])
+      { path: 'link/create',component: FormComponent },
+      { path: 'link/edit/:id',component: FormComponent },
+      // { path: 'links', component: LinkListComponent },
+      { path: '',  redirectTo: '/link/create', pathMatch: 'full'}
+    ])    
   ],
   providers: [
     UserService,

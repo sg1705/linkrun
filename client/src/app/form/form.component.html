@@ -9,12 +9,17 @@
       </md-list>      
     </md-grid-tile>
     <md-grid-tile>
-      <md-input-container>
+      <md-input-container floatPlaceholder="always">
+
+        <div style="display:flex">
+        <span style="color: #bababa">Link.run/</span>
         <input #link   [formControl]="linkFormGroup.controls['link']" name="link" mdInput  linkNameValidator
-          required minlength="2" placeholder="Link">
+          required minlength="2" placeholder="Short Link" >
+          </div>        
           <md-error>
             {{formErrors.link}}
             </md-error>
+          
       </md-input-container>
     </md-grid-tile>
     <md-grid-tile>
@@ -37,4 +42,4 @@
   </md-grid-list>
 </form>
 
-<app-link-list [shortName]="linkFormGroup.controls['link'].value" ></app-link-list>
+<app-link-list #linkList [shortName]="linkFormGroup.controls['link'].value" ></app-link-list>

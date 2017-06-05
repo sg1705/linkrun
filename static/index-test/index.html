@@ -33,11 +33,10 @@
         (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
         m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
         })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
         ga('create', 'UA-99455967-1', 'auto');
         ga('send', 'pageview');
 
-        </script>        
+        </script>     
 
 
 
@@ -94,8 +93,9 @@
                     <!-- For centering the content vertically -->
                     <div class="outer">
                         <div class="inner text-center">
-                            <h1 class="white-color">link.run/[mylink]</h1>
-                            <h5 class="">Content at your fingertips</h5>
+                            <h1 class="white-color"><span style="color: rgb(206, 206, 206);">Link.run/</span><span class="typed">holidays</span></h1>
+                            <h2 class="white-color">Shortlinks with friendly names</h2>
+                            <p class="white-color" style="font-size: 20px;">Private to your org</p>
                             <!--<a href="#" class="btn se-btn-white btn-rounded">Use it for free</a>-->
                         </div> <!-- end inner -->
                     </div> <!-- end outer -->
@@ -108,7 +108,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-md-12 text-center">
-                        <p><!--<span class="badge">FREE</span>--> Better way to access your content on cloud with links that make sense. No longer searching for links buried in messages, websites etc. <!-- <a href="#" class="learn-more">Learn More</a>--></p>
+                        <p><!--<span class="badge">FREE</span>--> Better way to access your URLs with shortlinks with friendly names and are private to your org. No longer searching for URL links. <!-- <a href="#" class="learn-more">Learn More</a>--></p>
                     </div>
                 </div> <!-- end row -->
             </div> <!-- end container -->
@@ -130,13 +130,13 @@
                     </div>
 
                     <div class="col-md-4 col-sm-4 one-step text-center">
-                        <h4>Create Links</h4>
-                        <p>Use simple form to create rememberable links to long URLs</p>
+                        <h4>Create Shortlinks</h4>
+                        <p>Use simple form to create shortlinks with friendly names to long URLs</p>
                     </div>
 
                     <div class="col-md-4 col-sm-4 one-step text-center">
-                        <h4>Use Links</h4>
-                        <p>Access and share Link.run links within your company</p>
+                        <h4>Use Shortlinks</h4>
+                        <p>Simply access and share Link.run/[shortlinks] within your org</p>
                     </div>
                 </div> <!-- end row -->
             </div> <!-- end container -->
@@ -168,6 +168,18 @@
     	<script src="scripts/main.js"></script>
 
         <script src="https://apis.google.com/js/platform.js" async defer></script>
+
+        <script src="typed.min.js"></script>
+        <script>
+        document.addEventListener('DOMContentLoaded', function(){
+            Typed.new('.typed', {
+                strings: ["holidays^500", "401k^500", "benefits", "bug-bash^500",],
+                typeSpeed: 100,
+                loop: true
+            });
+        });
+        </script>
+        
     </body>
 
 </html>
