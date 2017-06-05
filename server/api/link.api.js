@@ -12,6 +12,8 @@ var   logger       = require('../model/logger.js');
 
 const linkService = new LinkService();
 const router = express.Router();
+const ws = new WS();
+
 
 // Automatically parse request body as JSON
 router.use(bodyParser.json());
@@ -40,9 +42,9 @@ router.get('/sort/:name', (req, res, next) => {
   var orgId = cookieService.getXsession(req).orgId;
   //get link id
   var linkName = req.params['name'];  
+
   linkService.getLinksByOrgId(orgId).then(links => {
-    links = WS.sort(links, linkName)
-    res.json(links['entities']);
+    res.json(ws.sort(links['entities'], linkName));
   }).catch(err => {
       logger.error(err);
       return;    
