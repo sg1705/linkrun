@@ -78,6 +78,7 @@ router.get('/oauthcallback',
       //retrieve userinfo from google
       .then((userinfo) => {
         userInfo = userinfo;
+        logger.info('userinfo from google', userInfo);
         if (userInfo.hd == null) {
           userInfo.hd = userInfo.email;
         }

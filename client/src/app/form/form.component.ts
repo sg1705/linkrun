@@ -7,11 +7,12 @@ import {MdButtonModule} from '@angular/material';
 import {MdListModule} from '@angular/material';
 import {MdGridListModule} from '@angular/material';
 import {MdTabsModule} from '@angular/material';
+import {MdDialog, MdDialogRef} from '@angular/material';
 import { LinkService } from '../services/link.service';
 import { Link } from '../model/link';
 import { LinkNameValidator } from './link.validator';
 import { LinkListComponent } from '../link-list/link-list.component';
-
+import { FormConfirmationDialogComponent } from './form-confirmation-dialog.component';
 import { Observable } from 'rxjs/Rx';
 import 'rxjs/Rx';
 
@@ -19,7 +20,7 @@ import 'rxjs/Rx';
   selector: 'app-form',
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.css'],
-  providers: [LinkService],
+  providers: [LinkService]
 })
 export class FormComponent implements OnInit {
 
@@ -33,6 +34,7 @@ export class FormComponent implements OnInit {
   @ViewChild('linkList') linkList: LinkListComponent;
 
   constructor(
+    private dialog: MdDialog,
     private fb: FormBuilder, 
     private linkService: LinkService,
     private router: Router,
@@ -45,11 +47,16 @@ export class FormComponent implements OnInit {
       //set linkid in case of /edit
       this.activateRoute.params.subscribe(params => {
         this.linkId = params['id'];
+        this.initialize();
       })
    }
 
   ngOnInit() {
     this.inputLink.nativeElement.focus();
+  }
+
+
+  private initialize() {
     if (this.router.url.indexOf('/link/edit') > -1) {
       //set edit mode
       this.mode = 'edit';
@@ -70,9 +77,8 @@ export class FormComponent implements OnInit {
           this.inputUrl.nativeElement.focus();
         }
       });
-    }
-    
-    this.setupValidation();
+    }    
+    this.setupValidation();    
   }
 
 
@@ -102,7 +108,7 @@ export class FormComponent implements OnInit {
         .then(link => {
           console.log('link updated', link);
           this.reset();
-          resolve(this.router.navigateByUrl('/link/create'));
+          this.showConfirmationDialog(resolve, 'edited', link);
         })
       });
     } else {
@@ -110,8 +116,7 @@ export class FormComponent implements OnInit {
         this.linkService.createLink(new Link(0, l.link, l.url, l.description))
         .then(link => {
           console.log('link created', link);
-          this.reset();
-          resolve(this.router.navigateByUrl('/link/create'));
+          this.showConfirmationDialog(resolve, 'created', link);
         })
       });
     }
@@ -120,6 +125,16 @@ export class FormComponent implements OnInit {
   private reset() {
     this.linkList.refreshList();
     this.linkFormGroup.reset();
+  }
+
+  private showConfirmationDialog(resolve, message, link:Link) {
+    let dialogRef = this.dialog.open(FormConfirmationDialogComponent);
+    dialogRef.componentInstance.message = message;
+    dialogRef.componentInstance.link = link;
+    dialogRef.afterClosed().subscribe(result => {
+      this.reset();
+      resolve(this.router.navigateByUrl('/link/create'));            
+    });
   }
 
   validationMessages = {

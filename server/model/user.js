@@ -102,6 +102,7 @@ class User {
             .then((entity) => {
               resolve(entity);
             }).catch (err => {
+              logger.error('rejected when updating user', err);
               reject(err);
             })
           } else {
@@ -117,6 +118,7 @@ class User {
             .then((entity) => {
               resolve(entity);
             }).catch(err => {
+              logger.error('rejected when creating user', err);
               reject(err)
             });
           }

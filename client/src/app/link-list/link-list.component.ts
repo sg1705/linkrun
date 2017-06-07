@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MdButtonModule } from '@angular/material';
 import { MdIcon } from '@angular/material';
-
 import { Link } from '../model/link';
 import { LinkService } from '../services/link.service';
 import { UserService } from '../services/user.service';
@@ -19,8 +18,10 @@ export class LinkListComponent implements OnInit {
   links: Array<Link>;
   user: User;
 
-  constructor(private linkService: LinkService, private userService: UserService) {
-   }
+  constructor(
+    private linkService: LinkService,
+    private userService: UserService) {
+  }
 
   ngOnInit() {
     this.userService.getCurrentUser().then(user => {
@@ -28,9 +29,9 @@ export class LinkListComponent implements OnInit {
     }).then(_ => {
       this.refreshList();
     })
-    .catch(err => {
-      console.log(err);
-    })
+      .catch(err => {
+        console.log(err);
+      })
   }
 
   deleteLink(linkId) {
@@ -42,12 +43,12 @@ export class LinkListComponent implements OnInit {
   }
 
   refreshList() {
-      return this.linkService.getLinks().then(links => {
-        this.links = links;
-        links.forEach(link => {
-          link['canEdit'] = (link.userId == this.user.id);
-        });
-      })
+    return this.linkService.getLinks().then(links => {
+      this.links = links;
+      links.forEach(link => {
+        link['canEdit'] = (link.userId == this.user.id);
+      });
+    })
   }
 
 }
