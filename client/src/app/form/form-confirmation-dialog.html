@@ -1,0 +1,5 @@
+<p>
+{{link.link}} {{message}}
+</p>
+    <button md-button [md-dialog-close]="true">Dismiss</button>
+    <button md-button [md-dialog-close]="true" target="_blank" (click)="gotoShortLink()">Goto {{link.link}}</button>

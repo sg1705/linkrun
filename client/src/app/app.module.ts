@@ -7,7 +7,10 @@ import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { FormComponent } from './form/form.component';
-import { MaterialModule } from './material/material.module';
+// import { MaterialModule} from './material/material.module';
+import { MaterialModule } from '@angular/material';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FormConfirmationDialogComponent } from './form/form-confirmation-dialog.component';
 import { LinkListComponent } from './link-list/link-list.component';
 import { LinkNameValidator } from './form/link.validator';
 import { UserService } from './services/user.service';
@@ -19,20 +22,25 @@ import { GoogleAnalyticsEventsService } from "./services/google-analytics-events
     LoginComponent,
     FormComponent,
     LinkListComponent,
-    LinkNameValidator
+    LinkNameValidator,
+    FormConfirmationDialogComponent
   ],
   imports: [
     BrowserModule,
     ReactiveFormsModule,
     HttpModule,
     MaterialModule,
-    RouterModule.forRoot([
+    BrowserAnimationsModule,
+    RouterModule.forRoot([  
       { path: 'login', component: LoginComponent },
       { path: 'link/create',component: FormComponent },
       { path: 'link/edit/:id',component: FormComponent },
       // { path: 'links', component: LinkListComponent },
       { path: '',  redirectTo: '/link/create', pathMatch: 'full'}
     ])    
+  ],
+  entryComponents: [
+    FormConfirmationDialogComponent,
   ],
   providers: [
     UserService,
