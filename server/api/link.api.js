@@ -19,24 +19,9 @@ const ws = new WS();
 router.use(bodyParser.json());
 
 /**
- * Retrieves all links for the user
- */
-router.get('/', (req, res, next) => {
-  //get user from cookie
-  var userId = cookieService.getXsession(req).userId;
-  var orgId = cookieService.getXsession(req).orgId;
-  linkService.getLinksByOrgId(orgId).then(links => {
-    res.json(links['entities']);
-  }).catch(err => {
-      logger.error(err);
-      return;    
-  })
-});
-
-/**
  * Retrieves all links for the user and sort them based on the similarity to the input word
  */
-router.get('/sort/:name', (req, res, next) => {
+var getLinks = (req, res, next)=> {
   //get user from cookie
   var userId = cookieService.getXsession(req).userId;
   var orgId = cookieService.getXsession(req).orgId;
@@ -44,12 +29,22 @@ router.get('/sort/:name', (req, res, next) => {
   var linkName = req.params['name'];  
 
   linkService.getLinksByOrgId(orgId).then(links => {
-    res.json(ws.sort(links['entities'], linkName));
+    if (linkName)
+      res.json(ws.sort(links['entities'], linkName));
+    else 
+      res.json(links['entities'])
   }).catch(err => {
       logger.error(err);
       return;    
   })
-});
+};
+
+router.get('/', getLinks);
+
+router.get('/sort', getLinks);
+
+router.get('/sort/:name', getLinks);
+
 
 router.post('/create', (req, res, next) => {
   //get user from cookie
