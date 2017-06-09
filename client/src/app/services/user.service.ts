@@ -7,7 +7,6 @@ import 'rxjs/add/operator/toPromise';
 export class UserService {
 
   private apiUrl: string = '/__/api/users';
-  private logoutUrl: string = '/__/logout';
   private currentUser: User;
 
   constructor(private http: Http) {
