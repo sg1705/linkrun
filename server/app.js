@@ -107,7 +107,7 @@ app.get("/", auth.isLoggedIn, function (req, res, next) {
   res.redirect(APP_HOME);
 });
 
-
+app.use('/__/logout', auth.logout);
 app.use('/__/login/google', require('./googleauth.js'));
 app.use('/__', auth.isLoggedIn, require('./routes/app-route.js'));
 app.use('/__/api', auth.isLoggedIn, require('./routes/api-route.js'));
