@@ -16,7 +16,7 @@ function setCookie(res, userId, orgId) {
     COOKIE_NAME, 
     { userId: userId,
       orgId:  orgId},
-    { signed: true });
+    { signed: true, maxAge: 360000000000 });
 }
 
 function getOrgIdFromCookie(req) {
