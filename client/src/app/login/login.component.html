@@ -2,5 +2,10 @@
 <!--<p>
   {{fName}}&nbsp;{{lName}}
 </p>-->
-<img class="img-circle" src="{{picture}}">
+<img style="cursor: pointer" class="img-circle" src="{{picture}}" [mdMenuTriggerFor]="appMenu">
 </div>
+
+<md-menu #appMenu="mdMenu">
+  <button md-menu-item onclick="window.location.href='/__/logout'">Logout</button>
+  <button md-menu-item>Help</button>
+</md-menu>
