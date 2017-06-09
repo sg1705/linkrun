@@ -74,7 +74,6 @@ export class FormComponent implements OnInit {
         let link = params['link'];
         if (link != null) {
           this.linkFormGroup.controls['link'].setValue(link);
-          this.inputUrl.nativeElement.focus();
         }
       });
     }    
