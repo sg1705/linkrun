@@ -35,7 +35,6 @@ function handleOAuth2Callback(req) {
             oauth2.userinfo.get({
               auth: oauth2Client
             }, function (err, response) {
-
               if (err) {
                 logger.error('Failed to login', {'error':error});
                 reject(err)
@@ -99,11 +98,10 @@ router.get('/oauthcallback',
       })
       .catch(err => {
         logger.error('routing error', err);
-              let ga = new GA();
-              let orgId = cookie.getOrgIdFromCookie(req)
-              let userId = cookie.getUserIdFromCookie(req)        
-              ga.trackEvent(userinfo, orgId, 'User', 'login', 'failed', '100')
-
+        let ga = new GA();
+        let orgId = cookie.getOrgIdFromCookie(req)
+        let userId = cookie.getUserIdFromCookie(req)        
+        ga.trackEvent(userinfo, orgId, 'User', 'login', 'failed', '100')
         //return err
       });
   });
