@@ -5,6 +5,8 @@ var logger = require('./model/logger.js');
 var UserService = require('./model/user.js');
 var OrgService = require('./model/org.js');
 var helper = require('./helper.js');
+var GA = require('./model/google-analytics-tracking.js')
+
 /**
  * Check if user is logged in
  */
@@ -33,6 +35,8 @@ function authenticateUser(res,req, authMethod, orgName, email, fName, lName, pic
   return new Promise((resolve, reject) => {
     let orgService = new OrgService();
     let userService = new UserService();
+    let ga = new GA();
+
     orgService.getOrgByName(orgName)
     //retrieve org
     .then(orgEntities => {
@@ -51,6 +55,8 @@ function authenticateUser(res,req, authMethod, orgName, email, fName, lName, pic
       .then(userEntity => {
         //set cookie
         cookie.setCookie(res, userEntity.id, userEntity.orgId);        
+        ga.trackEvent(userEntity.id, userEntity.orgId, 'User', 'login', 'successful', '100')
+        
       })
       //retrieve user
       .then((data) => {
