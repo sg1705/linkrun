@@ -86,7 +86,7 @@ var GuzzleServer = function(port, log) {
                 } else {
                     that.responses = eval("(" + data + ")");
                     if (that.log) {
-                        console.log(that.responses);
+                        console.log("Response",that.responses);
                     }
                     res.writeHead(200, "OK", { "Content-Length": 0 });
                 }
