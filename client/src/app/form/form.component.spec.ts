@@ -4,8 +4,10 @@ import { MockBackend, MockConnection } from '@angular/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SpyLocation } from '@angular/common/testing';
 import { Router } from "@angular/router";
+import { MaterialModule } from '@angular/material';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { MaterialModule} from '../material/material.module';
+// import { MaterialModule} from '../material/material.module';
 import { FormBuilder,FormGroup} from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormComponent } from './form.component';
@@ -27,7 +29,10 @@ describe('FormComponent', () => {
         FormComponent,
         LinkListComponent
       ],
-      imports: [MaterialModule, ReactiveFormsModule,
+      imports: [
+        MaterialModule,
+        BrowserAnimationsModule,
+        ReactiveFormsModule,
         RouterTestingModule.withRoutes([
           {
             path: 'link/create',
