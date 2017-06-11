@@ -27,7 +27,7 @@ class User {
     userData["fName"] = fName;
     userData["lName"] = lName;
     userData["picture"] = picture;
-    logger.info("creating_user", {'userId':uid, 'orgId':orgId});
+    logger.info("creating_user", {'email':email, 'orgId':orgId});
     return this.getModel().create(userData);
   }
 

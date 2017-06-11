@@ -46,7 +46,7 @@ function authenticateUser(res,req, authMethod, orgName, email, fName, lName, pic
         return orgService.createOrg(orgName, authMethod)
           .then((orgEntity) => {
                 return userService.getOrCreateUserByEmail(orgEntity.id, email, fName, lName, picture, refresh_token);
-              });
+            });
           } else {
             // org exists
             let orgEntity = orgEntities.entities[0];
