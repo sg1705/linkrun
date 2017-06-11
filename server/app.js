@@ -151,6 +151,8 @@ app.get("/:gourl", helper.setRouteUrl, auth.isLoggedIn, function (req, res, next
                 }
                 res.redirect(301, url);
                 ga.trackEvent(userId, orgId, 'Link', 'redirect', linkEntities.entities[0].id, '100')
+                if (linkEntities.userId != userId) 
+                    ga.trackEvent(userId, orgId, 'Link', 'redirect others', linkEntities.entities[0].id, '100')
                 logger.info("routing_link", {'link' : linkEntities.entities[0]});
               });
             } else {
