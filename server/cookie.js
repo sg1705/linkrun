@@ -37,10 +37,14 @@ function getXsession(req) {
     return req.signedCookies[COOKIE_NAME];
 }
 
+function clearCookie(res) {
+  res.clearCookie(COOKIE_NAME, { path: '/' });
+}
 
 module.exports = {
     setCookie: setCookie,
     getOrgIdFromCookie: getOrgIdFromCookie,
     getUserIdFromCookie: getUserIdFromCookie,    
-    getXsession: getXsession
+    getXsession: getXsession,
+    clearCookie: clearCookie
 };

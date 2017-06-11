@@ -31,6 +31,11 @@ function isUserIdSetInCookie(req) {
   return false;
 }
 
+function logout(req, res, next) {
+  cookie.clearCookie(res);
+  res.redirect('/_/');
+}
+
 function authenticateUser(res,req, authMethod, orgName, email, fName, lName, picture, refresh_token) {
   return new Promise((resolve, reject) => {
     let orgService = new OrgService();
@@ -81,5 +86,6 @@ function authenticateUser(res,req, authMethod, orgName, email, fName, lName, pic
 
 module.exports = {
     isLoggedIn: isLoggedIn,
+    logout: logout,
     authenticateUser: authenticateUser
 };
