@@ -3,7 +3,7 @@
 
 const config = require('config');
 var logger   = require('./logger.js');
-var GA = require('./model/google-analytics-tracking.js')
+var GA = require('./google-analytics-tracking.js')
 
 class User {
   
@@ -28,7 +28,7 @@ class User {
     userData["fName"] = fName;
     userData["lName"] = lName;
     userData["picture"] = picture;
-    logger.info("creating_user", {'userId':uid, 'orgId':orgId});
+    // logger.info("creating_user", {'userId':uid, 'orgId':orgId});
     return this.getModel().create(userData);
   }
 
@@ -87,8 +87,9 @@ class User {
         'email',
         email)
         .then((userData) => {
+          let ga = new GA();
+          
           if (userData.entities.length > 0) {
-            let ga = new GA();
 
             //user exists
             //update user
