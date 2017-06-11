@@ -3,6 +3,7 @@
 
 const config = require('config');
 var logger   = require('./logger.js');
+var GA = require('./model/google-analytics-tracking.js')
 
 class User {
   
@@ -87,6 +88,8 @@ class User {
         email)
         .then((userData) => {
           if (userData.entities.length > 0) {
+            let ga = new GA();
+
             //user exists
             //update user
             let userEntity = userData.entities[0];
@@ -116,6 +119,7 @@ class User {
               lName,
               picture)
             .then((entity) => {
+              ga.trackEvent(entity.id, orgId, 'User', 'create', 'success', '100')
               resolve(entity);
             }).catch(err => {
               logger.error('rejected when creating user', err);
