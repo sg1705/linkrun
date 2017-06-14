@@ -125,7 +125,7 @@ app.get("/:gourl", helper.setRouteUrl, auth.isLoggedIn, function (req, res, next
   let ga = new GA();
   let orgId = cookie.getOrgIdFromCookie(req)
   let userId = cookie.getUserIdFromCookie(req)
-  
+  console.log('userid = ', userId)
   linkService.getLinkByGoLink(routeGoUrl, orgId)
     .then(linkEntities => { 
       
@@ -150,9 +150,11 @@ app.get("/:gourl", helper.setRouteUrl, auth.isLoggedIn, function (req, res, next
                   url = 'http://' + url;
                 }
                 res.redirect(301, url);
-                ga.trackEvent(userId, orgId, 'Link', 'redirect', linkEntities.entities[0].id, '100')
-                if (linkEntities.userId != userId) 
-                    ga.trackEvent(userId, orgId, 'Link', 'redirect others', linkEntities.entities[0].id, '100')
+                if (linkEntities.entities[0].userId == userId) 
+                  ga.trackEvent(userId, orgId, 'Link', 'redirect', linkEntities.entities[0].id, '100')
+                else 
+                  ga.trackEvent(userId, orgId, 'Link', 'redirect others', linkEntities.entities[0].id, '100')     
+                    
                 logger.info("routing_link", {'link' : linkEntities.entities[0]});
               });
             } else {
@@ -170,7 +172,11 @@ app.get("/:gourl", helper.setRouteUrl, auth.isLoggedIn, function (req, res, next
         if (!(url.startsWith('https://') || url.startsWith('http://'))) {
           url = 'http://' + url;
         }        
-        ga.trackEvent(userId, orgId, 'Link', 'redirect', linkEntities.entities[0].id, '100')
+        if (linkEntities.entities[0].userId == userId) 
+          ga.trackEvent(userId, orgId, 'Link', 'redirect', linkEntities.entities[0].id, '100')
+        else 
+          ga.trackEvent(userId, orgId, 'Link', 'redirect others', linkEntities.entities[0].id, '100')     
+            
         logger.info("routing_link", {'link' : linkEntities.entities[0]});
         res.redirect(301, url);
       }
