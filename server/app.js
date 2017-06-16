@@ -125,7 +125,6 @@ app.get("/:gourl", helper.setRouteUrl, auth.isLoggedIn, function (req, res, next
   let ga = new GA();
   let orgId = cookie.getOrgIdFromCookie(req)
   let userId = cookie.getUserIdFromCookie(req)
-  console.log('userid = ', userId)
   linkService.getLinkByGoLink(routeGoUrl, orgId)
     .then(linkEntities => { 
       

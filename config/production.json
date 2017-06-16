@@ -26,5 +26,8 @@
   "static": {
     "signInPage": "index-production"
   },  
-  "COOKIE_NAME" : "xsession"
+  "COOKIE_NAME" : "xsession",
+  "features":{
+    "wordSimilarity": "true"
+  }
 }
