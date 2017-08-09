@@ -12,11 +12,16 @@
     "google": {
         "id": "106821081585-q0igdb16nf51g7272vd83s6ao3plnfbh.apps.googleusercontent.com",
         "secret": "M_Wm9g4EGna0kK7ZQQZpDXar"
+    },
+    "msft" : {
+        "id": "45de05e9-2bca-458c-ab3e-37710181611c",
+        "secret": "AyrgGTeUPZanMSCmQKe6jWO"
     }
   },
 
   "oauthCallbacks": {
-    "googleCallbackUrl"  : "http://localhost:8090/__/login/google/oauthcallback"
+    "googleCallbackUrl"  : "http://localhost:8090/__/login/google/oauthcallback",
+    "msftCallbackUrl"    : "http://localhost:8090/__/oauthcallback/msft"
   },
   
   "ga":{
