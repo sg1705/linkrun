@@ -23,12 +23,12 @@
     "express": "^4.14.1",
     "express-session": "^1.15.0",
     "googleapis": "^16.1.0",
-    "got": "6.7.1",
     "helmet": "^3.6.1",
     "jade": "^1.11.0",
     "lodash": "^4.14.2",
     "nconf": "^0.8.4",
     "prompt": "^1.0.0",
+    "word2vec": "^1.1.1",
     "zone.js": "^0.7.2"
   },
   "devDependencies": {

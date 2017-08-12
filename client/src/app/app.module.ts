@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-import { RouterModule }   from '@angular/router';
+import { RouterModule } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -14,6 +14,7 @@ import { FormConfirmationDialogComponent } from './form/form-confirmation-dialog
 import { LinkListComponent } from './link-list/link-list.component';
 import { LinkNameValidator } from './form/link.validator';
 import { UserService } from './services/user.service';
+import { GoogleAnalyticsEventsService } from "./services/google-analytics-events.service";
 
 @NgModule({
   declarations: [
@@ -41,7 +42,10 @@ import { UserService } from './services/user.service';
   entryComponents: [
     FormConfirmationDialogComponent,
   ],
-  providers: [UserService],
+  providers: [
+    UserService,
+    GoogleAnalyticsEventsService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

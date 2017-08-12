@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { MdButtonModule } from '@angular/material';
 import { MdIcon } from '@angular/material';
 import { Link } from '../model/link';
@@ -15,6 +15,7 @@ import { User } from '../model/user';
 })
 export class LinkListComponent implements OnInit {
 
+  @Input() shortName: string;
   links: Array<Link>;
   user: User;
 
@@ -43,12 +44,12 @@ export class LinkListComponent implements OnInit {
   }
 
   refreshList() {
-    return this.linkService.getLinks().then(links => {
-      this.links = links;
-      links.forEach(link => {
-        link['canEdit'] = (link.userId == this.user.id);
-      });
-    })
+      return this.linkService.getLinks(this.shortName).then(links => {
+        this.links = links;
+        links.forEach(link => {
+          link['canEdit'] = (link.userId == this.user.id);
+        });
+      })
   }
 
 }

@@ -42,4 +42,4 @@
   </md-grid-list>
 </form>
 
-<app-link-list #linkList></app-link-list>
+<app-link-list #linkList [shortName]="linkFormGroup.controls['link'].value" ></app-link-list>
