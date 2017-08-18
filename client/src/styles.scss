@@ -1,0 +1,12 @@
+/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+// /* @import '~@angular/material/prebuilt-themes/deeppurple-amber.css'; */
+@import './custom-theme';
+
+.alternate-theme {
+    $alternate-primary: mat-palette($mat-light-green);
+    $alternate-accent: mat-palette($mat-light-green, A200, A100, A400);
+    $alternate-warn: mat-palette($mat-red);
+    $alternate-theme: mat-dark-theme($alternate-primary, $alternate-accent, $alternate-warn);
+    @include angular-material-theme($alternate-theme);
+}
