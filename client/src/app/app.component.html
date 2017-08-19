@@ -4,7 +4,7 @@
             <span style="width: 300px"><img height="40" width="144" src="./assets/logo_green.png"></span>
             
         </div>
-    <div><i>{{user.orgName}}</i></div>
+    <div><i>{{(user|async)?.orgName}}</i></div>
         <app-login></app-login>
     </div>
 </md-toolbar>

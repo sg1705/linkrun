@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { LoginComponent } from './login/login.component';
 import { UserService } from './services/user.service';
 import { User } from './model/user';
+import { Observable } from 'rxjs/Rx';
+import 'rxjs/Rx';
 
 @Component({
   selector: 'app-root',
@@ -10,16 +12,15 @@ import { User } from './model/user';
 })
 export class AppComponent {
 
-  user: User;
+  user: Observable<User>;
 
   constructor(private userService: UserService) {
-    this.userService.getCurrentUser().then(user => {
+    this.user = Observable.fromPromise(this.userService.getCurrentUser());
+    this.user.subscribe(user => {
       console.debug('logged in user', user);
-      this.user = user;
       if (!user.id) {
         window.location.href = '/_/';
-      }
-      
+      }      
     })
   }
 
