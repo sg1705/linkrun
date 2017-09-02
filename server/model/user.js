@@ -43,7 +43,7 @@ class User {
     userData["lName"] = lName;
     userData["picture"] = picture;
     logger.info("updating user", {'userId':uid, 'orgId':orgId});
-    return this.getModel().update (uid, userData);
+    return this.getModel().update(uid, userData);
   }
 
   /**

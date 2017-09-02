@@ -10,6 +10,8 @@ import {MdGridListModule} from '@angular/material';
 import {MdTabsModule} from '@angular/material';
 import {MdDialog, MdDialogRef} from '@angular/material';
 import { LinkService } from '../services/link.service';
+import { UserService } from '../services/user.service';
+import { User } from '../model/user';
 import { Link } from '../model/link';
 import { LinkNameValidator } from './link.validator';
 import { LinkListComponent } from '../link-list/link-list.component';
@@ -29,6 +31,7 @@ export class FormComponent implements OnInit {
   linkId: number = 0;
   mode:string = 'create';
   formTitle:string = 'Create Short Link';
+  user: Observable<User>;
 
   @ViewChild('link') inputLink: ElementRef;
   @ViewChild('url') inputUrl: ElementRef;
@@ -38,6 +41,7 @@ export class FormComponent implements OnInit {
     private dialog: MdDialog,
     private fb: FormBuilder, 
     private linkService: LinkService,
+    private userService: UserService,
     private router: Router,
     private activateRoute: ActivatedRoute ) {
       this.linkFormGroup = fb.group({
@@ -50,6 +54,7 @@ export class FormComponent implements OnInit {
         this.linkId = params['id'];
         this.initialize();
       })
+      this.user = Observable.fromPromise(this.userService.getCurrentUser());    
    }
 
   ngOnInit() {
