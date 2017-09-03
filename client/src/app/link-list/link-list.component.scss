@@ -1,0 +1,7 @@
+// Import theming functions
+@import '~@angular/material/theming';
+@include mat-core();
+
+.title {
+    padding: 24px;
+}

@@ -1,3 +1,6 @@
+// Import theming functions
+@import '~@angular/material/theming';
+
 /* You can add global styles to this file, and also import other style files */
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 // /* @import '~@angular/material/prebuilt-themes/deeppurple-amber.css'; */
@@ -9,4 +12,8 @@
     $alternate-warn: mat-palette($mat-red);
     $alternate-theme: mat-dark-theme($alternate-primary, $alternate-accent, $alternate-warn);
     @include angular-material-theme($alternate-theme);
+}
+
+.app {
+  background-color: mat-color($custom-theme-primary, 100);
 }
