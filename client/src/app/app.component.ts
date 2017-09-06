@@ -15,13 +15,6 @@ export class AppComponent {
   user: Observable<User>;
 
   constructor(private userService: UserService) {
-    // this.user = Observable.fromPromise(this.userService.getCurrentUser());
-    // this.user.subscribe(user => {
-    //   console.debug('logged in user', user);
-    //   if (!user.id) {
-    //     window.location.href = '/_/';
-    //   }      
-    // })
   }
 
   ngOnInit() {
