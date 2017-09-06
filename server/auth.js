@@ -38,23 +38,28 @@ function authenticateUser(res,req, authMethod, orgName, email, fName, lName, pic
   return new Promise((resolve, reject) => {
     let orgService = new OrgService();
     let userService = new UserService();
+    console.log("orgName:", orgName);
     orgService.getOrgByName(orgName)
     //retrieve org
     .then(orgEntities => {
+      console.log("orgEntities:", orgEntities);
       if (orgEntities.entities.length == 0) {
         //org doesn't exist
         return orgService.createOrg(orgName, authMethod)
           .then((orgEntity) => {
+               console.log("orgEntity:", orgEntity);
                 return userService.getOrCreateUserByEmail(orgEntity.id, email, fName, lName, picture, refresh_token);
             });
           } else {
             // org exists
             let orgEntity = orgEntities.entities[0];
+            console.log("orgEntity:", orgEntity);
             return userService.getOrCreateUserByEmail(orgEntity.id, email, fName, lName, picture, refresh_token);
           }
       })
       .then(userEntity => {
         //set cookie
+        console.log("userEntity:", userEntity);
         cookie.setCookie(res, userEntity.id, userEntity.orgId);        
       })
       //retrieve user
