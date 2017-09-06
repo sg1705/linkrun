@@ -1,44 +1,35 @@
-<!-- <md-list>
-  <md-list-item *ngFor="let link of links" style="border-bottom: 1px #dadada solid">
-    <h3 md-line  ><a href="/{{link.link}}"> {{link.link}}</a> </h3>
-    <div style="display:flex" *ngIf="link['canEdit']">
-      <div style="color:#ababab">
-        <a routerLink="/link/edit/{{link.id}}" style="color:#ababab"><span class="material-icons">edit</span></a>
-      </div>
-      <div style="color:#ababab">
-        <a (click)="deleteLink(link.id)" style="cursor:pointer"><span class="material-icons">delete</span></a>
-      </div>
-    </div>
-  </md-list-item>
-</md-list> -->
-
-
 <section class="mat-typography">
-<div class="mat-elevation-z4" style="background:white">
-  <h2 class="title">Shortlinks created at {{(user|async)?.orgName}}</h2>
-<md-table #table [dataSource]="dataSource">
+  <div class="mat-elevation-z4" style="background:white">
+    <h2 class="title">Shortlinks created at {{(user|async)?.orgName}}</h2>
+    <md-table #table [dataSource]="dataSource">
 
-     <ng-container mdColumnDef="link">
-      <md-header-cell *mdHeaderCellDef>LINK</md-header-cell>
-      <md-cell *mdCellDef="let row"> <a href="/{{row.link}}">{{row.link}}</a></md-cell>
-    </ng-container>
+      <ng-container mdColumnDef="link">
+        <md-header-cell *mdHeaderCellDef class="link header"> SHORT LINK </md-header-cell>
+        <md-cell *mdCellDef="let row" class="link"> <a href="/{{row.link}}">link.run/{{row.link}}</a></md-cell>
+      </ng-container>
+
+      <ng-container mdColumnDef="url">
+        <md-header-cell *mdHeaderCellDef class="url header">URL</md-header-cell>
+        <md-cell *mdCellDef="let row" class="url"> <a href="/{{row.url}}">{{row.url}}</a></md-cell>
+      </ng-container>
+
 
       <ng-container mdColumnDef="action">
-      <md-header-cell *mdHeaderCellDef>Action</md-header-cell>
-      <md-cell *mdCellDef="let row">
-        <div style="display:flex" *ngIf="row['canEdit']">
-          <div style="color:#ababab">
-            <a routerLink="/link/edit/{{row.id}}" style="color:#ababab"><span class="material-icons">edit</span></a>
+        <md-header-cell *mdHeaderCellDef class="action header">ACTION</md-header-cell>
+        <md-cell *mdCellDef="let row" class="action">
+          <div style="display:flex; justify-content: flex-end;" *ngIf="row['canEdit']">
+            <div style="color:#ababab">
+              <a routerLink="/link/edit/{{row.id}}" style="color:#ababab"><span class="material-icons">edit</span></a>
+            </div>
+            <div style="color:#ababab">
+              <a (click)="deleteLink(row.id)" style="cursor:pointer"><span class="material-icons">delete</span></a>
+            </div>
           </div>
-          <div style="color:#ababab">
-            <a (click)="deleteLink(row.id)" style="cursor:pointer"><span class="material-icons">delete</span></a>
-          </div>
-        </div>
-      </md-cell>
-    </ng-container>  
+        </md-cell>
+      </ng-container>
 
-    <md-header-row *mdHeaderRowDef="displayedColumns"></md-header-row>
-    <md-row *mdRowDef="let row; columns: displayedColumns;"></md-row>   
-  </md-table>
+      <md-header-row *mdHeaderRowDef="displayedColumns"></md-header-row>
+      <md-row *mdRowDef="let row; columns: displayedColumns;"></md-row>
+    </md-table>
   </div>
 </section>

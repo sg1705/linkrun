@@ -22,7 +22,7 @@ export class LinkListComponent implements OnInit {
   user: Observable<User> | null;
   userObject: User;
   dataSource: DataSource<any>;
-  displayedColumns = ['link', 'action'];
+  displayedColumns = ['link', 'url','action'];
 
   constructor(
     private linkService: LinkService,
