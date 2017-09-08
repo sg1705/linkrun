@@ -45,7 +45,6 @@ class Org {
   }
 
   getOrgByName(orgName) {
-    console.log ("getting org", orgName);
     return this.modelService.readByColumn('orgName', orgName);
   }
 

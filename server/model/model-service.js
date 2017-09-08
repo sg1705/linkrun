@@ -181,12 +181,10 @@ class ModelService {
             const q =
                 ds.createQuery([kind])
                     .filter(columnName, '=', columnValue);
-            console.log("before running query"); 
             ds.runQuery(q, (err, entities, nextQuery) => {
                 if (err) {
                     reject(err);
                 }
-                console.log("after running query"); 
                 const hasMore = nextQuery.moreResults !== Datastore.NO_MORE_RESULTS ? nextQuery.endCursor : false;
                 resolve({
                     entities: entities.map(this.fromDatastore),
