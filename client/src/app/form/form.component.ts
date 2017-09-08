@@ -133,7 +133,10 @@ export class FormComponent implements OnInit {
   }
 
   private showConfirmationDialog(resolve, message, link:Link) {
-    let dialogRef = this.dialog.open(FormConfirmationDialogComponent);
+    let dialogRef = this.dialog.open(FormConfirmationDialogComponent, {
+      width: '350px',
+      height: '250px'
+    });
     dialogRef.componentInstance.message = message;
     dialogRef.componentInstance.link = link;
     dialogRef.afterClosed().subscribe(result => {

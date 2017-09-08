@@ -5,6 +5,8 @@ import { Link } from '../model/link';
 @Component({
   selector: 'form-confirmation-dialog',
   templateUrl: 'form-confirmation-dialog.html',
+  styleUrls: ['./form.component.scss'],
+
 })
 export class FormConfirmationDialogComponent implements OnInit {
 

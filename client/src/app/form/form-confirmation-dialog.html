@@ -1,5 +1,12 @@
+<md-toolbar>
+<h2 md-dialog-title>Shortlink Created</h2>
+</md-toolbar>
+
 <p>
 {{link.link}} {{message}}
 </p>
+
+<md-dialog-actions>
     <button md-button [md-dialog-close]="true">Dismiss</button>
     <button md-button [md-dialog-close]="true" target="_blank" (click)="gotoShortLink()">Goto {{link.link}}</button>
+</md-dialog-actions>

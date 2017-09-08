@@ -15,6 +15,9 @@ export class AppComponent {
   user: Observable<User>;
 
   constructor(private userService: UserService) {
+  }
+
+  ngOnInit() {
     this.user = Observable.fromPromise(this.userService.getCurrentUser());
     this.user.subscribe(user => {
       console.debug('logged in user', user);
@@ -22,6 +25,7 @@ export class AppComponent {
         window.location.href = '/_/';
       }      
     })
+    
   }
 
 }
