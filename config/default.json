@@ -14,17 +14,17 @@
         "secret": "M_Wm9g4EGna0kK7ZQQZpDXar"
     },
     "msft" : {
-     "client": {
-      "id": "45de05e9-2bca-458c-ab3e-37710181611c",
-      "secret": "AyrgGTeUPZanMSCmQKe6jWO"
-     },
-     "auth" : {
-      "tokenHost": "https://login.microsoftonline.com",
-      "authorizePath": "common/oauth2/v2.0/authorize",
-      "tokenPath": "common/oauth2/v2.0/token"
-     }
-   }
-},
+      "client": {
+        "id": "45de05e9-2bca-458c-ab3e-37710181611c",
+        "secret": "AyrgGTeUPZanMSCmQKe6jWO"
+      },
+      "auth" : {
+        "tokenHost": "https://login.microsoftonline.com",
+        "authorizePath": "common/oauth2/v2.0/authorize",
+        "tokenPath": "common/oauth2/v2.0/token"
+      }
+    }
+  },
 
   "oauthCallbacks": {
     "googleCallbackUrl"  : "http://localhost:8090/__/login/google/oauthcallback",
