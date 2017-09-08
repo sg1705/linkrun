@@ -21,7 +21,6 @@
     "config": "^1.25.1",
     "cookie-parser": "^1.4.3",
     "core-js": "^2.4.1",
-    "es6-promise": "^4.1.1",
     "express": "^4.14.1",
     "express-session": "^1.15.0",
     "googleapis": "^16.1.0",
