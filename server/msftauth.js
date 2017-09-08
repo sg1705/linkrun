@@ -131,7 +131,6 @@ function getUserInfo(token) {
       if (err) {
         reject(err);
       } else {
-        logger.debug("res:", res);
         resolve(res);
       }
     });
