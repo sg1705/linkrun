@@ -157,22 +157,18 @@ class ModelService {
     read(id) {
         let ds = this.ds;
         let kind = this.kind;
- console.log('read')
         return new Promise((resolve, reject) => {
             const key = ds.key([kind, parseInt(id, 10)]);
             ds.get(key, (err, entity) => {
                 if (err) {
-                    console.log('error')
                     return reject(err);
                 }
                 if (!entity) {
-                    console.log('not found')
                     return reject({
                         code: 404,
                         message: 'Not found'
                     });
                 }
-                console.log(this.fromDatastore(entity))
                 resolve(this.fromDatastore(entity));
             });
         })
