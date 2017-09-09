@@ -6,8 +6,11 @@
   "scripts": {
     "start": "node server/app.js",
     "dev": "nodemon server/app.js",
+    "cover": "nyc --cache npm test; nyc report --reporter=html",
     "build:prod": "cd client && ng build -prod",
-    "build:staging": "cd client && ng build -prod"
+    "build:staging": "cd client && ng build -prod",
+    "test": "npm run test-unit",
+    "test-unit": "NODE_ENV=test mocha --require co-mocha 'server/**/*.spec.js'"
   },
   "private": true,
   "dependencies": {
@@ -32,14 +35,19 @@
     "zone.js": "^0.7.2"
   },
   "devDependencies": {
+    "@google-cloud/nodejs-repo-tools": "1.4.15",
     "@types/jasmine": "2.5.38",
     "@types/node": "^6.0.42",
+    "chai": "3.5.0",
+    "chai-as-promised": "^7.1.1",
+    "co-mocha": "1.1.2",
     "jasmine-core": "2.5.2",
     "jasmine-spec-reporter": "2.5.0",
     "mocha": "^3.0.2",
     "nodejs-repo-tools": "git+https://git@github.com/GoogleCloudPlatform/nodejs-repo-tools.git",
     "protractor": "~4.0.13",
-    "proxyquire": "^1.7.10",
-    "sinon": "^1.17.5"
+    "proxyquire": "~1.8.0",
+    "sinon": "~2.3.5",
+    "sinon-chai": "2.8.0"
   }
 }
