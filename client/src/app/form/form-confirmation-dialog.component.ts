@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { MdDialogRef } from '@angular/material';
+import { Component, OnInit, Inject } from '@angular/core';
+import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 import { Link } from '../model/link';
 
 @Component({
@@ -13,7 +13,7 @@ export class FormConfirmationDialogComponent implements OnInit {
   message:string;
   link: Link;
 
-  constructor(public dialogRef: MdDialogRef<FormConfirmationDialogComponent>) {}
+  constructor(public dialogRef: MdDialogRef<FormConfirmationDialogComponent>, @Inject(MD_DIALOG_DATA) public data: any) {}
 
   ngOnInit() {}
 

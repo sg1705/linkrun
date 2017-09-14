@@ -1,12 +1,11 @@
-<md-toolbar>
-<h2 md-dialog-title>Shortlink Created</h2>
-</md-toolbar>
+<div class="mat-typography" style="display:flex; flex-direction:column; height: 100%; justify-content: space-between;">
+    <h1 color="primary" md-dialog-title>Shortlink Created</h1>
 
-<p>
-{{link.link}} {{message}}
-</p>
+    <p>
+        <b>link.run/{{link.link}}</b> created. Anyone at <i>{{data.orgName}}</i> can use this shortlink
+    </p>
 
-<md-dialog-actions>
-    <button md-button [md-dialog-close]="true">Dismiss</button>
-    <button md-button [md-dialog-close]="true" target="_blank" (click)="gotoShortLink()">Goto {{link.link}}</button>
-</md-dialog-actions>
+    <md-dialog-actions style="justify-content: flex-end">
+        <button md-raised-button color="primary" md-button [md-dialog-close]="true">Close</button>
+        <!-- <button md-raised-button color="primary" md-button [md-dialog-close]="true" target="_blank" (click)="gotoShortLink()">Goto {{link.link}}</button> -->
+    </md-dialog-actions>
