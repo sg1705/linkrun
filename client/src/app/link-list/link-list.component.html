@@ -13,6 +13,12 @@
         <md-cell *mdCellDef="let row" class="url"> <a href="/{{row.url}}">{{row.url}}</a></md-cell>
       </ng-container>
 
+      <ng-container mdColumnDef="createdby">
+        <md-header-cell *mdHeaderCellDef class="link header">CREATED BY</md-header-cell>
+        <md-cell *mdCellDef="let row" class="link">{{row.userId}}</md-cell>
+      </ng-container>
+
+
 
       <ng-container mdColumnDef="action">
         <md-header-cell *mdHeaderCellDef class="action header">ACTION</md-header-cell>
