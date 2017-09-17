@@ -39,6 +39,27 @@ export class UserService {
     }
   }
 
+  getAllUsers(): Promise<Array<User>> {
+      //make a network call to get user
+      return this.http.get(this.apiUrl+'/allusers')
+        .toPromise().then(res => {
+          var data = res.json();
+          var users = new Array<User>();
+          data.forEach(element => {
+            var user = new User(
+              element.id,
+              element.orgId,
+              element.fName,
+              element.lName,
+              element.picture,
+              element.email,
+              element.orgName
+            );
+            users.push(element);
+          });
+          return users;
+        })
+  }
 }
 
 
