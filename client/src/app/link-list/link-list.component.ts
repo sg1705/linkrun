@@ -34,7 +34,6 @@ export class LinkListComponent implements OnInit {
     this.user = Observable.fromPromise(this.userService.getCurrentUser());
     this.user.subscribe(user => {
       this.userService.getAllUsers().then(users => {
-        console.log('got user');
         this.users = users;        
         this.dataSource = new LinkDataSource(this.linkService, user, this.users);
         this.userObject = user;
