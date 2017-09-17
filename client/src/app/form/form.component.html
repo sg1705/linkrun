@@ -38,12 +38,11 @@
       </md-input-container>
     </md-grid-tile> 
     <md-grid-tile>
-      <button md-raised-button type="submit" [disabled]="!linkFormGroup.valid" >Submit</button>  
+      <button md-raised-button color="primary" type="submit" [disabled]="!linkFormGroup.valid" >Create</button>  
     </md-grid-tile>
   </md-grid-list> 
 </form>
 </div>
 <br/>
-<br/>
+<app-link-list #linkList [shortName]="linkFormGroup.controls['link'].value" ></app-link-list><br/>
 
-<app-link-list #linkList [shortName]="linkFormGroup.controls['link'].value" ></app-link-list>

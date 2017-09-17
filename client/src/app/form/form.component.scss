@@ -1,0 +1,14 @@
+// Import theming functions
+@import '~@angular/material/theming';
+@import '../../styles.scss';
+
+@include mat-core();
+
+md-dialog-container.mat-dialog-container {
+    padding: 0px;
+}
+
+md-input-container {
+    width: 600px;
+    font-size: 20px;
+}

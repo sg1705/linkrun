@@ -32,6 +32,7 @@ export class FormComponent implements OnInit {
   mode:string = 'create';
   formTitle:string = 'Create Short Link';
   user: Observable<User>;
+  orgName: string;
 
   @ViewChild('link') inputLink: ElementRef;
   @ViewChild('url') inputUrl: ElementRef;
@@ -54,7 +55,11 @@ export class FormComponent implements OnInit {
         this.linkId = params['id'];
         this.initialize();
       })
-      this.user = Observable.fromPromise(this.userService.getCurrentUser());    
+      this.user = Observable.fromPromise(this.userService.getCurrentUser());
+      
+      this.user.subscribe(user => {
+        this.orgName = user.orgName;
+      });    
    }
 
   ngOnInit() {
@@ -134,8 +139,9 @@ export class FormComponent implements OnInit {
 
   private showConfirmationDialog(resolve, message, link:Link) {
     let dialogRef = this.dialog.open(FormConfirmationDialogComponent, {
-      width: '350px',
-      height: '250px'
+      width: '300px',
+      height: '220px', 
+      data: { orgName: this.orgName }
     });
     dialogRef.componentInstance.message = message;
     dialogRef.componentInstance.link = link;
