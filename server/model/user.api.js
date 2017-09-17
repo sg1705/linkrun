@@ -56,9 +56,9 @@ router.get('/', (req, res, next) => {
 });
 
 /**
- * GET /api/users/:id
+ * GET /api/users/allusers
  *
- * Retrieve a user.
+ * Retrieve all users for the org
  */
 router.get('/allusers', (req, res, next) => {
   //get user from cookie
