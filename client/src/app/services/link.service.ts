@@ -22,7 +22,7 @@ export class LinkService {
             links.push(link);
           }
           return links;
-        })
+        });
   }
 
   /**

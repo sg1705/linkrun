@@ -63,6 +63,7 @@ class Org {
   readByColumn (columnName, columnValue) {
     return this.getModel().readByColumn (columnName, columnValue);
   }
+
 }
 
 module.exports = Org;
