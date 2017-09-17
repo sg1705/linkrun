@@ -1,6 +1,6 @@
 <section class="mat-typography">
   <div class="mat-elevation-z4" style="background:white">
-    <h2 class="title">Shortlinks created at {{(user|async)?.orgName}}</h2>
+    <h1 class="title mat-h1"><i>{{(user|async)?.orgName}}</i> short links</h1>
     <md-table #table [dataSource]="dataSource">
 
       <ng-container mdColumnDef="link">
