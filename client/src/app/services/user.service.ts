@@ -25,7 +25,8 @@ export class UserService {
             data.fName,
             data.lName,
             data.picture,
-            data.email
+            data.email,
+            data.orgName
           );
           this.currentUser = user;
           return this.currentUser;

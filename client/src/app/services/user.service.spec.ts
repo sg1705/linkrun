@@ -34,7 +34,8 @@ describe('UserService', () => {
       id:5715921523965952,
       lName: "Gupta",
       orgId: 5704147139559424,
-      picture: "https://lh5.googleusercontent.com/-EKWz1QcfjGg/AAAAAAAAAAI/AAAAAAAAEdM/rQpQ4Z44pRA/photo.jpg"
+      picture: "https://lh5.googleusercontent.com/-EKWz1QcfjGg/AAAAAAAAAAI/AAAAAAAAEdM/rQpQ4Z44pRA/photo.jpg",
+      orgName: "sg1705@gmail.com"
     }
 
     it('should get current user from backend', async(
@@ -47,6 +48,7 @@ describe('UserService', () => {
         service.getCurrentUser().then(user => {
           expect(user.id).toEqual(5715921523965952);
           expect(user.email).toEqual('sg1705@gmail.com');
+          expect(user.orgName).toEqual('sg1705@gmail.com');
         });
 
       }))
@@ -62,6 +64,7 @@ export class UserServiceSpy {
     "Gupta",
     "https://lh5.googleusercontent.com/-EKWz1QcfjGg/AAAAAAAAAAI/AAAAAAAAEdM/rQpQ4Z44pRA/photo.jpg",
     "sg1705@gmail.com",
+    "sg1705@gmail.com"
   )
 
   getCurrentUser = jasmine.createSpy('getCurrentUser').and.callFake(

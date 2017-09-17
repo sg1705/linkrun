@@ -13,11 +13,23 @@
     "google": {
         "id": "635298643416-jolk8frb406gktsuabbuob9lettk5lg9.apps.googleusercontent.com",
         "secret": "tt1G5eD549phXXboBF_bSxp-"
-    }
+    },
+    "msft" : {
+     "client": {
+      "id": "32896a98-d328-4531-b758-b4aee43a86d1",
+      "secret": "oiaiq5ML9bkFxgfi0jmvRyi"
+     },
+     "auth" : {
+      "tokenHost": "https://login.microsoftonline.com",
+      "authorizePath": "common/oauth2/v2.0/authorize",
+      "tokenPath": "common/oauth2/v2.0/token"
+     }
+   }
   },
 
   "oauthCallbacks": {
-    "googleCallbackUrl"  : "https://link.run/__/login/google/oauthcallback"
+    "googleCallbackUrl"  : "https://link.run/__/login/google/oauthcallback",
+    "msftCallbackUrl"    : "https://link.run/__/login/msft/oauthcallback"
   },
   
   "ga":{

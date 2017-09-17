@@ -3,6 +3,9 @@
 import { Component } from '@angular/core';
 import { LoginComponent } from './login/login.component';
 import { UserService } from './services/user.service';
+import 'rxjs/Rx';
+import { Observable } from 'rxjs/Rx';
+import { User } from './model/user';
 import { Router, NavigationEnd } from "@angular/router";
 import { GoogleAnalyticsEventsService } from "./services/google-analytics-events.service";
 @Component({
@@ -12,8 +15,12 @@ import { GoogleAnalyticsEventsService } from "./services/google-analytics-events
 })
 export class AppComponent {
 
+  user: Observable<User>;
   constructor(private userService: UserService, public router: Router, public googleAnalyticsEventsService: GoogleAnalyticsEventsService) {
-    this.userService.getCurrentUser().then(user => {
+  }
+  ngOnInit() {
+    this.user = Observable.fromPromise(this.userService.getCurrentUser());
+    this.user.subscribe(user => {
       console.debug('logged in user', user);
       if (!user.id) {
         window.location.href = '/_/';
