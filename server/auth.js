@@ -16,6 +16,16 @@ function isLoggedIn(req, res, next) {
   res.redirect('/_/');
 }
 
+//returns true or false if the user is logged in
+function isLogged(req, res) {
+  if (isUserIdSetInCookie(req)) {
+    helper.clearRouteUrl(res);
+    return true;
+  } else {
+    return false;
+  }
+}
+
 function isUserIdSetInCookie(req) {
   var xsession = cookie.getXsession(req);
   if (xsession == null) {
@@ -79,6 +89,7 @@ function authenticateUser(res,req, authMethod, orgName, email, fName, lName, pic
 
 module.exports = {
     isLoggedIn: isLoggedIn,
+    isLogged: isLogged,
     logout: logout,
     authenticateUser: authenticateUser
 };

@@ -17,6 +17,7 @@ var helper = require('./helper.js');
 var logger = require('./model/logger.js');
 var SC = require('./model/spell-checker.js');
 var GA = require('./model/google-analytics-tracking.js')
+var fs = require('fs');
 
 /**
  * Setup Express
@@ -98,6 +99,31 @@ app.use('/_/', express.static(path.join(__dirname, '../static/')));
 
 app.use('/opensearch.xml', function (req, res, next) {
   res.sendFile(path.join(__dirname, '../static/opensearch.xml'));
+});
+
+/**
+ * Intercept any go url when user isn't logged in
+ */
+app.get("/:gourl", helper.setRouteUrl, function(req, res, next) {
+  if (
+        (req.params.gourl.indexOf('/__') > -1) 
+        || (req.params.gourl.indexOf('/_/') > -1)
+        || (req.params.gourl.indexOf('images/') > -1)) {
+    next();
+  }
+  if (auth.isLogged(req, res)) {
+    next();
+  } else {
+    fs.readFile(path.join(__dirname, '../static/refer.html'), 'utf8', function (err, data) {
+      if (err) {
+        return console.log(err);
+        next();
+      }
+      var result = data.replace("mylink", req.params.gourl);
+      res.set('Content-Type', 'text/html');
+      res.send(result)
+    });
+  }
 });
 
 /**
