@@ -102,6 +102,98 @@ app.use('/opensearch.xml', function (req, res, next) {
 });
 
 /**
+ * serving public url 
+ */
+app.get("/@:orgShortName/:gourl", helper.setRouteUrl, function(req, res, next) {
+  if (
+        (req.params.gourl.indexOf('/__') > -1) 
+        || (req.params.gourl.indexOf('/_/') > -1)
+        || (req.params.gourl.indexOf('images/') > -1)) {
+    next();
+  }
+  let ga = new GA();  
+  logger.info('routeGoUrl:', req.params.gourl);
+  logger.info('orgShortName:', req.params.orgShortName);
+  let orgShortName = req.params.orgShortName;
+  let routeGoUrl = req.params.gourl;
+  let userId = "public_user"; 
+  var orgId;
+
+  if (orgShortName == null) {
+    //error condition
+    logger.error('orgShortName is null');
+    next();
+  }
+  if (routeGoUrl == null) {
+    //error condition
+    logger.error('link is null');
+    next();
+  }
+  let orgService = new OrgService();
+  orgService.getOrgByShortName(orgShortName)
+  //retrieve org
+  .then(orgEntities => {
+    if (orgEntities.entities.length == 0) {
+          //org doesn't exist
+          ga.trackEvent(userId, orgId, 'Link', 'redirect', 'no_url_found', '100')
+          logger.info("no_org_shortname_exist", {'orgShortName' : orgShortName});
+          // TODO: route to error page with warning that you are attepting to access 
+          // org that does not exist. Violation will be reported.
+          res.redirect(APP_HOME);
+          return;
+    } else {
+          // org exists
+          orgId = orgEntities.entities[0].id;
+          logger.info("orgShortName_exists", {'orgShortName' : orgShortName, 'orgId' : orgId});
+          if (!orgEntities.entities[0].isPublicLinksAllowed) {
+            logger.error("attempt_to_access_private_org_failed", {'link' : routeGoUrl, 'orgShortName' :orgShortName,  'orgId' : orgId});
+            //TODO: route to error page with warning that you are attepting to access 
+            // private link. Violation will be reported.  
+            res.redirect(APP_HOME);
+            return;
+          }
+    }
+    // retrieve actual url
+    let linkService = new LinkService();
+    linkService.getLinkByGoLink(routeGoUrl, orgId)
+      .then(linkEntities => { 
+        if ((linkEntities.entities.length == 0) || (!linkEntities.entities[0].url) )
+        {
+          ga.trackEvent(userId, orgId, 'Link', 'redirect', 'no_url_found', '100')
+          logger.info("no_route_found", {'link' : routeGoUrl});
+          res.redirect(APP_HOME);
+          return;
+        } else {
+          if (!linkEntities.entities[0].isPublic){
+            logger.error("attempt_to_access_private_link_failed", {'link' : routeGoUrl,'orgShortName' :orgShortName, 'orgId' : orgId});
+            //TODO: route to error page with warning that you are attepting to access 
+            // private link. Violation will be reported.  
+            res.redirect(APP_HOME);
+            return;
+          }
+          let url = linkEntities.entities[0].url;
+          if (!(url.startsWith('https://') || url.startsWith('http://'))) {
+            url = 'http://' + url;
+          }        
+          ga.trackEvent(userId, orgId, 'Link', 'redirect', linkEntities.entities[0].id, '100')
+          logger.info("routing_link", {'link' : linkEntities.entities[0]});
+          res.redirect(301, url);
+          return;
+        }
+      })
+    .catch(err => {
+      logger.error(err);
+      //error condition
+      //route to error page
+    })
+  })
+  .catch(err => {
+    logger.error(err);
+    //error condition
+    //route to error page
+  })
+});
+/**
  * Intercept any go url when user isn't logged in
  */
 app.get("/:gourl", helper.setRouteUrl, function(req, res, next) {
@@ -125,7 +217,6 @@ app.get("/:gourl", helper.setRouteUrl, function(req, res, next) {
     });
   }
 });
-
 /**
  * Go to the url requested
  */
