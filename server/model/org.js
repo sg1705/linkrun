@@ -18,10 +18,9 @@ class Org {
   /**
    * Create a new Org.
    */
-  createOrg(orgName, orgShortName, orgType) {
+  createOrg(orgName, orgType) {
     var orgData = {};
     orgData["orgName"] = orgName;
-    orgData["orgShortName"] = orgShortName;
     orgData["orgType"] = orgType;
     logger.info ("creating org", orgData);
     return this.modelService.create(orgData);

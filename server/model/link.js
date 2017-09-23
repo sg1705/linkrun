@@ -64,7 +64,7 @@ createLink(orgId, userId, gourl, url, description, isPublic) {
    * Update an existing link.
    * First check whether the link is owned by userId
    */
-  updateLink(id, orgId, userId, gourl, url, description, isExposedAsPublicLink) {
+  updateLink(id, orgId, userId, gourl, url, description, isPublic) {
     return new Promise((resolve, reject) => {
       this.getModel().read(id).then(entity => {
         if(entity.userId == userId) {
@@ -74,7 +74,7 @@ createLink(orgId, userId, gourl, url, description, isPublic) {
           linkData["gourl"] = gourl.trim().toLowerCase();
           linkData["url"] = url.trim();
           linkData["description"] = description;
-          linkData["isExposedAsPublicLink"] = isExposedAsPublicLink;
+          linkData["isPublic"] = isPublic;
           logger.info("updating_link", linkData);
           ga.trackEvent(userId, orgId, 'Link', 'update', linkData["gourl"], '100')              
           resolve(this.getModel().update (id, linkData));
