@@ -44,5 +44,5 @@
 </form>
 </div>
 <br/>
-<app-link-list #linkList></app-link-list>
-<br/>
+<app-link-list #linkList [shortName]="linkFormGroup.controls['link'].value" ></app-link-list><br/>
+

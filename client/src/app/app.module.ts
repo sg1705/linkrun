@@ -12,6 +12,7 @@ import { FormConfirmationDialogComponent } from './form/form-confirmation-dialog
 import { LinkListComponent } from './link-list/link-list.component';
 import { LinkNameValidator } from './form/link.validator';
 import { UserService } from './services/user.service';
+import { GoogleAnalyticsEventsService } from "./services/google-analytics-events.service";
 
 @NgModule({
   declarations: [
@@ -39,7 +40,10 @@ import { UserService } from './services/user.service';
   entryComponents: [
     FormConfirmationDialogComponent,
   ],
-  providers: [UserService],
+  providers: [
+    UserService,
+    GoogleAnalyticsEventsService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

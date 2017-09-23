@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { MdButtonModule } from '@angular/material';
 import { DataSource } from '@angular/cdk/collections';
 import { MdIcon } from '@angular/material';
@@ -19,6 +19,8 @@ import 'rxjs/Rx';
 })
 export class LinkListComponent implements OnInit {
 
+  @Input() shortName: string;
+  links: Array<Link>;
   user: Observable<User> | null;
   userObject: User;
   dataSource: DataSource<any>;
@@ -35,7 +37,7 @@ export class LinkListComponent implements OnInit {
     this.user.subscribe(user => {
       this.userService.getAllUsers().then(users => {
         this.users = users;        
-        this.dataSource = new LinkDataSource(this.linkService, user, this.users);
+        this.dataSource = new LinkDataSource(this.linkService, user, this.users, this.shortName);
         this.userObject = user;
       })
       
@@ -51,20 +53,22 @@ export class LinkListComponent implements OnInit {
   }
 
   refreshList() {
-    this.dataSource = new LinkDataSource(this.linkService, this.userObject, this.users);
+    this.dataSource = new LinkDataSource(this.linkService, this.userObject, this.users, this.shortName);
   }
 
 }
 
 export class LinkDataSource extends DataSource<any> {
 
-  constructor(private linkService: LinkService, private user: User, private users:Array<User>) {
+  shortName: string
+  constructor(private linkService: LinkService, private user: User, private users:Array<User>, shortName: string) {
     super();
+    this.shortName = shortName
   }
 
   connect(): Observable<Link[]> {
     console.log('LinkDataSource#connect')
-    return Observable.fromPromise(this.linkService.getLinks().then(links => {
+    return Observable.fromPromise(this.linkService.getLinks(this.shortName).then(links => {
       
       links.forEach(link => {
         link['canEdit'] = (link.userId == this.user.id);

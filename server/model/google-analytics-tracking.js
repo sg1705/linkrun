@@ -1,6 +1,9 @@
 'use strict';
-const got = require('got');
 var config = require('config');
+const request = require('request');
+const express = require('express');
+const app = express();
+app.enable('trust proxy');
 
 class GA {
 
@@ -14,15 +17,15 @@ class GA {
             // Anonymous Client Identifier. Ideally, this should be a UUID that
             // is associated with particular user, device, or browser instance.
             cid: userId,
-            // uid: userId,
+            uid: userId,
             cd1: orgId, // org-id custom dimenstion
 
             // client-id custom dimension. Custom dimension is easier to use and 
             // has less restricitons than the built-in cid.
-            cd2: userId, 
-            
+            cd2: userId,
+
             // user-id custom dimension
-            cd3: userId, 
+            cd3: userId,
 
             // Event hit type.
             t: 'event',
@@ -37,9 +40,22 @@ class GA {
             //custom dimension 
         };
 
-        return got.post('http://www.google-analytics.com/collect', {
-            body: data
-        });
+        request.post(
+            'http://www.google-analytics.com/collect',
+            {
+                form: data
+            },
+            (err, response) => {
+                if (err) {
+                    logger.info('error: ', err)
+                    return;
+                }
+                if (response.statusCode !== 200) {
+                    logger.info('Tracking failed')
+                    return;
+                }
+            }
+        );
     }
 }
 

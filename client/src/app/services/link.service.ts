@@ -11,8 +11,8 @@ export class LinkService {
   /**
    * Return all links for the user
    */
-  getLinks(): Promise<Array<Link>> {
-      return this.http.get(this.apiUrl)
+  getLinks(shortName: string): Promise<Array<Link>> {
+      return this.http.get(this.apiUrl+'/sort/'+shortName)
         .toPromise().then(res => {
           var data = res.json();
           var links = new Array<Link>();

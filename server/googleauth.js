@@ -6,6 +6,8 @@ var oauth2       = google.oauth2('v2');
 var OAuth2       = google.auth.OAuth2;
 var logger       = require('./model/logger.js')
 var auth         = require('./auth.js');
+var GA = require('./model/google-analytics-tracking.js')
+var cookie = require('./cookie.js');
 
 const express    = require('express');
 const router     = express.Router();
@@ -96,6 +98,10 @@ router.get('/oauthcallback',
       })
       .catch(err => {
         logger.error('routing error', err);
+        let ga = new GA();
+        let orgId = cookie.getOrgIdFromCookie(req)
+        let userId = cookie.getUserIdFromCookie(req)        
+        ga.trackEvent(userinfo, orgId, 'User', 'login', 'fail', '100')
         //return err
       });
   });
