@@ -17,7 +17,7 @@ export class LinkService {
           var data = res.json();
           var links = new Array<Link>();
           for (var entity of data) {
-            var link = new Link(entity['id'], entity['gourl'], entity['url'], entity['description']);
+            var link = new Link(entity['id'], entity['gourl'], entity['url'], entity['isExposedAsPublicLink']);
             link.setUserId(entity['userId']);
             links.push(link);
           }
@@ -32,10 +32,10 @@ export class LinkService {
     return this.http.post(this.apiUrl+'/create', {
       'link': link.link,
       'url': link.url,
-      'description': link.description
+      'isExposedAsPublicLink': link.isExposedAsPublicLink
     }).toPromise().then(res => {
       let resBody = res.json();
-      let linkObj = new Link(resBody['id'], resBody['gourl'], resBody['url'], resBody['description']);
+      let linkObj = new Link(resBody['id'], resBody['gourl'], resBody['url'], resBody['isExposedAsPublicLink']);
       linkObj.setUserId(resBody['userId']);
       return linkObj;
     })
@@ -46,10 +46,10 @@ export class LinkService {
       'id': link.id,
       'link': link.link,
       'url': link.url,
-      'description': link.description
+      'isExposedAsPublicLink': link.isExposedAsPublicLink
     }).toPromise().then(res => {
       let resBody = res.json();
-      let linkObj = new Link(resBody['id'], resBody['gourl'], resBody['url'], resBody['description'] );
+      let linkObj = new Link(resBody['id'], resBody['gourl'], resBody['url'], resBody['isExposedAsPublicLink'] );
       linkObj.setUserId(resBody['userId']);
       return linkObj;
     })
@@ -68,7 +68,7 @@ export class LinkService {
       return this.http.get(this.apiUrl + '/link/'+linkId)
         .toPromise().then(res => {
           var entity = res.json();
-          var link = new Link(entity['id'], entity['gourl'], entity['url'], entity['description']);
+          var link = new Link(entity['id'], entity['gourl'], entity['url'], entity['isExposedAsPublicLink']);
           link.setUserId(entity['userId']);
           return link;
         })

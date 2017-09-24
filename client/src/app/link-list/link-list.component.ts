@@ -37,8 +37,7 @@ export class LinkListComponent implements OnInit {
         this.users = users;        
         this.dataSource = new LinkDataSource(this.linkService, user, this.users);
         this.userObject = user;
-      })
-      
+      }) 
     })
   }
 
@@ -65,7 +64,6 @@ export class LinkDataSource extends DataSource<any> {
   connect(): Observable<Link[]> {
     console.log('LinkDataSource#connect')
     return Observable.fromPromise(this.linkService.getLinks().then(links => {
-      
       links.forEach(link => {
         link['canEdit'] = (link.userId == this.user.id);
         var user = _.find(this.users, function(user) {

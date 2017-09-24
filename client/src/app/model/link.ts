@@ -2,14 +2,14 @@ export class Link {
   id:           number;
   link:         string;
   url:          string;
-  description:  string;
   userId:       number;
+  isExposedAsPublicLink:     boolean;
   
-  constructor(id, link, url, description) {
+  constructor(id, link, url, isPublic) {
     this.id = id;
     this.url = url;
     this.link = link;
-    this.description = description;
+    this.isExposedAsPublicLink = isPublic;
   }
 
   setUserId(userId: number) {

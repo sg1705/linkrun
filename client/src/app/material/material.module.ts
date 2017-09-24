@@ -6,10 +6,12 @@ import {MdButtonModule} from '@angular/material';
 import {MdListModule} from '@angular/material';
 import {MdGridListModule} from '@angular/material';
 import {MdTabsModule} from '@angular/material';
+import {MdTableModule} from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MdButton} from '@angular/material';
 import { MdIconModule } from '@angular/material';
 import {MdDialog, MdDialogRef} from '@angular/material';
+import {CdkTableModule} from '@angular/cdk/table';
 
 @NgModule({
   imports: [
@@ -20,7 +22,9 @@ import {MdDialog, MdDialogRef} from '@angular/material';
     MdListModule,
     MdGridListModule,
     MdTabsModule,
-    MdIconModule
+    MdIconModule,
+    CdkTableModule,
+    MdTableModule
   ],
   exports: [
     BrowserAnimationsModule,
@@ -30,6 +34,8 @@ import {MdDialog, MdDialogRef} from '@angular/material';
     MdListModule,
     MdGridListModule,
     MdTabsModule,
+    CdkTableModule,
+    MdTableModule
   ]
 })
 export class MaterialModule { }

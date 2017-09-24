@@ -26,7 +26,7 @@ describe('LinkService', () => {
   describe('should', () => {
     const mockResponse = [ 
       { 
-        description: '',
+        isExposedAsPublicLink: false,
         gourl: 'fsdfds',
         url: 'sdffsdfsd',
         id: 5722467590995968 } ];
@@ -48,10 +48,11 @@ describe('LinkService', () => {
     const mockLink = {
         orgId: 5704147139559424,
         userId: 5715921523965952,
-        description: 'Test description',
+        isExposedAsPublicLink: false,
         url: 'Test Url',
         link: 'Test Link',
-        id: 0 };
+        id: 0
+      };
 
 
     it('gets link for a given id', async(
@@ -78,9 +79,10 @@ describe('LinkService', () => {
           conn.mockRespond(new Response(new ResponseOptions({ body: JSON.stringify(mockLink) })));
         });
         
-        service.createLink(new Link(mockLink.id, mockLink.link, mockLink.url, mockLink.description)).then(link => {
+        service.createLink(new Link(mockLink.id, mockLink.link, mockLink.url, mockLink.isExposedAsPublicLink)).then(link => {
           expect(link.url).toEqual(mockLink.url);
-          expect(link.description).toEqual(mockLink.description);
+          console.log(link);
+          expect(link.isExposedAsPublicLink).toEqual(mockLink.isExposedAsPublicLink);
         });
       }))
     ));
@@ -88,13 +90,14 @@ describe('LinkService', () => {
 });
 
 export class LinkServiceSpy {
-  private testLink = new Link(5715921523965952, 'google', 'http://www.google.com', 'description');
+  private testLink = new Link(5715921523965952, 'google', 'http://www.google.com', false);
 
   getLinks = jasmine.createSpy('getLinks').and.callFake(
-    () => Promise
-    
+    () => {
+      return Promise
       .resolve(true)
-      .then(() => Object.assign({}, this.testLink))
+      .then(() => Object.assign([], [this.testLink]))
+    }
   );
 
 }
