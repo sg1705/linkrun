@@ -1,8 +1,8 @@
 'use strict';
 
 var logger = require('./model/logger.js');
-
-
+var fs = require('fs');
+var path = require('path');
 
 /**
  * Caching function
@@ -65,10 +65,23 @@ function routeUrl(linkEntities, userId, orgId, ga, res) {
   res.redirect(301, url);
 }
 
+function serve404(req, msg, res) {
+  fs.readFile(path.join(__dirname, '../static/404.html'), 'utf8', function (err, data) {
+  if (err) {
+    return console.log(err);
+    next();
+  }
+  var result = data.replace("mylink", req.params.gourl);
+  var result = result.replace("Your colleague shared a short link", msg);
+  res.set('Content-Type', 'text/html');
+  res.status(404).send(result)
+  });
+}
 module.exports = {
     setRouteUrl: setRouteUrl,
     getRouteUrl: getRouteUrl,
     clearRouteUrl: clearRouteUrl,
     routeUrl: routeUrl,
+    serve404: serve404,
     noCache: noCache
 };

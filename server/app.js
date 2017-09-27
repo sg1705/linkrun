@@ -133,7 +133,7 @@ app.get("/@:orgShortName/:gourl", function(req, res, next) {
           logger.warn("no_org_shortname_exist", {'orgShortName' : orgShortName});
           // TODO: route to error page with warning that you are attepting to access 
           // org that does not exist. Violation will be reported.
-          res.status(404).send("No workplace named \"" + orgShortName + "\" exits!");        // HTTP status 404: NotFound
+          helper.serve404(req, "No workplace named \"" + orgShortName + "\" exits!", res);        // HTTP status 404: NotFound
           return;
     } else {
           // org exists
@@ -143,7 +143,7 @@ app.get("/@:orgShortName/:gourl", function(req, res, next) {
             logger.warn("attempt_to_access_private_org_failed", {'link' : routeGoUrl, 'orgShortName' :orgShortName,  'orgId' : orgId});
             //TODO: route to error page with warning that you are attepting to access 
             // private link. Violation will be reported.  
-            res.status(404).send("Workplace \""+ orgShortName + "\" is private. You don\'t have permission to access it");
+            helper.serve404(req, "Workplace \""+ orgShortName + "\" is private. You don\'t have permission to access it", res);
             return;
           }
     }
@@ -155,14 +155,14 @@ app.get("/@:orgShortName/:gourl", function(req, res, next) {
         {
           ga.trackEvent(userId, orgId, 'Link', 'redirect_failed', 'no_url_found', '100')
           logger.warn("no_url_found", {'link' : routeGoUrl});
-          res.status(404).send('No URL found for the short link');
+          helper.serve404(req, 'No URL found for the short link', res);
           return;
         } else {
           if (!linkEntities.entities[0].isPublic){
             logger.warn("attempt_to_access_private_link_failed", {'link' : routeGoUrl,'orgShortName' :orgShortName, 'orgId' : orgId});
             //TODO: route to error page with warning that you are attepting to access 
             // private link. Violation will be reported.  
-            res.status(404).send("It is private link. You don\'t have permission to access it" );
+            helper.serve404(req, "It is private link. You don\'t have permission to access it", res);
             return;
           }
           helper.routeUrl(linkEntities, userId, orgId, ga, res);
