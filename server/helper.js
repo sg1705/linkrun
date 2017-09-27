@@ -55,10 +55,20 @@ function clearRouteUrl(res) {
   res.cookie('X_ROUTE', '', {expires: new Date(0)});
 }
 
+function routeUrl(linkEntities, userId, orgId, ga, res) {
+  let url = linkEntities.entities[0].url;
+  if (!(url.startsWith('https://') || url.startsWith('http://'))) {
+    url = 'http://' + url;
+  }        
+  ga.trackEvent(userId, orgId, 'Link', 'redirect', linkEntities.entities[0].id, '100')
+  logger.info("routing_link", {'link' : linkEntities.entities[0]});
+  res.redirect(301, url);
+}
+
 module.exports = {
     setRouteUrl: setRouteUrl,
     getRouteUrl: getRouteUrl,
     clearRouteUrl: clearRouteUrl,
-
+    routeUrl: routeUrl,
     noCache: noCache
 };

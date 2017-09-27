@@ -55,7 +55,6 @@ if (process.env.NODE_ENV === 'production') {
 
 const APP_HOME = '/__/app';
 
-
 /**
  * Setup Google Cloud monitoring
  */
@@ -104,13 +103,8 @@ app.use('/opensearch.xml', function (req, res, next) {
 /**
  * serving public url 
  */
-app.get("/@:orgShortName/:gourl", helper.setRouteUrl, function(req, res, next) {
-  if (
-        (req.params.gourl.indexOf('/__') > -1) 
-        || (req.params.gourl.indexOf('/_/') > -1)
-        || (req.params.gourl.indexOf('images/') > -1)) {
-    next();
-  }
+app.get("/@:orgShortName/:gourl", function(req, res, next) {
+
   let ga = new GA();  
   logger.info('routeGoUrl:', req.params.gourl);
   logger.info('orgShortName:', req.params.orgShortName);
@@ -121,12 +115,12 @@ app.get("/@:orgShortName/:gourl", helper.setRouteUrl, function(req, res, next) {
 
   if (orgShortName == null) {
     //error condition
-    logger.error('orgShortName is null');
+    logger.warn('orgShortName is null');
     next();
   }
   if (routeGoUrl == null) {
     //error condition
-    logger.error('link is null');
+    logger.warn('link is null');
     next();
   }
   let orgService = new OrgService();
@@ -135,21 +129,21 @@ app.get("/@:orgShortName/:gourl", helper.setRouteUrl, function(req, res, next) {
   .then(orgEntities => {
     if (orgEntities.entities.length == 0) {
           //org doesn't exist
-          ga.trackEvent(userId, orgId, 'Link', 'redirect', 'no_url_found', '100')
-          logger.info("no_org_shortname_exist", {'orgShortName' : orgShortName});
+          ga.trackEvent(userId, orgId, 'Link', 'redirect_failed', 'no_org_shortname_exist', '100')
+          logger.warn("no_org_shortname_exist", {'orgShortName' : orgShortName});
           // TODO: route to error page with warning that you are attepting to access 
           // org that does not exist. Violation will be reported.
-          res.redirect(APP_HOME);
+          res.status(404).send("No workplace named \"" + orgShortName + "\" exits!");        // HTTP status 404: NotFound
           return;
     } else {
           // org exists
           orgId = orgEntities.entities[0].id;
           logger.info("orgShortName_exists", {'orgShortName' : orgShortName, 'orgId' : orgId});
           if (!orgEntities.entities[0].isPublicLinksAllowed) {
-            logger.error("attempt_to_access_private_org_failed", {'link' : routeGoUrl, 'orgShortName' :orgShortName,  'orgId' : orgId});
+            logger.warn("attempt_to_access_private_org_failed", {'link' : routeGoUrl, 'orgShortName' :orgShortName,  'orgId' : orgId});
             //TODO: route to error page with warning that you are attepting to access 
             // private link. Violation will be reported.  
-            res.redirect(APP_HOME);
+            res.status(404).send("Workplace \""+ orgShortName + "\" is private. You don\'t have permission to access it");
             return;
           }
     }
@@ -159,26 +153,19 @@ app.get("/@:orgShortName/:gourl", helper.setRouteUrl, function(req, res, next) {
       .then(linkEntities => { 
         if ((linkEntities.entities.length == 0) || (!linkEntities.entities[0].url) )
         {
-          ga.trackEvent(userId, orgId, 'Link', 'redirect', 'no_url_found', '100')
-          logger.info("no_route_found", {'link' : routeGoUrl});
-          res.redirect(APP_HOME);
+          ga.trackEvent(userId, orgId, 'Link', 'redirect_failed', 'no_url_found', '100')
+          logger.warn("no_url_found", {'link' : routeGoUrl});
+          res.status(404).send('No URL found for the short link');
           return;
         } else {
           if (!linkEntities.entities[0].isPublic){
-            logger.error("attempt_to_access_private_link_failed", {'link' : routeGoUrl,'orgShortName' :orgShortName, 'orgId' : orgId});
+            logger.warn("attempt_to_access_private_link_failed", {'link' : routeGoUrl,'orgShortName' :orgShortName, 'orgId' : orgId});
             //TODO: route to error page with warning that you are attepting to access 
             // private link. Violation will be reported.  
-            res.redirect(APP_HOME);
+            res.status(404).send("It is private link. You don\'t have permission to access it" );
             return;
           }
-          let url = linkEntities.entities[0].url;
-          if (!(url.startsWith('https://') || url.startsWith('http://'))) {
-            url = 'http://' + url;
-          }        
-          ga.trackEvent(userId, orgId, 'Link', 'redirect', linkEntities.entities[0].id, '100')
-          logger.info("routing_link", {'link' : linkEntities.entities[0]});
-          res.redirect(301, url);
-          return;
+          helper.routeUrl(linkEntities, userId, orgId, ga, res);
         }
       })
     .catch(err => {
@@ -235,7 +222,7 @@ app.get("/:gourl", helper.setRouteUrl, auth.isLoggedIn, function (req, res, next
   let routeGoUrl = req.params.gourl;
   if (routeGoUrl == null) {
     //error condition
-    logger.error('link is null');
+    logger.warn('link is null');
     next();
   }
   // retrieve actual url
@@ -272,23 +259,17 @@ app.get("/:gourl", helper.setRouteUrl, auth.isLoggedIn, function (req, res, next
                 logger.info("routing_link", {'link' : linkEntities.entities[0]});
               });
             } else {
-              ga.trackEvent(userId, orgId, 'Link', 'redirect', 'no_url_found', '100')
-              logger.info("no_route_found", {'link' : correctedRouteGoUrl});
+              ga.trackEvent(userId, orgId, 'Link', 'redirect_failed', 'no_url_found', '100')
+              logger.warn("no_route_found", {'link' : correctedRouteGoUrl});
               res.redirect(APP_HOME + '/link/create?link=' + routeGoUrl);
             }
           })
       } else if (!linkEntities.entities[0].url) {
-        ga.trackEvent(userId, orgId, 'Link', 'redirect', 'empty_url', '100')
-        logger.info("empty_url", "redirecting to links page");
+        ga.trackEvent(userId, orgId, 'Link', 'redirect_failed', 'empty_url', '100')
+        logger.warn("empty_url", "redirecting to links page");
         res.redirect(APP_HOME + '/link/create?link=' + routeGoUrl);
       } else { 
-        let url = linkEntities.entities[0].url;
-        if (!(url.startsWith('https://') || url.startsWith('http://'))) {
-          url = 'http://' + url;
-        }        
-        ga.trackEvent(userId, orgId, 'Link', 'redirect', linkEntities.entities[0].id, '100')
-        logger.info("routing_link", {'link' : linkEntities.entities[0]});
-        res.redirect(301, url);
+        helper.routeUrl(linkEntities, userId, orgId, ga, res);
       }
     })
     .catch(err => {
