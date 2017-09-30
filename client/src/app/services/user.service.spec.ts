@@ -57,7 +57,7 @@ describe('UserService', () => {
 });
 
 export class UserServiceSpy {
-  testUser = new User(
+  testUser:User = new User(
     5715921523965952,
     5704147139559424,
     "Saurabh",
@@ -67,9 +67,22 @@ export class UserServiceSpy {
     "sg1705@gmail.com"
   )
 
+  allUsers:User[] = new Array<User>();
+
+  constructor() {
+    this.allUsers.push(this.testUser);
+  }
+
   getCurrentUser = jasmine.createSpy('getCurrentUser').and.callFake(
     () => Promise
       .resolve(true)
       .then(() => Object.assign({}, this.testUser))
   );
+
+  getAllUsers = jasmine.createSpy('getAllUsers').and.callFake(
+    () => Promise
+      .resolve(this.allUsers)
+  );
+  
+
 }

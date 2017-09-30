@@ -48,7 +48,8 @@ export class FormComponent implements OnInit {
       this.linkFormGroup = fb.group({
       'link': '',
         'url' : '',
-        'description': ''
+        'isPublic': false
+        // 'description': ''
       });
       //set linkid in case of /edit
       this.activateRoute.params.subscribe(params => {
@@ -78,7 +79,8 @@ export class FormComponent implements OnInit {
         this.linkFormGroup.controls['link'].setValue(link.link);
         this.linkFormGroup.controls['link'].disable();
         this.linkFormGroup.controls['url'].setValue(link.url);
-        this.linkFormGroup.controls['description'].setValue(link.description);
+        this.linkFormGroup.controls['isPublic'].setValue(link.isExposedAsPublicLink);
+        // this.linkFormGroup.controls['description'].setValue(link.description);
       })
     } else if (this.router.url.indexOf('/link/create') > -1) {
       this.activateRoute.queryParams.subscribe(params => {
@@ -113,8 +115,9 @@ export class FormComponent implements OnInit {
       return new Promise((resolve, reject) => {
         var link = this.linkFormGroup.controls['link'].value;
         var url = this.linkFormGroup.controls['url'].value;
-        var description = this.linkFormGroup.controls['description'].value;
-        this.linkService.updateLink(new Link(this.linkId, link, url, description))
+        var isPublic:boolean = this.linkFormGroup.controls['isPublic'].value;
+        // var description = this.linkFormGroup.controls['description'].value;
+        this.linkService.updateLink(new Link(this.linkId, link, url, false))
         .then(link => {
           console.log('link updated', link);
           this.reset();
@@ -123,7 +126,7 @@ export class FormComponent implements OnInit {
       });
     } else {
       return new Promise((resolve, reject) => {     
-        this.linkService.createLink(new Link(0, l.link, l.url, l.description))
+        this.linkService.createLink(new Link(0, l.link, l.url, l.isPublic))
         .then(link => {
           console.log('link created', link);
           this.showConfirmationDialog(resolve, 'created', link);

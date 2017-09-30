@@ -11,6 +11,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormBuilder,FormGroup} from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormComponent } from './form.component';
+import { FormConfirmationDialogComponent } from './form-confirmation-dialog.component';
 import { LinkListComponent } from '../link-list/link-list.component';
 import { Link } from '../model/link';
 import { LinkService } from '../services/link.service';
@@ -27,7 +28,8 @@ describe('FormComponent', () => {
     TestBed.configureTestingModule({
       declarations: [ 
         FormComponent,
-        LinkListComponent
+        LinkListComponent,
+        FormConfirmationDialogComponent
       ],
       imports: [
         MaterialModule,
@@ -43,22 +45,24 @@ describe('FormComponent', () => {
             component: LinkListComponent
           }          
         ])
-      ]
+      ],
     })
     .overrideComponent(FormComponent, {
       set: {
-      providers: [
-        LinkService,
-        UserService,
-        MockBackend,
-        { provide: Router, useClass: RouterStub },
-        { provide: Location, useClass: SpyLocation },
-        BaseRequestOptions,
-        {
-          provide: Http,
-          useFactory: (backend, options) => new Http(backend, options),
-          deps: [MockBackend, BaseRequestOptions]                    
-        }]
+        entryComponents: [FormConfirmationDialogComponent],
+        providers: [
+          LinkService,
+          UserService,
+          MockBackend,
+          { provide: Router, useClass: RouterStub },
+          { provide: Location, useClass: SpyLocation },
+          BaseRequestOptions,
+          {
+            provide: Http,
+            useFactory: (backend, options) => new Http(backend, options),
+            deps: [MockBackend, BaseRequestOptions]                    
+          }
+        ]
       }
     }).compileComponents();
   }));
@@ -79,21 +83,21 @@ describe('FormComponent', () => {
     expect(fixture.nativeElement.querySelectorAll('input').length).toEqual(2);
   })
 
-  it('should have one text area field', () => {
-    expect(fixture.nativeElement.querySelectorAll('textarea').length).toEqual(1);
-  })
+  // it('should have one text area field', () => {
+  //   expect(fixture.nativeElement.querySelectorAll('textarea').length).toEqual(1);
+  // })
 
 
   it('form value should update from form changes', fakeAsync(() => {
-    updateForm('testLink', 'testUrl', 'testDescription');
+    updateForm('testLink', 'testUrl', false);
     expect(component.linkFormGroup.value['link']).toEqual('testLink');
     expect(component.linkFormGroup.value['url']).toEqual('testUrl');
   }));
 
   it('pass the form values to backend', () => {
       // update form
-      updateForm('testLink', 'testUrl', 'testDescription');
-      let mockLink = new Link(0, 'testLink', 'testUrl', 'testDescription');
+      updateForm('testLink', 'testUrl', false);
+      let mockLink = new Link(0, 'testLink', 'testUrl', false);
 
       let mockBackend = fixture.debugElement.injector.get(MockBackend);
       //respond to a mock connection
@@ -101,7 +105,7 @@ describe('FormComponent', () => {
         let submittedLink = JSON.parse(conn.request.getBody());
         expect(submittedLink['link']).toEqual('testLink');
         expect(submittedLink['url']).toEqual('testUrl');
-        expect(submittedLink['description']).toEqual('testDescription');
+        expect(submittedLink['isExposedAsPublicLink']).toEqual(false);
         conn.mockRespond(new Response(new ResponseOptions({ body: JSON.stringify(mockLink) })));
       });
 
@@ -114,10 +118,10 @@ describe('FormComponent', () => {
       });
   });
 
-  function updateForm(link, url, description) {
+  function updateForm(link, url, isPublic) {
     component.linkFormGroup.controls['link'].setValue(link);
     component.linkFormGroup.controls['url'].setValue(url);
-    component.linkFormGroup.controls['description'].setValue(description);
+    component.linkFormGroup.controls['isPublic'].setValue(isPublic);    
   }
 
 });
