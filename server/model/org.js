@@ -25,6 +25,19 @@ class Org {
     logger.info ("creating org", orgData);
     return this.modelService.create(orgData);
   }
+
+   /**
+   * Add Org Short Name in org.
+   */
+  addOrgShortName(orgid, orgName, orgShortName, orgType, isPublicLinksAllowed) {
+    var orgData = {};
+    orgData["orgName"] = orgName;
+    orgData["orgShortName"] = orgShortName;
+    orgData["isPublicLinksAllowed"] = isPublicLinksAllowed;
+    orgData["orgType"] = orgType;
+    logger.info ("adding org Short Name", orgData);
+    return this.modelService.update (orgid, orgData);
+  }
   
   /**
    * Update an existing Org.
@@ -48,6 +61,9 @@ class Org {
     return this.modelService.readByColumn('orgName', orgName);
   }
 
+  getOrgByShortName(orgShortName) {
+    return this.modelService.readByColumn('orgShortName', orgShortName);
+  }
 
   /**
    * Delete a Org.
