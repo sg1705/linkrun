@@ -158,7 +158,7 @@ app.get("/@:orgShortName/:gourl", function(req, res, next) {
           helper.serve404(req, 'No URL found for the short link', res);
           return;
         } else {
-          if (!linkEntities.entities[0].isPublic){
+          if (linkEntities.entities[0].acl != 1){
             logger.warn("attempt_to_access_private_link_failed", {'link' : routeGoUrl,'orgShortName' :orgShortName, 'orgId' : orgId});
             //TODO: route to error page with warning that you are attepting to access 
             // private link. Violation will be reported.  
