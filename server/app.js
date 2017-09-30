@@ -54,6 +54,9 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 const APP_HOME = '/__/app';
+const LINK_ACL_DEFAULT = 0;
+const LINK_ACL_PUBLIC = 1;
+const LINK_ACL_PRIVATE = 2;
 
 /**
  * Setup Google Cloud monitoring
@@ -158,7 +161,7 @@ app.get("/@:orgShortName/:gourl", function(req, res, next) {
           helper.serve404(req, 'No URL found for the short link', res);
           return;
         } else {
-          if (linkEntities.entities[0].acl != 1){
+          if (linkEntities.entities[0].acl != LINK_ACL_PUBLIC){
             logger.warn("attempt_to_access_private_link_failed", {'link' : routeGoUrl,'orgShortName' :orgShortName, 'orgId' : orgId});
             //TODO: route to error page with warning that you are attepting to access 
             // private link. Violation will be reported.  

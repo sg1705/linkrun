@@ -6,6 +6,7 @@ const config     = require('config');
 var logger       = require('./logger.js');
 let ga = new GA();
 
+
 class Link {
   
   constructor() {
