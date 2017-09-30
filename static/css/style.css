@@ -1,0 +1,352 @@
+* {
+   font-family: 'Roboto', sans-serif; 
+  /* font-family: 'Open Sans', sans-serif; */
+  font-weight: 300;
+}
+
+/*Rest style*/
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-box-sizing: border-box; -moz-box-sizing: border-box; list-style: none; }
+* { -webkit-tap-highlight-color: rgba(0, 0, 0, 0); }
+html, body.em, .em span, .em applet, .em object, .em iframe, .em h1, .em h2, .em h3, .em h4, .em h5, .em h6, .em p, .em blockquote, .em pre, .em a, .em abbr, .em acronym, .em address, .em big, .em cite, .em code, .em del, .em dfn, .em em, .em font, .em img, .em ins, .em kbd, .em q, .em s, .em samp, .em small, .em strike, .em strong, .em sub, .em sup, .em tt, .em var, .em dl, .em dt, .em dd, .em ol, .em ul, .em li, .em fieldset, .em form, .em label, .em legend, .em table, .em caption, .em tbody, .em tfoot, .em thead, .em tr, .em th, .em td, .em select, .em input, .em option { margin: 0; padding: 0; border: 0; outline: 0; }
+html { -webkit-text-size-adjust: none; }
+article, aside, details, figcaption, figure, footer, header, hgroup, nav, section, summary { display: block; }
+.em sub, .em sup { font-size: 75%; line-height: 0; position: relative; vertical-align: baseline }
+.em sup { top: -0.5em; }
+.em sub { bottom: -0.25em }
+.em nav ul, .em nav ol { list-style: none; list-style-image: none; }
+.em button, .em input, .em select, .em textarea { font-size: 100%; margin: 0; vertical-align: baseline; box-shadow: none !important; }
+.em input[type="button"], .em input[type="submit"] { -webkit-appearance: none !important; }
+.em :focus { outline: 0; }
+.em ol, .em ul { list-style: none; }
+.em a { text-decoration: none; }
+.em img { border: 0 none; max-width: 100%; vertical-align: top; }
+.em a { outline: none; cursor: pointer; }
+.em a:hover { text-decoration: none; }
+.em a:focus { text-decoration: none !important; outline: none !important; }
+.em .none { display: none; }
+.em .clear { clear: both; }
+.em img { max-width: 100%; }
+.em .cf:before, .cf:after { content: ""; display: table }
+.em .cf:after { clear: both; }
+.em .cf { *zoom:1;}
+.em .text-transform { text-transform: uppercase; }
+.em .break { float: left; width: 100%; }
+.em .preloader { display: none; }
+
+/*Placeholder opacity cross browsers*/
+.em input::-webkit-input-placeholder {
+color: #7d7d7d;
+opacity:1;
+} /* WebKit browsers */
+.em input:-moz-placeholder {
+color: #7d7d7d;
+opacity:1;
+} /* Mozilla Firefox 4 to 18 */
+.em input::-moz-placeholder {
+color: #7d7d7d;
+opacity:1;
+} /* Mozilla Firefox 19+ */
+.em input:-ms-input-placeholder {
+color: #7d7d7d;
+opacity:1;
+} /* Internet Explorer 10+ */
+.em textarea::-webkit-input-placeholder {
+color: #7d7d7d;
+opacity:1;
+} /* WebKit browsers */
+.em textarea:-moz-placeholder {
+color: #7d7d7d;
+opacity:1;
+} /* Mozilla Firefox 4 to 18 */
+.em textarea::-moz-placeholder {
+color: #7d7d7d;
+opacity:1;
+} /* Mozilla Firefox 19+ */
+.em textarea:-ms-input-placeholder {
+color: #7d7d7d;
+opacity:1;
+} /* Internet Explorer 10+ */
+.em button::-moz-focus-inner, input[type="submit"]::-moz-focus-inner {
+border: 0;
+}
+
+
+/* Table of Content
+ ==================================================
+ #Page Structure
+ #Home Page Style */
+
+
+/* #Page Structure
+================================================== */
+ body.em { margin: 0; padding: 0; font-size: 16px; color: #000; } 
+  body.em { margin: 0; padding: 0; font-size: 16px; color: #000;} 
+.em .wrapper { width: 100%; opacity: 0;transition: all ease-in-out 0.5s; -webkit-transition: all ease-in-out 0.5s; -moz-transition: all ease-in-out 0.5s;	}
+.em .main { max-width: 951px; margin: 0 auto; }
+.em a{transition: 0.5s; -webkit-transition: 0.5s; -moz-transition: 0.5s; -o-transition: 0.5s;}
+.em h1{ color:#263e82; font-size:36px; font-weight:700; padding-bottom:20px;}
+.em h2{ color:#070404; font-size:21px ;font-weight:bold;  padding-bottom:30px;}
+.em ul.bullets{margin-left:10px; margin-bottom:10px;}
+.em ul.bullets li{ color:#505050; font-size:16px; font-weight:600; margin-bottom:4px;  padding-left:13px;}
+.em .ms-btn{position:relative; vertical-align: middle; display: inline-block;background-color: #fff;border: 2px solid #8c8c8c; border-radius: 3px;transition: 0.5s; -webkit-transition: 0.5s; -moz-transition: 0.5s; -o-transition: 0.5s; }
+.em .ms-btn img{max-width: 42px;width: 100%; position: absolute;left:0; top: 2px;}
+.em .ms-btn a{display: inline-block;letter-spacing: 0.2px;font-weight: 600;vertical-align: middle;color: #737373; font-size: 19px;line-height: 20px; padding: 13px 9px 15px 44px;}
+.em .ms-btn:hover{ background-color: #fff; }
+.em .ms-btn:hover a{color: #fd6b0d; }
+.em .google-btn{position: relative; vertical-align: middle; display: inline-block;background-color: #fd6b0d;border: 2px solid #fd6b0d; border-radius: 3px; transition: 0.5s; -webkit-transition: 0.5s; -moz-transition: 0.5s; -o-transition: 0.5s;}
+.em .google-btn img{max-width: 48px;width: 100%; position: absolute;left: 0;top: 0;}
+.em .google-btn a{display: inline-block;letter-spacing: 0.3px;font-weight: 600; vertical-align: middle;color: #fff; font-size: 19px;line-height: 20px; padding: 13px 10px 15px 60px;}
+.em .google-btn:hover{background-color: #fff;}
+.em .google-btn:hover a{color: #8c8c8c;}
+.em .pace {
+  -webkit-pointer-events: none;
+  pointer-events: none;
+
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+.em .pace-inactive {
+  display: none;
+}
+.em .pace .pace-progress {
+  background: #00adee;
+  position: fixed;
+  z-index: 2000;
+  top: 0;
+  right: 100%;
+  width: 100%;
+  height: 2px;
+}
+/* Home Page Style
+ ==================================================
+ 
+/***** header styles goes here *****/
+.em header{float:left; width:100%; padding: 27px 0 29px;}
+.em .header-left{
+  float: left;
+  width: 26%;
+  text-align: left;
+}
+
+.em .header-left img{
+  width: 100%;
+  max-width: 167px;
+}
+.em .header-right{
+  float: right;
+      margin-top: 3px;
+ width: 74%;
+}
+.em .header-right ul{
+  float: left;
+  width: 100%;
+}
+.em .header-right ul li{
+  float: left;
+  margin-right: 19px;
+}
+.em .header-right ul li:last-child{
+  margin-right: 0px;
+}
+/***** midd container styles goes here *****/
+.em .midd-container{
+  float: left;
+  width: 100%;
+}
+.em .section1{
+  float: left;
+  width: 100%;
+  background-color: #c8c8c8;
+  padding: 95px 0 102px;
+}
+.em .section1 .section1-text{
+  float: left;
+  width: 100%;
+  text-align: left;
+}
+.em .section1 .section1-text h1{
+  font-size: 70px;
+  line-height: 67px;
+  color: #000;
+  padding-bottom: 14px;
+    letter-spacing: -0.7px;
+
+}
+.em .section1 .section1-text h3{
+  font-size: 26px;
+  line-height: 30px;
+  color: #000;
+  letter-spacing: -0.3px;
+}
+.em .section1-btn{
+  float: left;
+  width: 100%;
+  padding-top: 39px;
+}
+.em .section1-btn ul{
+  float: left;
+  width: 100%;
+}
+.em .section1-btn ul li{
+  float: left;
+  margin-right: 19px;
+}
+.em .section1-btn ul li:last-child{
+  margin-right: 0px;
+}
+.em .section2{
+  float: left;
+  width: 100%;
+  padding: 40px 0 98px;
+}
+.em .section2 h2.section-title {
+  font-size: 42px;
+  line-height: 46px;
+  color: #fd6b0d;
+  float: left;
+  width: 100%;
+} 
+.em .section2 ul{
+  float: left;
+  width: 100%;
+  padding: 20px 0;
+}
+.em .section2 ul li{
+  float: left;
+  width: 61.6%;
+  text-align: left;
+  padding: 23px 0;
+}
+.em .section2 ul li:nth-child(2){
+  float: right;
+  width: 38.4%;
+  padding: 0;
+  text-align: right;
+}
+.em .section2 ul li h3.title{
+font-size: 42px;
+line-height: 49px;
+color: #000;
+padding-right: 20px;
+}
+.em .section2 ul li .hr-line{
+float: left;
+width: 100%;
+background-color: #b4b4b4;
+height: 1px;
+margin: 18px 0 12px;
+}
+.em .section2 ul li p{
+  font-size: 26px;
+  color: #555555;
+  line-height: 31px;
+  padding-right: 20px;
+}
+.em .section2 ul li p a{
+  color: #fd6b0d;
+  font-weight: 500;
+  display: inline-block;
+}
+.em .section2 ul li p a:hover{
+  color: #000;
+}
+.em .section2 ul li:nth-child(2) img{
+  width: 100%;
+  max-width: 365px;
+  border: 1px solid #edeaea; 
+}
+.em .section2 ul.two{
+    padding: 51px 0;
+}
+.em .section2 ul.two li{
+  padding: 9px 0 0;
+}
+.em .section2 ul.two li:nth-child(2){
+  padding: 0 0 0;
+}
+.em .section2 ul.two li p{
+line-height: 34px;
+}
+.em .section2 ul.three{
+    padding: 1px 0;
+}
+.em .section3{
+  float: left;
+  width: 100%;
+  background-color: #c8c8c8;
+  padding: 48px 0 72px;
+  text-align: center;
+}
+.em .section3 h2{
+font-size: 42px;
+line-height: 50px;
+color: #000;
+padding-bottom: 19px;
+letter-spacing: -0.4px;
+}
+.em .section3-btn{
+  float: left;
+  text-align: center;
+  width: 100%;
+}
+.em .section3-btn ul{
+  float: left;
+  width: 100%;
+}
+.em .section3-btn ul li{
+  display: inline-block;
+  text-align: center;
+  margin-right: 15px;
+}
+.em .section3-btn ul li:last-child{
+margin-right: 0;
+}
+/*****footer styles goes here *****/
+.em footer{ float:left; width:100%; background:#4a4a4a;padding: 16px 0;}
+.em footer ul{
+  float: left;
+  width: 100%;
+  text-align: center;
+}
+.em footer ul li{
+  display: inline-block;
+  text-align: center;
+  font-size: 14px;
+  line-height: 20px;
+  color: #cecfd6;
+  margin-right: 13px;
+  position: relative;
+}
+.em footer ul li::before{
+  content: "|";
+  position: absolute;
+  right: -13px;
+  bottom: 5px;
+  font-weight: bold;
+  font-size: 15px;
+  line-height: 14px;
+  color: #82848f;
+}
+.em footer ul li:nth-child(2){
+margin-right: 15px;
+}
+.em footer ul li:nth-child(1)::before,.em footer ul li:nth-child(3)::before{
+  content: "";
+  position: absolute;
+  right: inherit;
+  bottom: inherit;
+  font-size: 0;
+  color: #82848f;
+}
+.em footer ul li a{
+  font-size: 14px;
+  line-height: 20px;
+  color: #cecfd6;
+}
+.em footer ul li a:hover{
+  color: #fd6b0d;
+}
+.em footer ul li:last-child{
+  margin-right: 0;
+}

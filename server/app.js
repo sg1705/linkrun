@@ -93,8 +93,9 @@ app.get('/*', helper.noCache);
 /**
  * Static Home pageExpress Routes
  */
-const signInPage = config.get('static.signInPage')
-app.use('/_/', express.static(path.join(__dirname, '../static/' + signInPage)));
+// const signInPage = config.get('static.signInPage')
+// app.use('/_/', express.static(path.join(__dirname, '../static/' + signInPage)));
+app.use('/_/', express.static(path.join(__dirname, '../static/index.html')));
 app.use('/_/', express.static(path.join(__dirname, '../static/')));
 
 app.use('/opensearch.xml', function (req, res, next) {

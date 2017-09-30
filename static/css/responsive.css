@@ -1,0 +1,522 @@
+@media all and (max-width:1000px) {
+.em .main{padding:0 20px; max-width:100%; width:100%;}
+.em .header-left {
+    width: 28%;
+}
+.em .header-right {
+    width: 71.3%;
+}
+.em .section1 .section1-text h1 {
+    font-size: 64px;
+    line-height: 66px;
+    padding-bottom: 11px;
+}
+.em .section1 {
+    padding: 54px 0 79px;
+}
+.em .section1 .section1-text h3 {
+    font-size: 24px;
+    line-height: 29px;
+}
+.em .section2 h2.section-title {
+    font-size: 39px;
+    line-height: 43px;
+    padding-bottom: 13px;
+}
+.em .section2 ul li h3.title {
+    font-size: 40px;
+    line-height: 45px;
+}
+.em .section2 ul li p,.em .section2 ul.two li p {
+    font-size: 24px;
+    line-height: 29px;
+    padding-right: 20px;
+}
+.em .section2 {
+    padding: 40px 0 80px;
+}
+.em .section3 h2 {
+    font-size: 40px;
+    line-height: 48px;
+}
+.em .section3 {
+    padding: 43px 0 54px;
+}
+}
+@media all and (max-width:964px) {
+.em .header-right ul li {
+    float: left;
+    margin-right: 10px;
+}
+}
+@media all and (max-width:951px) {
+.em .header-right {
+ display: none;
+}
+.em .header-left img {
+    width: 100%;
+    max-width: 215px;
+}
+.em .header-left {
+    width: 100%;
+    padding-left: 9px;
+}
+.em header {
+    padding: 27px 0 47px;
+}
+.em .section1 {
+    padding: 41px 7px 61px;
+}
+.em .section1 .section1-text h3 {
+    font-size: 35px;
+    line-height: 42px;
+    letter-spacing: -0.4px;
+    font-weight: 300;
+}
+.em .section1 .section1-text h3 br{
+	display: none;
+}
+.em .section1 .section1-text h1 {
+    font-size: 58px;
+    line-height: 60px;
+    padding-bottom: 16px;
+}
+.em .section1-btn ul li {
+    float: none;
+    display: inline-block;
+    margin-right: 0;
+    width: 100%;
+    margin-bottom: 19px;
+}
+.em .section1-btn ul li:last-child {
+    margin-bottom: 0px;
+}
+.em .google-btn {
+    width: 100%;
+    max-width: 450px;
+}
+.safari .google-btn {
+    width: 100%;
+    max-width: 480px;
+}
+.em .section1-btn {
+    padding-top: 42px;
+}
+.em .google-btn a {
+    font-size: 26px;
+    line-height: 26px;
+    padding: 19px 10px 21px 82px;
+    float: left;
+}
+.em .google-btn img {
+    max-width: 66px;
+    width: 100%;
+    float: left;
+}
+.em .ms-btn img {
+    max-width: 58px;
+    width: 100%;
+    top: 3px;
+    float: left;
+}
+.em .ms-btn {
+    width: 100%;
+    max-width: 450px;
+}
+.safari  .ms-btn {
+    width: 100%;
+    max-width: 480px;
+}
+.em .ms-btn a {
+    font-size: 26px;
+    line-height: 26px;
+    float: left;
+    padding: 19px 1px 21px 70px;
+    letter-spacing: 0;
+}
+.em .section2 {
+    padding: 75px 2px 80px;
+}
+.em .section2 h2.section-title {
+    font-size: 59px;
+    line-height: 43px;
+    padding-bottom: 13px;
+}
+.em .section2 ul li h3.title {
+    font-size: 59px;
+    padding-right: 0;
+    line-height: 64px;
+}
+.em .section2 ul li {
+    float: left;
+    width: 100%;
+    text-align: left;
+        margin-bottom: 23px;
+
+    padding: 23px 0;
+}
+.em .section2 ul {
+    float: left;
+    width: 100%;
+    padding: 18px 0;
+}
+.em .section2 ul li .hr-line {
+    height: 2px;
+    margin: 32px 0 37px;
+}
+.em .section2 ul li p br{
+display: none;
+
+}
+.em .section2 ul li p, .em .section2 ul.two li p {
+    font-size: 44px;
+    line-height: 55px;
+    padding-right: 0;
+}
+.em .section2 ul li:nth-child(2) {
+    float: right;
+    width: 100%;
+    padding: 0;
+    text-align: center;
+    margin-bottom: 10px;
+
+}
+.em .section2 ul li:nth-child(2) img {
+    width: 100%;
+    max-width: 715px;
+    border: 1px solid #edeaea;
+}
+.em .section2 ul.two {
+    padding: 27px 0;
+}
+.em .section2 ul.two li {
+    margin-bottom: 42px;
+}
+.em .section2 ul.two li:nth-child(2) {
+    margin-bottom: 13px;
+}
+.em .section2 ul.three li {
+    margin-bottom: 15px;
+}
+
+.em .section3 h2 {
+    font-size: 58px;
+    line-height: 66px;
+    max-width: 600px;
+    width: 100%;
+    margin: 0 auto;
+    letter-spacing: 0;
+}
+.em .section3 {
+    padding: 64px 0 81px;
+}
+
+.em .section3-btn ul li {
+    display: inline-block;
+    text-align: center;
+    margin-right: 0px;
+	width: 100%;
+	 margin-bottom: 19px;
+	
+}
+.em .section3-btn {
+    float: left;
+    text-align: center;
+    width: 100%;
+    margin-top: 19px;
+}
+.em .section3-btn ul li:last-child {
+   margin-bottom: 0;
+}
+.em footer ul li:first-child {
+    font-size: 18px;
+    line-height: 20px;
+      margin-right: 0;
+    width: 100%;
+        margin-bottom: 15px;
+}
+.em footer ul li a {
+    font-size: 18px;
+    line-height: 20px;
+    margin-right: 0; 
+}
+.em footer {
+    padding: 21px 0;
+}
+}
+@media all and (max-width:767px) {	
+.em .header-left {
+    width: 100%;
+    padding-left: 0;
+}
+.em .header-left img {
+    width: 100%;
+    max-width: 192px;
+}
+.em header {
+    padding: 27px 0 36px;
+}
+.em .section1-btn {
+    padding-top: 48px;
+}
+.em .section1 .section1-text h3 {
+    font-size: 29px;
+    line-height: 37px;
+    letter-spacing: -0.4px;
+    font-weight: 300;
+}
+.em .section1 .section1-text h1 {
+    font-size: 49px;
+    line-height: 52px;
+    padding-bottom: 13px;
+}
+.em .section1 {
+    padding: 50px 0px 61px;
+}
+.em .section2 {
+    padding: 58px 0px 66px;
+}
+.em .section2 h2.section-title {
+    font-size: 52px;
+    line-height: 55px;
+    padding-bottom: 2px;
+}
+.em .section2 ul li h3.title {
+    font-size: 53px;
+    padding-right: 0;
+    line-height: 64px;
+}
+.em .section2 ul li h3.title br{
+	display: none;
+}
+.em .section2 ul li .hr-line {
+    height: 2px;
+    margin: 34px 0 36px;
+}
+.em .section2 ul li p, .em .section2 ul.two li p {
+    font-size: 41px;
+    line-height: 50px;
+    padding-right: 0;
+}
+.em .section2 ul.two {
+    padding: 30px 0;
+}
+.em .section2 ul.two li {
+    margin-bottom: 47px;
+}
+.em .section2 ul.three li {
+    padding: 18px 0;
+}
+.em .section2 ul.three li p {
+    max-width: 100%;
+}
+.em .section2 ul.two li p{
+	max-width: 100%;
+}
+.em .section3 {
+    padding: 56px 0 70px;
+}
+.em .section3 h2 {
+    font-size: 53px;
+line-height: 61px;
+max-width: 530px;
+}
+.em .section3-btn {
+    margin-top: 16px;
+}
+.em footer {
+    padding: 23px 0;
+}
+}
+@media all and (max-width:639px) {
+	.em .main {
+    padding: 0 14px;
+    max-width: 100%;
+    width: 100%;
+}
+.em .header-left {
+ 
+    padding-left: 5px;
+}
+.em header {
+    padding: 21px 0 29px;
+}
+.em .header-left img {
+    width: 100%;
+    max-width: 125px;
+}
+.em .section1 {
+    padding: 32px 0px 42px;
+}
+.em .section1 .section1-text h1 {
+    font-size: 35px;
+    line-height: 37px;
+    padding-bottom: 26px;
+}
+.em .section1 .section1-text h3 {
+    font-size: 22px;
+    line-height: 28px;
+    letter-spacing: -0.2px;
+    font-weight: 300;
+    padding-left: 5px;
+}
+.em .section1-btn {
+    padding-top: 29px;
+}
+.em .google-btn img {
+    max-width: 43px;
+    width: 100%;
+    float: left;
+}
+.em .google-btn {
+    width: 100%;
+    max-width: 321px;
+}
+.em .google-btn a {
+    font-size: 16px;
+    line-height: 18px;
+    padding: 11px 1px 14px 56px;
+    float: left;
+}
+.em .ms-btn img {
+    max-width: 40px;
+    width: 100%;
+    float: left;
+}
+.em .ms-btn {
+    width: 100%;
+    max-width: 321px;
+}
+.em .ms-btn a {
+    font-size: 16px;
+    line-height: 18px;
+    padding: 13px 3px 14px 51px;
+float: left;
+letter-spacing: 0;
+}
+.safari .google-btn a {
+    padding: 12px 1px 14px 52px;
+}
+.safari .ms-btn a {
+    padding: 13px 3px 14px 40px;
+}
+.em .section1-btn ul li {
+    margin-bottom: 13px;
+}
+.em .section2 {
+    padding: 40px 0px 34px;
+}
+.em .section2 h2.section-title {
+    font-size: 31px;
+    line-height: 40px;
+    padding-bottom: 2px;
+}
+.em .section2 ul li {
+    padding: 14px 0;
+}
+.em .section2 ul li h3.title {
+    font-size: 30px;
+    padding-right: 0;
+    line-height: 42px;
+    letter-spacing: -0.1px;
+}
+.em .section2 ul li h3.title br{
+	display: none;	
+}
+.em .section2 ul li p, .em .section2 ul.two li p {
+    font-size: 23px;
+    line-height: 34px;
+    padding-right: 0;
+}
+.em .section2 ul li .hr-line {
+    height: 2px;
+    margin: 29px 0 20px;
+}
+.em .section2 ul li:nth-child(2) img {
+    width: 100%;
+    max-width: 297px;
+    border: 1px solid #edeaea;
+}
+.em .section2 ul li {
+    padding: 13px 0;
+    margin-bottom: 15px;
+}
+.em .section2 ul.two {
+    padding: 13px 0;
+}
+
+.em .section2 ul li p, .em .section2 ul.two li p {
+    font-size: 23px;
+    line-height: 35px;
+    padding-right: 0;
+}
+.em .section2 ul.two li {
+    margin-bottom: 29px;
+}
+.em .section2 ul.three li {
+    padding: 18px 0 0px;
+}
+.em .section2 ul.three li {
+    padding: 16px 0 0px;
+}
+.em .section3 h2 {
+    font-size: 34px;
+    line-height: 38px;
+    max-width: 100%;
+}
+.em .section3 {
+    padding: 34px 0 39px;
+}
+.em .section3-btn {
+    margin-top: 12px;
+}
+.em .section3-btn ul li {
+    margin-bottom: 14px;
+}
+.em footer {
+    padding: 21px 0;
+}
+}
+@media all and (max-width:319px) {
+.em .google-btn a {
+    font-size: 16px;
+    line-height: 16px;
+    padding: 13px 1px 14px 54px;
+    float: left;
+}
+.em .ms-btn a {
+    font-size: 16px;
+    line-height: 16px;
+    padding: 13px 3px 14px 50px;
+    float: left;
+    letter-spacing: 0;
+    float: left;
+}
+.em .section3 h2 {
+font-size: 33px;
+line-height: 36px;
+max-width: 100%;
+}
+.safari .em .section2 h2.section-title {
+    font-size: 28px;
+}
+.em .section2 h2.section-title {
+    font-size: 30px;
+    line-height: 34px;
+    padding-bottom: 2px;
+}
+.em .section2 ul li h3.title {
+	font-size: 29px;
+	padding-right: 0;
+	line-height: 32px;
+	letter-spacing: -0.1px;
+}
+.em .section2 ul li p, .em .section2 ul.two li p {
+	font-size: 22px;
+	line-height: 32px;
+	padding-right: 0;
+}
+.em .mid-container .section-1 .top-s1 .right-s1 .form-area {
+    padding: 32px 43px 36PX;
+}
+}
