@@ -6,6 +6,7 @@ const config     = require('config');
 var logger       = require('./logger.js');
 let ga = new GA();
 
+
 class Link {
   
   constructor() {
@@ -20,8 +21,16 @@ class Link {
   /**
    * Create a new link.
    * First check whether the link exists or not
+   * By default isExposedAsPublicLink is false
    */
 createLink(orgId, userId, gourl, url, description) {
+  this.createLink(orgId, userId, gourl, url, description, false); 
+ }
+  /**
+   * Create a new link.
+   * First check whether the link exists or not
+   */
+createLink(orgId, userId, gourl, url, description, acl) {
   return new Promise((resolve, reject) => {
     this.getModel().readByColumns('gourl', gourl, 'orgId', orgId).then(linkEntities => {
       if (linkEntities.entities.length == 0) {
@@ -31,6 +40,7 @@ createLink(orgId, userId, gourl, url, description) {
         linkData["gourl"] = gourl.trim().toLowerCase();
         linkData["url"] = url.trim();
         linkData["description"] = description;
+        linkData["acl"] = acl;
         logger.info("creating_link", linkData);
         ga.trackEvent(userId, orgId, 'Link', 'create', linkData["gourl"], '100')      
         resolve(this.getModel().create(linkData));
@@ -46,8 +56,16 @@ createLink(orgId, userId, gourl, url, description) {
   /**
    * Update an existing link.
    * First check whether the link is owned by userId
+   * By default isExposedAsPublicLink is false
    */
   updateLink(id, orgId, userId, gourl, url, description) {
+    this.updateLink(id, orgId, userId, gourl, url, description, false);
+  }
+  /**
+   * Update an existing link.
+   * First check whether the link is owned by userId
+   */
+  updateLink(id, orgId, userId, gourl, url, description, acl) {
     return new Promise((resolve, reject) => {
       this.getModel().read(id).then(entity => {
         if(entity.userId == userId) {
@@ -57,6 +75,7 @@ createLink(orgId, userId, gourl, url, description) {
           linkData["gourl"] = gourl.trim().toLowerCase();
           linkData["url"] = url.trim();
           linkData["description"] = description;
+          linkData["acl"] = acl;
           logger.info("updating_link", linkData);
           ga.trackEvent(userId, orgId, 'Link', 'update', linkData["gourl"], '100')              
           resolve(this.getModel().update (id, linkData));
