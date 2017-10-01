@@ -6,7 +6,7 @@ import { RouterModule }   from '@angular/router';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { FormComponent } from './form/form.component';
-import { MaterialModule } from '@angular/material';
+import { MaterialModule } from './material/material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormConfirmationDialogComponent } from './form/form-confirmation-dialog.component';
 import { LinkListComponent } from './link-list/link-list.component';
