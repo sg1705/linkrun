@@ -12,6 +12,15 @@ var   logger       = require('../model/logger.js');
 const linkService = new LinkService();
 const router = express.Router();
 
+/**
+ * Mapping in datastore to API request received from app
+ * 
+ * link:        gourl
+ * url:         url
+ * description: description
+ * acl:         acl
+ */
+
 // Automatically parse request body as JSON
 router.use(bodyParser.json());
 
@@ -36,15 +45,9 @@ router.post('/create', (req, res, next) => {
   var orgId = cookieService.getXsession(req).orgId;
   var link = req.body['link'];
   var url = req.body['url'];
-  var desc = req.body['description'];
-  var newLink = {
-    userId: userId,
-    orgId:  orgId,
-    link:   link,
-    url:    url,
-    description: desc
-  }
-  linkService.createLink(orgId, userId, link, url, desc).then(entity => {
+  var desc = req.body['description'] || '';
+  var acl = req.body['acl'] || 0;  
+  linkService.createLink(orgId, userId, link, url, desc, acl).then(entity => {
     res.json(entity);
   })  
 });
@@ -56,8 +59,9 @@ router.post('/update/:id', (req, res, next) => {
   var linkId = req.params['id'];
   var link = req.body['link'];
   var url = req.body['url'];
-  var desc = req.body['description'];
-  linkService.updateLink(linkId, orgId, userId, link, url, desc).then(entity => {
+  var desc = req.body['description'] || '';
+  var acl = req.body['acl'] || 0;
+  linkService.updateLink(linkId, orgId, userId, link, url, desc, acl).then(entity => {
     res.json(entity);
   })  
 });
