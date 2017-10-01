@@ -51,18 +51,6 @@ class Logger {
     this.log.info(entry);
  }
 
- warn (msg) {
-  if (this.logOnConsole(msg)) return;
-  let entry = this.log.entry(this.metadata, { "msg": msg});
-  this.log.warn (entry);
-}
-
-warn (msg, detail) {
-  if (this.logOnConsole(msg, detail)) return;
-  let entry = this.log.entry(this.metadata, { "msg": msg, "detail": detail});
-  this.log.warn (entry);
-}
-
  error (msg) {
     if (this.logOnConsole(msg)) return;
     let entry = this.log.entry(this.metadata, { "msg": msg});
