@@ -119,12 +119,12 @@ app.get("/@:orgShortName/:gourl", function(req, res, next) {
 
   if (orgShortName == null) {
     //error condition
-    logger.warn('orgShortName is null');
+    logger.error('orgShortName is null');
     next();
   }
   if (routeGoUrl == null) {
     //error condition
-    logger.warn('link is null');
+    logger.error('link is null');
     next();
   }
   let orgService = new OrgService();
@@ -134,7 +134,7 @@ app.get("/@:orgShortName/:gourl", function(req, res, next) {
     if (orgEntities.entities.length == 0) {
           //org doesn't exist
           ga.trackEvent(userId, orgId, 'Link', 'redirect_failed', 'no_org_shortname_exist', '100')
-          logger.warn("no_org_shortname_exist", {'orgShortName' : orgShortName});
+          logger.info("no_org_shortname_exist", {'orgShortName' : orgShortName});
           // TODO: route to error page with warning that you are attepting to access 
           // org that does not exist. Violation will be reported.
           helper.serve404(req, "No workplace named \"" + orgShortName + "\" exits!", res);        // HTTP status 404: NotFound
@@ -144,7 +144,7 @@ app.get("/@:orgShortName/:gourl", function(req, res, next) {
           orgId = orgEntities.entities[0].id;
           logger.info("orgShortName_exists", {'orgShortName' : orgShortName, 'orgId' : orgId});
           if (!orgEntities.entities[0].isPublicLinksAllowed) {
-            logger.warn("attempt_to_access_private_org_failed", {'link' : routeGoUrl, 'orgShortName' :orgShortName,  'orgId' : orgId});
+            logger.info("attempt_to_access_private_org_failed", {'link' : routeGoUrl, 'orgShortName' :orgShortName,  'orgId' : orgId});
             //TODO: route to error page with warning that you are attepting to access 
             // private link. Violation will be reported.  
             helper.serve404(req, "Workplace \""+ orgShortName + "\" is private. You don\'t have permission to access it", res);
@@ -158,12 +158,12 @@ app.get("/@:orgShortName/:gourl", function(req, res, next) {
         if ((linkEntities.entities.length == 0) || (!linkEntities.entities[0].url) )
         {
           ga.trackEvent(userId, orgId, 'Link', 'redirect_failed', 'no_url_found', '100')
-          logger.warn("no_url_found", {'link' : routeGoUrl});
+          logger.info("no_url_found", {'link' : routeGoUrl});
           helper.serve404(req, 'No URL found for the short link', res);
           return;
         } else {
           if (linkEntities.entities[0].acl != LINK_ACL_PUBLIC){
-            logger.warn("attempt_to_access_private_link_failed", {'link' : routeGoUrl,'orgShortName' :orgShortName, 'orgId' : orgId});
+            logger.info("attempt_to_access_private_link_failed", {'link' : routeGoUrl,'orgShortName' :orgShortName, 'orgId' : orgId});
             //TODO: route to error page with warning that you are attepting to access 
             // private link. Violation will be reported.  
             helper.serve404(req, "It is private link. You don\'t have permission to access it", res);
@@ -226,7 +226,7 @@ app.get("/:gourl", helper.setRouteUrl, auth.isLoggedIn, function (req, res, next
   let routeGoUrl = req.params.gourl;
   if (routeGoUrl == null) {
     //error condition
-    logger.warn('link is null');
+    logger.error('link is null');
     next();
   }
   // retrieve actual url
@@ -264,13 +264,13 @@ app.get("/:gourl", helper.setRouteUrl, auth.isLoggedIn, function (req, res, next
               });
             } else {
               ga.trackEvent(userId, orgId, 'Link', 'redirect_failed', 'no_url_found', '100')
-              logger.warn("no_route_found", {'link' : correctedRouteGoUrl});
+              logger.info("no_route_found", {'link' : correctedRouteGoUrl});
               res.redirect(APP_HOME + '/link/create?link=' + routeGoUrl);
             }
           })
       } else if (!linkEntities.entities[0].url) {
         ga.trackEvent(userId, orgId, 'Link', 'redirect_failed', 'empty_url', '100')
-        logger.warn("empty_url", "redirecting to links page");
+        logger.info("empty_url", "redirecting to links page");
         res.redirect(APP_HOME + '/link/create?link=' + routeGoUrl);
       } else { 
         helper.routeUrl(linkEntities, userId, orgId, ga, res);
