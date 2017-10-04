@@ -39,8 +39,6 @@ export class FormComponent implements OnInit {
   @ViewChild('url') inputUrl: ElementRef;
   @ViewChild('linkList') linkList: LinkListComponent;
 
-  //feature_flag
-  linkAclFeatureOrgs = ['jerseystem.org','link.run'];
   linkAclFeature:boolean = false;
 
   constructor(
@@ -66,14 +64,9 @@ export class FormComponent implements OnInit {
       this.user.subscribe(user => {
         this.orgName = user.orgName;
         
-        //feature flag
-        var oo = _.find(this.linkAclFeatureOrgs, function(orgName) {
-            return (user.orgName == orgName);
-        })
-        if (oo) {
+        if (user.orgAllowsPublic) {
           this.linkAclFeature = true;
         }
-
       });    
    }
 

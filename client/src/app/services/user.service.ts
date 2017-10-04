@@ -26,7 +26,8 @@ export class UserService {
             data.lName,
             data.picture,
             data.email,
-            data.orgName
+            data.orgName,
+            data.orgAllowsPublic
           );
           this.currentUser = user;
           return this.currentUser;
@@ -53,7 +54,8 @@ export class UserService {
               element.lName,
               element.picture,
               element.email,
-              element.orgName
+              element.orgName,
+              element.orgAllowsPublic
             );
             users.push(element);
           });
