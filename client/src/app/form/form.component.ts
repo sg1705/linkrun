@@ -59,7 +59,7 @@ export class FormComponent implements OnInit {
         this.linkId = params['id'];
         this.initialize();
       })
-      this.user = Observable.fromPromise(this.userService.getCurrentUser());
+      this.user = this.userService.getCurrentUser();
       
       this.user.subscribe(user => {
         this.orgName = user.orgName;

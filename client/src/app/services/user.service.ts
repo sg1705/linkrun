@@ -2,42 +2,62 @@ import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { User } from '../model/user';
 import 'rxjs/add/operator/toPromise';
+import { Observable, Subject } from 'rxjs';
 
 @Injectable()
 export class UserService {
 
   private apiUrl: string = '/__/api/users';
   private currentUser: User;
+  private currUser:Subject<User> = new Subject();
 
   constructor(private http: Http) {
-
+    this.http.get(this.apiUrl)
+      .toPromise().then(res => {
+        var data = res.json();
+        var user = new User(
+          data.id,
+          data.orgId,
+          data.fName,
+          data.lName,
+          data.picture,
+          data.email,
+          data.orgName,
+          data.orgAllowsPublic
+        );
+        this.currUser.next(user);
+      })
   }
 
-  getCurrentUser(): Promise<User> {
-    if (this.currentUser == null) {
-      //make a network call to get user
-      return this.http.get(this.apiUrl)
-        .toPromise().then(res => {
-          var data = res.json();
-          var user = new User(
-            data.id,
-            data.orgId,
-            data.fName,
-            data.lName,
-            data.picture,
-            data.email,
-            data.orgName,
-            data.orgAllowsPublic
-          );
-          this.currentUser = user;
-          return this.currentUser;
-        })
+  // getCurrentUser(): Promise<User> {
+  //   if (this.currentUser == null) {
+  //     //make a network call to get user
+  //     return this.http.get(this.apiUrl)
+  //       .toPromise().then(res => {
+  //         var data = res.json();
+  //         var user = new User(
+  //           data.id,
+  //           data.orgId,
+  //           data.fName,
+  //           data.lName,
+  //           data.picture,
+  //           data.email,
+  //           data.orgName,
+  //           data.orgAllowsPublic
+  //         );
+  //         this.currentUser = user;
+  //         return this.currentUser;
+  //       })
 
-    } else {
-      return new Promise<User>((resolve, reject) => {
-        resolve(this.currentUser);
-      });
-    }
+  //   } else {
+  //     return new Promise<User>((resolve, reject) => {
+  //       resolve(this.currentUser);
+  //     });
+  //   }
+  // }
+
+  getCurrentUser():Observable<User> {
+    return this.currUser;
   }
 
   getAllUsers(): Promise<Array<User>> {

@@ -18,7 +18,7 @@ export class AppComponent {
   }
 
   ngOnInit() {
-    this.user = Observable.fromPromise(this.userService.getCurrentUser());
+    this.user = this.userService.getCurrentUser();
     this.user.subscribe(user => {
       console.debug('logged in user', user);
       if (!user.id) {
