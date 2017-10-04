@@ -44,6 +44,7 @@ router.get('/', (req, res, next) => {
   })
   .then(orgEntity => {
     userData['orgName'] = orgEntity.orgName;
+    userData['orgAllowsPublic'] = (orgEntity.isPublicLinksAllowed) || false;
     res.json(userData);    
   })
   .catch(err => {

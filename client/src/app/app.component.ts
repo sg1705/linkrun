@@ -29,10 +29,3 @@ export class AppComponent {
   }
 
 }
-
-export class Link {
-  id:           Number;
-  link:         String;
-  url:          String;
-  description:  String;
-}

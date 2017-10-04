@@ -23,8 +23,8 @@ class Link {
    * First check whether the link exists or not
    * By default isExposedAsPublicLink is false
    */
-createLink(orgId, userId, gourl, url, description) {
-  this.createLink(orgId, userId, gourl, url, description, false); 
+createLink(orgId, userId, gourl, url, description, acl) {
+  this.createLink(orgId, userId, gourl, url, description, acl); 
  }
   /**
    * Create a new link.
@@ -58,8 +58,8 @@ createLink(orgId, userId, gourl, url, description, acl) {
    * First check whether the link is owned by userId
    * By default isExposedAsPublicLink is false
    */
-  updateLink(id, orgId, userId, gourl, url, description) {
-    this.updateLink(id, orgId, userId, gourl, url, description, false);
+  updateLink(id, orgId, userId, gourl, url, description, acl) {
+    this.updateLink(id, orgId, userId, gourl, url, description, acl);
   }
   /**
    * Update an existing link.

@@ -32,6 +32,10 @@
       </md-input-container>
     </md-grid-tile>
 
+    <md-grid-tile *ngIf="linkAclFeature">
+        <md-slide-toggle [formControl]="linkFormGroup.controls['acl']" [checked]="linkFormGroup.controls['acl']">Public</md-slide-toggle>
+    </md-grid-tile> 
+
      <md-grid-tile>
       <md-input-container>
         <textarea  [formControl]="linkFormGroup.controls['description']" name="description" mdInput placeholder="Description"></textarea>
