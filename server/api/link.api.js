@@ -11,6 +11,7 @@ var   logger       = require('../model/logger.js');
 
 const linkService = new LinkService();
 const router = express.Router();
+const json2csv = require('json2csv');
 
 /**
  * Mapping in datastore to API request received from app
@@ -38,6 +39,25 @@ router.get('/', (req, res, next) => {
       return;    
   })
 });
+
+/**
+ * Retrieves all links for the user
+ */
+router.get('/csv', (req, res, next) => {
+  //get user from cookie
+  var userId = cookieService.getXsession(req).userId;
+  var orgId = cookieService.getXsession(req).orgId;
+  linkService.getLinksByOrgId(orgId).then(links => {
+    var fields = ['gourl', 'url','description', 'updatedAt'];
+    var result = json2csv({ data: links['entities'], fields: fields });
+    res.set('Content-Type', 'application/octet-stream');
+    res.send(result);
+  }).catch(err => {
+      logger.error(err);
+      return;    
+  })
+});
+
 
 router.post('/create', (req, res, next) => {
   //get user from cookie
