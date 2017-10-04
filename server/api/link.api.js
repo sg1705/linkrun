@@ -11,6 +11,16 @@ var   logger       = require('../model/logger.js');
 
 const linkService = new LinkService();
 const router = express.Router();
+const json2csv = require('json2csv');
+
+/**
+ * Mapping in datastore to API request received from app
+ * 
+ * link:        gourl
+ * url:         url
+ * description: description
+ * acl:         acl
+ */
 
 // Automatically parse request body as JSON
 router.use(bodyParser.json());
@@ -30,21 +40,34 @@ router.get('/', (req, res, next) => {
   })
 });
 
+/**
+ * Retrieves all links for the user
+ */
+router.get('/csv', (req, res, next) => {
+  //get user from cookie
+  var userId = cookieService.getXsession(req).userId;
+  var orgId = cookieService.getXsession(req).orgId;
+  linkService.getLinksByOrgId(orgId).then(links => {
+    var fields = ['gourl', 'url','description', 'updatedAt'];
+    var result = json2csv({ data: links['entities'], fields: fields });
+    res.set('Content-Type', 'application/octet-stream');
+    res.send(result);
+  }).catch(err => {
+      logger.error(err);
+      return;    
+  })
+});
+
+
 router.post('/create', (req, res, next) => {
   //get user from cookie
   var userId = cookieService.getXsession(req).userId;
   var orgId = cookieService.getXsession(req).orgId;
   var link = req.body['link'];
   var url = req.body['url'];
-  var desc = req.body['description'];
-  var newLink = {
-    userId: userId,
-    orgId:  orgId,
-    link:   link,
-    url:    url,
-    description: desc
-  }
-  linkService.createLink(orgId, userId, link, url, desc).then(entity => {
+  var desc = req.body['description'] || '';
+  var acl = req.body['acl'] || 0;  
+  linkService.createLink(orgId, userId, link, url, desc, acl).then(entity => {
     res.json(entity);
   })  
 });
@@ -56,8 +79,9 @@ router.post('/update/:id', (req, res, next) => {
   var linkId = req.params['id'];
   var link = req.body['link'];
   var url = req.body['url'];
-  var desc = req.body['description'];
-  linkService.updateLink(linkId, orgId, userId, link, url, desc).then(entity => {
+  var desc = req.body['description'] || '';
+  var acl = req.body['acl'] || 0;
+  linkService.updateLink(linkId, orgId, userId, link, url, desc, acl).then(entity => {
     res.json(entity);
   })  
 });
