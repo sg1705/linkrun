@@ -29,33 +29,6 @@ export class UserService {
       })
   }
 
-  // getCurrentUser(): Promise<User> {
-  //   if (this.currentUser == null) {
-  //     //make a network call to get user
-  //     return this.http.get(this.apiUrl)
-  //       .toPromise().then(res => {
-  //         var data = res.json();
-  //         var user = new User(
-  //           data.id,
-  //           data.orgId,
-  //           data.fName,
-  //           data.lName,
-  //           data.picture,
-  //           data.email,
-  //           data.orgName,
-  //           data.orgAllowsPublic
-  //         );
-  //         this.currentUser = user;
-  //         return this.currentUser;
-  //       })
-
-  //   } else {
-  //     return new Promise<User>((resolve, reject) => {
-  //       resolve(this.currentUser);
-  //     });
-  //   }
-  // }
-
   getCurrentUser():Observable<User> {
     return this.currUser;
   }
