@@ -7,6 +7,7 @@ import {MdListModule} from '@angular/material';
 import {MdGridListModule} from '@angular/material';
 import {MdTabsModule} from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { MatSlideToggleModule } from '@angular/material';
 import {MdButton} from '@angular/material';
 import { MdIconModule } from '@angular/material';
 import { MatMenuModule, MatTableModule, MatDialogModule } from '@angular/material';
@@ -26,7 +27,8 @@ import { CdkTableModule } from '@angular/cdk/table';
     MatMenuModule,
     CdkTableModule,
     MatTableModule,
-    MatDialogModule
+    MatDialogModule,
+    MatSlideToggleModule
   ],
   exports: [
     BrowserAnimationsModule,
@@ -39,7 +41,8 @@ import { CdkTableModule } from '@angular/cdk/table';
     MatMenuModule,
     CdkTableModule,
     MatTableModule,
-    MatDialogModule
+    MatDialogModule,
+    MatSlideToggleModule
   ]
 })
 export class MaterialModule { }

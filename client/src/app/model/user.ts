@@ -6,8 +6,9 @@ export class User {
   picture:    string;
   email:      string;
   orgName:    string;
+  orgAllowsPublic:boolean = false;
 
-  constructor(id, orgId, firstName, lastName, photoUrl, email, orgName) {
+  constructor(id, orgId, firstName, lastName, photoUrl, email, orgName, orgAllowsPublic) {
     this.id = id;
     this.orgId = orgId;
     this.fName = firstName;
@@ -15,6 +16,7 @@ export class User {
     this.picture = photoUrl;
     this.email = email;
     this.orgName = orgName;
+    this.orgAllowsPublic = orgAllowsPublic;
   }
   
 }

@@ -121,9 +121,9 @@ class ModelService {
             data['updatedAt'] = new Date();
             if (id) {
                 key = ds.key([kind, parseInt(id, 10)]);
-                data['createdAt'] = new Date();
             } else {
                 key = ds.key(kind);
+                data['createdAt'] = new Date();                
             }
             const entity = {
                 key: key,
