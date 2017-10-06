@@ -15,7 +15,7 @@ export class LoginComponent implements OnInit {
   picture: string;
 
   constructor(private userService:UserService) {
-    this.userService.getCurrentUser().then(user => {
+    this.userService.getCurrentUser().subscribe(user => {
       this.user = user;
       this.fName = user.fName;
       this.lName = user.lName;
@@ -24,7 +24,7 @@ export class LoginComponent implements OnInit {
       } else {
         this.picture = user.picture;
       }
-    });
+    })
   }
 
   ngOnInit() {
