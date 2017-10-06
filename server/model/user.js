@@ -19,7 +19,7 @@ class User {
   /**
    * Create a new user.
    */
-  createUser(orgId, refresh_token, email, fName, lName, picture) {
+  createUser(orgId, refresh_token, email, fName, lName, picture, authMethod) {
     var userData = {};
     userData["orgId"] = orgId;
     userData["refresh_token"] = refresh_token;
@@ -27,6 +27,7 @@ class User {
     userData["fName"] = fName;
     userData["lName"] = lName;
     userData["picture"] = picture;
+    userData["authMethod"] = authMethod;
     logger.info("creating_user", {'email':email, 'orgId':orgId});
     return this.getModel().create(userData);
   }
@@ -34,7 +35,7 @@ class User {
   /**
    * Update an existing user.
    */
-  updateUser(uid, orgId, refresh_token, email, fName, lName, picture) {
+  updateUser(uid, orgId, refresh_token, email, fName, lName, picture, authMethod) {
     var userData = {};
     userData["orgId"] = orgId;
     userData["refresh_token"] = refresh_token;
@@ -42,6 +43,7 @@ class User {
     userData["fName"] = fName;
     userData["lName"] = lName;
     userData["picture"] = picture;
+    userData["authMethod"] = authMethod;    
     logger.info("updating user", {'userId':uid, 'orgId':orgId});
     return this.getModel().update(uid, userData);
   }
@@ -80,7 +82,7 @@ class User {
    * @return user entity
    * 
    */
-  getOrCreateUserByEmail(orgId, email, fName, lName, picture, refresh_token) {
+  getOrCreateUserByEmail(orgId, email, fName, lName, picture, refresh_token, authMethod) {
     return new Promise((resolve, reject) => {
       this.readByColumn(
         'email',
@@ -98,7 +100,8 @@ class User {
               email,
               fName,
               lName,
-              picture)
+              picture,
+              authMethod)
             .then((entity) => {
               resolve(entity);
             }).catch (err => {
@@ -114,7 +117,8 @@ class User {
               email,
               fName,
               lName,
-              picture)
+              picture,
+              authMethod)
             .then((entity) => {
               resolve(entity);
             }).catch(err => {
