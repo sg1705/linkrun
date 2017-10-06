@@ -57,7 +57,7 @@ function clearRouteUrl(res) {
 
 function routeUrl(linkEntities, userId, orgId, ga, res) {
   let url = linkEntities.entities[0].url;
-  if (!(url.startsWith('https://') || url.startsWith('http://'))) {
+  if (!(url.startsWith('https://') || url.startsWith('http://') || url.startsWith('ftp://'))) {
     url = 'http://' + url;
   }        
   ga.trackEvent(userId, orgId, 'Link', 'redirect', linkEntities.entities[0].id, '100')

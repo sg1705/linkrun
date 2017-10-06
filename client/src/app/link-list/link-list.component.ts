@@ -31,7 +31,7 @@ export class LinkListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.user = Observable.fromPromise(this.userService.getCurrentUser());
+    this.user = this.userService.getCurrentUser();
     this.user.subscribe(user => {
       this.userService.getAllUsers().then(users => {
         this.users = users;        
