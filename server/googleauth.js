@@ -6,8 +6,6 @@ var oauth2       = google.oauth2('v2');
 var OAuth2       = google.auth.OAuth2;
 var logger       = require('./model/logger.js')
 var auth         = require('./auth.js');
-var GA           = require('./model/google-analytics-tracking.js')
-var cookie       = require('./cookie.js');
 
 const express    = require('express');
 const router     = express.Router();
