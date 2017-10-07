@@ -1,9 +1,6 @@
 'use strict';
 var config = require('config');
 const request = require('request');
-const express = require('express');
-const app = express();
-app.enable('trust proxy');
 
 class GA {
 
