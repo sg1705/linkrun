@@ -55,8 +55,12 @@ function authenticateUser(res,req, authMethod, orgName, email, fName, lName, pic
         //org doesn't exist
         return orgService.createOrg(orgName, authMethod)
           .then((orgEntity) => {
-                return userService.getOrCreateUserByEmail(orgEntity.id, email, fName, lName, picture, refresh_token);
-            });
+                return userService.getOrCreateUserByEmail(orgEntity.id, email, fName, lName, picture, refresh_token)
+                .then(userEntity => {
+                  ga.trackEvent(userEntity.id, orgEntity.id, 'Org', 'create', 'success', '100');
+                  return userEntity;
+              })
+        });
           } else {
             // org exists
             let orgEntity = orgEntities.entities[0];
@@ -65,7 +69,8 @@ function authenticateUser(res,req, authMethod, orgName, email, fName, lName, pic
       })
       .then(userEntity => {
         //set cookie
-        cookie.setCookie(res, userEntity.id, userEntity.orgId);        
+        cookie.setCookie(res, userEntity.id, userEntity.orgId);  
+        ga.trackEvent(userEntity.id, userEntity.orgId, 'User', 'login', 'success', '100')      
       })
       //retrieve user
       .then((data) => {

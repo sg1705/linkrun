@@ -96,7 +96,6 @@ router.get('/oauthcallback',
       })
       .catch(err => {
         logger.error('routing error', err);
-        //return err
       });
   });
 
