@@ -98,11 +98,6 @@ router.get('/oauthcallback',
       })
       .catch(err => {
         logger.error('routing error', err);
-        let ga = new GA();
-        let orgId = cookie.getOrgIdFromCookie(req)
-        let userId = cookie.getUserIdFromCookie(req)        
-        ga.trackEvent(userinfo, orgId, 'User', 'login', 'fail', '100')
-        //return err
       });
   });
 
