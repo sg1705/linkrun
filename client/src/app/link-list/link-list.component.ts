@@ -10,7 +10,6 @@ import { Observable } from 'rxjs/Rx';
 import * as _ from 'lodash';
 import 'rxjs/Rx';
 
-
 @Component({
   selector: 'app-link-list',
   templateUrl: './link-list.component.html',
@@ -19,7 +18,7 @@ import 'rxjs/Rx';
 })
 export class LinkListComponent implements OnInit {
 
-  user: Observable<User> | null;
+  user: Observable<User>;
   userObject: User;
   dataSource: DataSource<any>;
   displayedColumns = ['link', 'url', 'createdby', 'action'];
@@ -27,7 +26,7 @@ export class LinkListComponent implements OnInit {
 
   constructor(
     private linkService: LinkService,
-    private userService: UserService) {
+    private userService: UserService) {      
   }
 
   ngOnInit() {
@@ -37,8 +36,7 @@ export class LinkListComponent implements OnInit {
         this.users = users;        
         this.dataSource = new LinkDataSource(this.linkService, user, this.users);
         this.userObject = user;
-      })
-      
+      });
     })
   }
 

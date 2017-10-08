@@ -2,14 +2,14 @@ import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { User } from '../model/user';
 import 'rxjs/add/operator/toPromise';
-import { Observable, Subject } from 'rxjs';
+import { Observable, BehaviorSubject, Subject } from 'rxjs';
 
 @Injectable()
 export class UserService {
 
   private apiUrl: string = '/__/api/users';
-  private currentUser: User;
-  private currUser:Subject<User> = new Subject();
+  private behaviorUser:BehaviorSubject<User> = null;  
+  private currUser:Subject<User> = new Subject<User>();
 
   constructor(private http: Http) {
     this.http.get(this.apiUrl)
@@ -26,11 +26,15 @@ export class UserService {
           data.orgAllowsPublic
         );
         this.currUser.next(user);
+        this.behaviorUser = new BehaviorSubject<User>(user);
       })
   }
 
   getCurrentUser():Observable<User> {
-    return this.currUser;
+    if (this.behaviorUser == null) {
+      return this.currUser;
+    }
+    return this.behaviorUser;
   }
 
   getAllUsers(): Promise<Array<User>> {
