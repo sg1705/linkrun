@@ -5,6 +5,8 @@ var logger = require('./model/logger.js');
 var UserService = require('./model/user.js');
 var OrgService = require('./model/org.js');
 var helper = require('./helper.js');
+var GA = require('./model/google-analytics-tracking.js')
+let ga = new GA();
 /**
  * Check if user is logged in
  */

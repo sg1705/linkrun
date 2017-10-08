@@ -6,8 +6,8 @@
   "scripts": {
     "start": "node server/app.js",
     "dev": "nodemon server/app.js",
-    "build:prod": "cd client && ng build -prod",
-    "build:staging": "cd client && ng build -prod"
+    "build:prod": "cd client && ng build --prod --env=prod",
+    "build:staging": "cd client && ng build --prod"
   },
   "private": true,
   "dependencies": {
@@ -20,7 +20,6 @@
     "body-parser": "^1.16.0",
     "config": "^1.25.1",
     "cookie-parser": "^1.4.3",
-    "@types/google.analytics": "0.0.35",
     "core-js": "^2.4.1",
     "express": "^4.14.1",
     "express-session": "^1.15.0",

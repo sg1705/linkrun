@@ -145,6 +145,7 @@ export class FormComponent implements OnInit {
         .then(link => {
           console.log('link created', link);
           this.showConfirmationDialog(resolve, 'created', link);
+          this.linkList.refreshList();
         })
       });
     }
