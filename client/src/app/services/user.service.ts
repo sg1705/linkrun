@@ -25,6 +25,7 @@ export class UserService {
           data.orgName,
           data.orgAllowsPublic
         );
+        user.orgShortName = data.orgShortName;
         this.currUser.next(user);
         this.behaviorUser = new BehaviorSubject<User>(user);
       })

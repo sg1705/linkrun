@@ -39,10 +39,8 @@ export class AppComponent {
 
     ga('create', environment.ga.GA_TRACKING_ID, 'auto');
     this.router.events.subscribe(event => {
-      console.log('in router event subscribe')
       if (event instanceof NavigationEnd) {
         this.user.subscribe(user => {
-          console.log('NavigationEnd called');
           ga('set', 'userId', user.id); // Set the user ID using signed-in user_id.          
           ga('set', 'page', event.urlAfterRedirects);
           ga('send', 'pageview');
