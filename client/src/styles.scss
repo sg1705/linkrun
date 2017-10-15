@@ -14,6 +14,10 @@
     @include angular-material-theme($alternate-theme);
 }
 
+$gray-theme-300: mat-palette($mat-grey,  A200, A100, A400);
+
 .app {
-  background-color: mat-color($custom-theme-primary, 100);
+  // background-color: mat-color($custom-theme-primary, 100);
+  //https://medium.com/covalent-ui/angular-material-2-theme-tutorial-2f7e6c344006
+  background-color: mat-color($gray-theme-300, 300);
 }

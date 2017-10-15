@@ -2,41 +2,40 @@ import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { User } from '../model/user';
 import 'rxjs/add/operator/toPromise';
+import { Observable, BehaviorSubject, Subject } from 'rxjs';
 
 @Injectable()
 export class UserService {
 
   private apiUrl: string = '/__/api/users';
-  private currentUser: User;
+  private behaviorUser:BehaviorSubject<User> = null;  
+  private currUser:Subject<User> = new Subject<User>();
 
   constructor(private http: Http) {
-
+    this.http.get(this.apiUrl)
+      .toPromise().then(res => {
+        var data = res.json();
+        var user = new User(
+          data.id,
+          data.orgId,
+          data.fName,
+          data.lName,
+          data.picture,
+          data.email,
+          data.orgName,
+          data.orgAllowsPublic
+        );
+        user.orgShortName = data.orgShortName;
+        this.currUser.next(user);
+        this.behaviorUser = new BehaviorSubject<User>(user);
+      })
   }
 
-  getCurrentUser(): Promise<User> {
-    if (this.currentUser == null) {
-      //make a network call to get user
-      return this.http.get(this.apiUrl)
-        .toPromise().then(res => {
-          var data = res.json();
-          var user = new User(
-            data.id,
-            data.orgId,
-            data.fName,
-            data.lName,
-            data.picture,
-            data.email,
-            data.orgName
-          );
-          this.currentUser = user;
-          return this.currentUser;
-        })
-
-    } else {
-      return new Promise<User>((resolve, reject) => {
-        resolve(this.currentUser);
-      });
+  getCurrentUser():Observable<User> {
+    if (this.behaviorUser == null) {
+      return this.currUser;
     }
+    return this.behaviorUser;
   }
 
   getAllUsers(): Promise<Array<User>> {
@@ -53,7 +52,8 @@ export class UserService {
               element.lName,
               element.picture,
               element.email,
-              element.orgName
+              element.orgName,
+              element.orgAllowsPublic
             );
             users.push(element);
           });

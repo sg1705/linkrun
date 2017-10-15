@@ -18,6 +18,7 @@ import { LinkListComponent } from '../link-list/link-list.component';
 import { FormConfirmationDialogComponent } from './form-confirmation-dialog.component';
 import { Observable } from 'rxjs/Rx';
 import 'rxjs/Rx';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-form',
@@ -33,10 +34,15 @@ export class FormComponent implements OnInit {
   formTitle:string = 'Create Short Link';
   user: Observable<User>;
   orgName: string;
+  orgShortName: string;
+  aclMessage:boolean = false;
+  shortLink:string = '';
 
   @ViewChild('link') inputLink: ElementRef;
   @ViewChild('url') inputUrl: ElementRef;
   @ViewChild('linkList') linkList: LinkListComponent;
+
+  linkAclFeature:boolean = false;
 
   constructor(
     private dialog: MdDialog,
@@ -46,25 +52,44 @@ export class FormComponent implements OnInit {
     private router: Router,
     private activateRoute: ActivatedRoute ) {
       this.linkFormGroup = fb.group({
-      'link': '',
+        'link': '',
         'url' : '',
+<<<<<<< HEAD
         'isPublic': false
         // 'description': ''
+=======
+        'description': '',
+        'acl': false
+>>>>>>> origin/master
       });
       //set linkid in case of /edit
       this.activateRoute.params.subscribe(params => {
         this.linkId = params['id'];
         this.initialize();
       })
-      this.user = Observable.fromPromise(this.userService.getCurrentUser());
-      
+      this.user = this.userService.getCurrentUser();
       this.user.subscribe(user => {
         this.orgName = user.orgName;
+        this.orgShortName = user.orgShortName;
+        
+        if (user.orgAllowsPublic) {
+          this.linkAclFeature = true;
+        }
       });    
    }
 
   ngOnInit() {
     this.inputLink.nativeElement.focus();
+
+    this.linkFormGroup.controls['acl'].valueChanges.subscribe(acl => {
+      this.aclMessage = acl;
+    })
+
+    this.linkFormGroup.controls['link'].valueChanges.subscribe(link => {
+      this.shortLink = link;
+    })
+    
+
   }
 
 
@@ -79,8 +104,13 @@ export class FormComponent implements OnInit {
         this.linkFormGroup.controls['link'].setValue(link.link);
         this.linkFormGroup.controls['link'].disable();
         this.linkFormGroup.controls['url'].setValue(link.url);
+<<<<<<< HEAD
         this.linkFormGroup.controls['isPublic'].setValue(link.isExposedAsPublicLink);
         // this.linkFormGroup.controls['description'].setValue(link.description);
+=======
+        this.linkFormGroup.controls['description'].setValue(link.description);
+        this.linkFormGroup.controls['acl'].setValue(link.acl != Link.LINK_ACL_DEFAULT);
+>>>>>>> origin/master
       })
     } else if (this.router.url.indexOf('/link/create') > -1) {
       this.activateRoute.queryParams.subscribe(params => {
@@ -110,14 +140,28 @@ export class FormComponent implements OnInit {
     })
   }
 
+  private getACL(acl:boolean) {
+    if (acl) {
+      return Link.LINK_ACL_PUBLIC;
+    }
+    return Link.LINK_ACL_DEFAULT;
+  }
+
+
   onSubmit(l):Promise<boolean> {
     if (this.mode == 'edit') {
       return new Promise((resolve, reject) => {
         var link = this.linkFormGroup.controls['link'].value;
         var url = this.linkFormGroup.controls['url'].value;
+<<<<<<< HEAD
         var isPublic:boolean = this.linkFormGroup.controls['isPublic'].value;
         // var description = this.linkFormGroup.controls['description'].value;
         this.linkService.updateLink(new Link(this.linkId, link, url, false))
+=======
+        var description = this.linkFormGroup.controls['description'].value;
+        var acl = this.getACL(this.linkFormGroup.controls['acl'].value);
+        this.linkService.updateLink(new Link(this.linkId, link, url, description, acl))
+>>>>>>> origin/master
         .then(link => {
           console.log('link updated', link);
           this.reset();
@@ -125,11 +169,17 @@ export class FormComponent implements OnInit {
         })
       });
     } else {
+<<<<<<< HEAD
       return new Promise((resolve, reject) => {     
         this.linkService.createLink(new Link(0, l.link, l.url, l.isPublic))
+=======
+      return new Promise((resolve, reject) => {
+        this.linkService.createLink(new Link(0, l.link, l.url, l.description, this.getACL(l.acl)))
+>>>>>>> origin/master
         .then(link => {
           console.log('link created', link);
           this.showConfirmationDialog(resolve, 'created', link);
+          this.linkList.refreshList();
         })
       });
     }

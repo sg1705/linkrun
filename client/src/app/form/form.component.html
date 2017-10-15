@@ -32,7 +32,19 @@
       </md-input-container>
     </md-grid-tile>
 
+<<<<<<< HEAD
     <!-- <md-grid-tile>
+=======
+    <md-grid-tile *ngIf="linkAclFeature">
+      <div style="display:flex; flex-direction:column">
+        <md-slide-toggle [formControl]="linkFormGroup.controls['acl']" [checked]="linkFormGroup.controls['acl']">Public</md-slide-toggle>
+        <p [hidden]="!aclMessage">Public link available at <i>https://link.run/@{{orgShortName}}/{{shortLink}}</i></p>
+        <p [hidden]="aclMessage">Links are private to <i>{{orgName}}</i></p>
+      </div>
+    </md-grid-tile> 
+
+     <md-grid-tile>
+>>>>>>> origin/master
       <md-input-container>
         <textarea  [formControl]="linkFormGroup.controls['description']" name="description" mdInput placeholder="Description"></textarea>
       </md-input-container>

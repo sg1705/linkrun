@@ -7,11 +7,17 @@ import { RouterModule }   from '@angular/router';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { FormComponent } from './form/form.component';
+<<<<<<< HEAD
 import { MaterialModule } from '@angular/material';
+=======
+import { MaterialModule } from './material/material.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+>>>>>>> origin/master
 import { FormConfirmationDialogComponent } from './form/form-confirmation-dialog.component';
 import { LinkListComponent } from './link-list/link-list.component';
 import { LinkNameValidator } from './form/link.validator';
 import { UserService } from './services/user.service';
+import { GoogleAnalyticsEventsService } from "./services/google-analytics-events.service";
 
 @NgModule({
   declarations: [
@@ -39,7 +45,7 @@ import { UserService } from './services/user.service';
   entryComponents: [
     FormConfirmationDialogComponent,
   ],
-  providers: [UserService],
+  providers: [UserService, GoogleAnalyticsEventsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -123,6 +123,7 @@ class ModelService {
                 key = ds.key([kind, parseInt(id, 10)]);
             } else {
                 key = ds.key(kind);
+                data['createdAt'] = new Date();                
             }
             const entity = {
                 key: key,
@@ -180,7 +181,7 @@ class ModelService {
         return new Promise((resolve, reject) => {
             const q =
                 ds.createQuery([kind])
-                    .filter(columnName, '=', columnValue);
+                    .filter(columnName, '=', columnValue)
             ds.runQuery(q, (err, entities, nextQuery) => {
                 if (err) {
                     reject(err);

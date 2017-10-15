@@ -42,6 +42,8 @@ have run the command `gcloud auth application-default login`, your identity can 
 6. Run `gcloud app deploy`
 
 # Deploying on Google Cloud Production
+When building angular application for production, we should make sure that we are passing `--env=prod` flag 
+to `ng build`. `npm run build:prod` passes the environment flag.
 
 1. Build for product `npm install && cd client && npm install && cd .. && npm run build:prod`
 2. Change the environment variable in app.yaml to `production`
@@ -51,3 +53,14 @@ have run the command `gcloud auth application-default login`, your identity can 
 5. Confirm using `gcloud config list`
 6. Run `gcloud app deploy`
 
+# Google Analytics 
+
+ ## Custom tracking dimensions
+ cd1: org-id
+ cd2: client-id
+ cd3: user-id
+ 
+ ## Events
+ Event Category: Link
+ Event Action: redirect
+ Event Label: link id(redirect), short name(creat), or error message

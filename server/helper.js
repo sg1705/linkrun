@@ -1,8 +1,8 @@
 'use strict';
 
 var logger = require('./model/logger.js');
-
-
+var fs = require('fs');
+var path = require('path');
 
 /**
  * Caching function
@@ -55,10 +55,33 @@ function clearRouteUrl(res) {
   res.cookie('X_ROUTE', '', {expires: new Date(0)});
 }
 
+function routeUrl(linkEntities, userId, orgId, ga, res) {
+  let url = linkEntities.entities[0].url;
+  if (!(url.startsWith('https://') || url.startsWith('http://') || url.startsWith('ftp://'))) {
+    url = 'http://' + url;
+  }        
+  ga.trackEvent(userId, orgId, 'Link', 'redirect', linkEntities.entities[0].id, '100')
+  logger.info("routing_link", {'link' : linkEntities.entities[0]});
+  res.redirect(301, url);
+}
+
+function serve404(req, msg, res) {
+  fs.readFile(path.join(__dirname, '../static/404.html'), 'utf8', function (err, data) {
+  if (err) {
+    return console.log(err);
+    next();
+  }
+  var result = data.replace("mylink", req.params.gourl);
+  var result = result.replace("Your colleague shared a short link", msg);
+  res.set('Content-Type', 'text/html');
+  res.status(404).send(result)
+  });
+}
 module.exports = {
     setRouteUrl: setRouteUrl,
     getRouteUrl: getRouteUrl,
     clearRouteUrl: clearRouteUrl,
-
+    routeUrl: routeUrl,
+    serve404: serve404,
     noCache: noCache
 };
