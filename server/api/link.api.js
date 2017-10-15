@@ -64,7 +64,8 @@ router.get('/csv', (req, res, next) => {
         }
       });
       var fields = ['gourl', 'url','description', 'updatedAt', 'userName'];
-      var result = json2csv({ data: links['entities'], fields: fields });
+      var fieldNames = ['Short Link', 'URL', 'Description', 'Updated Date', 'Created By'];
+      var result = json2csv({ data: links['entities'], fields: fields, fieldNames: fieldNames });
       res.set('Content-Type', 'application/octet-stream');
       res.send(result);
     }).catch(err => {
