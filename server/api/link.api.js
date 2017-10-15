@@ -5,11 +5,14 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const config = require('config');
 const LinkService = require(`../model/link.js`);
+const UserService = require(`../model/user.js`);
 const cookieService = require('../cookie.js');
 const Datastore = require('@google-cloud/datastore');
 var   logger       = require('../model/logger.js');
+const _ = require('lodash');
 
 const linkService = new LinkService();
+const userService = new UserService();
 const router = express.Router();
 const json2csv = require('json2csv');
 
@@ -47,14 +50,30 @@ router.get('/csv', (req, res, next) => {
   //get user from cookie
   var userId = cookieService.getXsession(req).userId;
   var orgId = cookieService.getXsession(req).orgId;
-  linkService.getLinksByOrgId(orgId).then(links => {
-    var fields = ['gourl', 'url','description', 'updatedAt'];
-    var result = json2csv({ data: links['entities'], fields: fields });
-    res.set('Content-Type', 'application/octet-stream');
-    res.send(result);
+
+  userService.getAllUsers(orgId).then(users => {
+    linkService.getLinksByOrgId(orgId).then(links => {
+      links['entities'].forEach(link => {
+        var user = _.find(users, function(user) {
+            return (user.id == link.userId);
+        })
+        if (user != null) {
+          link['userName'] = user.fName + ' ' + user.lName;
+        } else {
+          link['userName'] = '';
+        }
+      });
+      var fields = ['gourl', 'url','description', 'updatedAt', 'userName'];
+      var result = json2csv({ data: links['entities'], fields: fields });
+      res.set('Content-Type', 'application/octet-stream');
+      res.send(result);
+    }).catch(err => {
+        logger.error(err);
+        return;    
+    })
   }).catch(err => {
-      logger.error(err);
-      return;    
+    logger.error('error exporting to csv',err);
+    return;
   })
 });
 
