@@ -65,30 +65,12 @@ router.get('/', (req, res, next) => {
 router.get('/allusers', (req, res, next) => {
   //get user from cookie
   var orgId = cookieService.getXsession(req).orgId;
-  //create user object
-  var users = [];
-  
-  userService.readByColumn('orgId', orgId)
-  .then(data => {
-    data.entities.forEach(function(entity) {
-      var userData = {}
-      userData['id'] = entity[Datastore.KEY].id;
-      userData["orgId"] = entity['orgId'];
-      userData["email"] = entity['email'];
-      userData["fName"] = entity['fName'];
-      userData["lName"] = entity['lName'];
-      userData["picture"] = entity['picture'];
-      users.push(userData);
-    }, this);
-    res.json(users);    
-  })
-  .catch(err => {
-      console.log(err);
-      res.clearCookie("userId");
-      res.clearCookie("orgId");
-      res.json(err);
-      return;
-  })
+  userService.getAllUsers(orgId).then(users => {
+    res.json(users)
+  }).catch(err => {
+    logger.error('error in fetching all users', error);
+    return;
+  });
 });
 
 

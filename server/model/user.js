@@ -129,6 +129,37 @@ class User {
     })
   }
 
+  /*
+  * Returns all users in the domain
+  *
+  * @param: orgId id of the org for which to return all users
+  * @return: array of all users
+  */
+  getAllUsers(orgId) {
+    var users = [];
+    return new Promise((resolve, reject) => {
+      this.readByColumn('orgId', orgId)
+      .then(data => {
+        data.entities.forEach(function(entity) {
+          var userData = {}
+          userData['id'] = entity['id'];
+          userData["orgId"] = entity['orgId'];
+          userData["email"] = entity['email'];
+          userData["fName"] = entity['fName'];
+          userData["lName"] = entity['lName'];
+          userData["picture"] = entity['picture'];
+          users.push(userData);
+        }, this);
+        resolve(users);
+      })
+      .catch(err => {
+        logger.error('error when accessing all users', err);
+        reject(err);
+      })
+    });
+  }
+
+
 
 }
 
