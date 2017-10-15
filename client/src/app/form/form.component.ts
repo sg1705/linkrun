@@ -34,6 +34,9 @@ export class FormComponent implements OnInit {
   formTitle:string = 'Create Short Link';
   user: Observable<User>;
   orgName: string;
+  orgShortName: string;
+  aclMessage:boolean = false;
+  shortLink:string = '';
 
   @ViewChild('link') inputLink: ElementRef;
   @ViewChild('url') inputUrl: ElementRef;
@@ -60,9 +63,10 @@ export class FormComponent implements OnInit {
         this.initialize();
       })
       this.user = this.userService.getCurrentUser();
-      
       this.user.subscribe(user => {
         this.orgName = user.orgName;
+        this.orgShortName = user.orgShortName;
+        console.log(user);
         
         if (user.orgAllowsPublic) {
           this.linkAclFeature = true;
@@ -72,6 +76,16 @@ export class FormComponent implements OnInit {
 
   ngOnInit() {
     this.inputLink.nativeElement.focus();
+
+    this.linkFormGroup.controls['acl'].valueChanges.subscribe(acl => {
+      this.aclMessage = acl;
+    })
+
+    this.linkFormGroup.controls['link'].valueChanges.subscribe(link => {
+      this.shortLink = link;
+    })
+    
+
   }
 
 

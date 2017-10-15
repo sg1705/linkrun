@@ -7,6 +7,7 @@ export class User {
   email:      string;
   orgName:    string;
   orgAllowsPublic:boolean = false;
+  orgShortName: string = '';
 
   constructor(id, orgId, firstName, lastName, photoUrl, email, orgName, orgAllowsPublic) {
     this.id = id;
