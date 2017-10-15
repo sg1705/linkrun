@@ -66,7 +66,6 @@ export class FormComponent implements OnInit {
       this.user.subscribe(user => {
         this.orgName = user.orgName;
         this.orgShortName = user.orgShortName;
-        console.log(user);
         
         if (user.orgAllowsPublic) {
           this.linkAclFeature = true;
