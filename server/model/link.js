@@ -61,6 +61,7 @@ createLink(orgId, userId, gourl, url, description, acl) {
   updateLink(id, orgId, userId, gourl, url, description, acl) {
     this.updateLink(id, orgId, userId, gourl, url, description, acl);
   }
+
   /**
    * Update an existing link.
    * First check whether the link is owned by userId
