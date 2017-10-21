@@ -97,6 +97,8 @@ app.get('/*', helper.noCache);
  */
 // const signInPage = config.get('static.signInPage')
 // app.use('/_/', express.static(path.join(__dirname, '../static/' + signInPage)));
+app.use('/_/termsofservice', express.static(path.join(__dirname, '../static/termsofservice.html')));
+app.use('/_/privacypolicy', express.static(path.join(__dirname, '../static/privacypolicy.html')));
 app.use('/_/', express.static(path.join(__dirname, '../static/index.html')));
 app.use('/_/', express.static(path.join(__dirname, '../static/')));
 
