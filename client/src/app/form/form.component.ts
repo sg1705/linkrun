@@ -177,6 +177,8 @@ export class FormComponent implements OnInit {
     });
     dialogRef.componentInstance.message = message;
     dialogRef.componentInstance.link = link;
+    //send an analytics event
+    ga('send', 'pageview', '/link/confirm-create');
     dialogRef.afterClosed().subscribe(result => {
       this.reset();
       resolve(this.router.navigateByUrl('/link/create'));            
