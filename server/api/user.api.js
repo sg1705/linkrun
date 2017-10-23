@@ -4,8 +4,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const config = require('config');
-const UserService = require(`./user.js`);
-const OrgService = require(`./org.js`);
+const UserService = require(`../model/user.js`);
+const OrgService = require(`../model/org.js`);
 const cookieService = require('../cookie.js');
 const Datastore = require('@google-cloud/datastore');
 
