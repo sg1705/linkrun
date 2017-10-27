@@ -13,7 +13,8 @@ export class FormConfirmationDialogComponent implements OnInit {
   message:string;
   link: Link;
 
-  constructor(public dialogRef: MdDialogRef<FormConfirmationDialogComponent>, @Inject(MD_DIALOG_DATA) public data: any) {}
+  constructor(public dialogRef: MdDialogRef<FormConfirmationDialogComponent>, @Inject(MD_DIALOG_DATA) public data: any) {
+  }
 
   ngOnInit() {}
 
