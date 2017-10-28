@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule }   from '@angular/router';
+import { ClipboardModule } from 'ngx-clipboard';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { FormComponent } from './form/form.component';
@@ -29,6 +30,7 @@ import { GoogleAnalyticsEventsService } from "./services/google-analytics-events
     HttpModule,
     MaterialModule,
     BrowserAnimationsModule,
+    ClipboardModule,
     RouterModule.forRoot([  
       { path: 'login', component: LoginComponent },
       { path: 'link/create',component: FormComponent },

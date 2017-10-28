@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer } from '@angular/core';
 import { MdButtonModule } from '@angular/material';
 import { DataSource } from '@angular/cdk/collections';
 import { MdIcon } from '@angular/material';
+import { MatSnackBar } from '@angular/material';
+import { ClipboardService } from 'ngx-clipboard';
 import { Link } from '../model/link';
 import { LinkService } from '../services/link.service';
 import { UserService } from '../services/user.service';
@@ -23,10 +25,14 @@ export class LinkListComponent implements OnInit {
   dataSource: DataSource<any>;
   displayedColumns = ['link', 'url', 'createdby', 'action'];
   users: Array<User>;
+  activeIndex: number = -1;
 
   constructor(
     private linkService: LinkService,
-    private userService: UserService) {      
+    private userService: UserService,
+    private clipboardService: ClipboardService,
+    private renderer: Renderer,
+    private snackBar: MatSnackBar) {      
   }
 
   ngOnInit() {
@@ -48,9 +54,34 @@ export class LinkListComponent implements OnInit {
     })
   }
 
+  copyLink(link:string) {
+    this.clipboardService.copyFromContent('https://link.run/'+link, this.renderer);
+    this.openSnackBar('ShortLink copied');
+  }
+
+  copyPublicLink(link:string) {
+    this.clipboardService.copyFromContent('https://link.run/@'+this.userObject.orgShortName+'/'+link, this.renderer);
+    this.openSnackBar('Public ShortLink copied');
+  }
+  
   refreshList() {
     this.dataSource = new LinkDataSource(this.linkService, this.userObject, this.users);
   }
+
+  mouseEnter(index) {
+    this.activeIndex = index;
+  }
+
+  mouseLeave(index) {
+    this.activeIndex = -1;
+  }
+
+  openSnackBar(message: string) {
+    this.snackBar.open(message, '', {
+      duration: 2000
+    });
+  }
+
 
 }
 
