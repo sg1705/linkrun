@@ -13,6 +13,7 @@ import { FormConfirmationDialogComponent } from './form/form-confirmation-dialog
 import { LinkListComponent } from './link-list/link-list.component';
 import { LinkNameValidator } from './form/link.validator';
 import { UserService } from './services/user.service';
+import { HelperService } from './services/helper.service';
 import { GoogleAnalyticsEventsService } from "./services/google-analytics-events.service";
 
 @NgModule({
@@ -42,7 +43,7 @@ import { GoogleAnalyticsEventsService } from "./services/google-analytics-events
   entryComponents: [
     FormConfirmationDialogComponent,
   ],
-  providers: [UserService, GoogleAnalyticsEventsService],
+  providers: [UserService, GoogleAnalyticsEventsService, HelperService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

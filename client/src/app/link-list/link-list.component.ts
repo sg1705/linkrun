@@ -7,6 +7,7 @@ import { ClipboardService } from 'ngx-clipboard';
 import { Link } from '../model/link';
 import { LinkService } from '../services/link.service';
 import { UserService } from '../services/user.service';
+import { HelperService } from '../services/helper.service';
 import { User } from '../model/user';
 import { Observable } from 'rxjs/Rx';
 import * as _ from 'lodash';
@@ -30,6 +31,7 @@ export class LinkListComponent implements OnInit {
   constructor(
     private linkService: LinkService,
     private userService: UserService,
+    private helperService: HelperService,
     private clipboardService: ClipboardService,
     private renderer: Renderer,
     private snackBar: MatSnackBar) {      
@@ -55,12 +57,12 @@ export class LinkListComponent implements OnInit {
   }
 
   copyLink(link:string) {
-    this.clipboardService.copyFromContent('https://link.run/'+link, this.renderer);
+    this.clipboardService.copyFromContent(this.helperService.generateFullShortLink(link), this.renderer);
     this.openSnackBar('ShortLink copied');
   }
 
   copyPublicLink(link:string) {
-    this.clipboardService.copyFromContent('https://link.run/@'+this.userObject.orgShortName+'/'+link, this.renderer);
+    this.clipboardService.copyFromContent(this.helperService.generatePublicLink(link, this.userObject), this.renderer);
     this.openSnackBar('Public ShortLink copied');
   }
   
@@ -78,7 +80,7 @@ export class LinkListComponent implements OnInit {
 
   openSnackBar(message: string) {
     this.snackBar.open(message, '', {
-      duration: 2000
+      duration: 1000
     });
   }
 

@@ -1,6 +1,8 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, Renderer } from '@angular/core';
 import { MdDialogRef, MD_DIALOG_DATA } from '@angular/material';
 import { Link } from '../model/link';
+import { MatSnackBar } from '@angular/material';
+import { ClipboardService } from 'ngx-clipboard';
 
 @Component({
   selector: 'form-confirmation-dialog',
@@ -12,8 +14,16 @@ export class FormConfirmationDialogComponent implements OnInit {
 
   message:string;
   link: Link;
-
-  constructor(public dialogRef: MdDialogRef<FormConfirmationDialogComponent>, @Inject(MD_DIALOG_DATA) public data: any) {
+  shortLink: string;
+  publicLink: string;
+  constructor(
+    public dialogRef: MdDialogRef<FormConfirmationDialogComponent>,
+    @Inject(MD_DIALOG_DATA) public data: any,
+    private clipboardService: ClipboardService,
+    private renderer: Renderer,
+    private snackBar: MatSnackBar) {
+    this.shortLink = data.shortLink;
+    this.publicLink = data.publicLink;
   }
 
   ngOnInit() {}
@@ -24,4 +34,21 @@ export class FormConfirmationDialogComponent implements OnInit {
       window.open(baseUrl + '/'+this.link.link, '_blank')
     //   window.location.href='/'+this.link.link;
   }
+
+  copyLink() {
+    this.clipboardService.copyFromContent(this.shortLink, this.renderer);
+    this.openSnackBar('ShortLink copied');
+  }
+
+  copyPublicLink() {
+    this.clipboardService.copyFromContent(this.publicLink, this.renderer);
+    this.openSnackBar('Public ShortLink copied');
+  }
+
+  openSnackBar(message: string) {
+    this.snackBar.open(message, '', {
+      duration: 1000
+    });
+  }
+
 }
