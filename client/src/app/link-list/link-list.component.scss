@@ -26,8 +26,31 @@
 
 }
 
+.shortlink-cell {
+    flex: 1 0 25%;
+    margin-right: 15px;
+}
+
+.shortlink {
+    width:100px;
+    flex: 0 0 85%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;        
+    a {
+        text-decoration: none;
+        color:mat-color($custom-theme-primary, 700);
+
+    }
+}
+
+.shortlink-clipboard {
+    flex: 0 0 10%;
+}
+
+
 .url {
-    flex:8;
+    flex:1 0 33%;
     margin-right: 15px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -41,11 +64,13 @@
 }
 
 .action {
-    flex: 2;
+    flex: 0 0 10%;
     text-align:right;
     margin-right: 15px;
     overflow: hidden;
     text-overflow: ellipsis;        
 }
 
-
+.highlight {
+   background-color: mat-color($gray-theme-300, 300);
+}

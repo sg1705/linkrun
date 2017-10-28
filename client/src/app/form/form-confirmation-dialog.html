@@ -2,7 +2,11 @@
     <h1 color="primary" md-dialog-title>Shortlink Created</h1>
 
     <p>
-        <b>link.run/{{link.link}}</b> created. Anyone at <i>{{data.orgName}}</i> can use this shortlink
+        <b>link.run/{{link.link}}</b>
+        <a mdTooltip="Copy ShortLink" (click)="copyLink()" style="cursor:pointer;color:#ababab"><span class="material-icons">content_copy</span></a>
+        <a [hidden]="publicLink == null" mdTooltip="Copy Public ShortLink" (click)="copyPublicLink()" style="cursor:pointer;color: orange"><span class="material-icons">content_copy</span></a>
+        <br/>
+        <br/> Anyone at <i>{{data.orgName}}</i> can use this shortlink
     </p>
 
     <md-dialog-actions style="justify-content: flex-end">
