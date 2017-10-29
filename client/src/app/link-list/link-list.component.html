@@ -9,13 +9,20 @@
 
       <ng-container mdColumnDef="link">
         <md-header-cell *mdHeaderCellDef class="link header"> SHORT LINK </md-header-cell>
-        <md-cell *mdCellDef="let row; let i = index"class="shortlink-cell">
-          <div style="display: flex;flex-direction: row;" > 
+        <md-cell *mdCellDef="let row; let i = index" class="shortlink-cell">
+          <div style="display: flex;flex-direction: row;">
             <a class="shortlink" href="/{{row.link}}">link.run/{{row.link}}</a>
-            <a mdTooltip="Copy ShortLink" [hidden]="activeIndex != i" class="shortlink-clipboard" (click)="copyLink(row.link)" style="cursor:pointer;color:#ababab"><span class="material-icons">content_copy</span></a>                           
-          </div>              
+            <div class="shortlink-clipboard" style="display:flex; flex-direction:row">
+            <a mdTooltip="Copy ShortLink" [hidden]="activeIndex != i" (click)="copyLink(row.link)" style="cursor:pointer;color:#ababab">
+              <span class="material-icons">content_copy</span>
+            </a>
+            <a mdTooltip="Copy Public ShortLink" *ngIf="userObject.orgAllowsPublic" [hidden]="activeIndex != i" (click)="copyPublicLink(row.link)" style="cursor:pointer;color: orange">
+              <span class="material-icons">content_copy</span>
+            </a>
+            </div>
+          </div>
 
-        
+
         </md-cell>
       </ng-container>
 
@@ -35,9 +42,6 @@
         <md-header-cell *mdHeaderCellDef class="action header">ACTION</md-header-cell>
         <md-cell *mdCellDef="let row; let i = index" class="action">
           <div style="display:flex; justify-content: flex-end;">
-            <div mdTooltip="Copy Public ShortLink" [hidden]="activeIndex != i" style="color:#ababab" *ngIf="userObject.orgAllowsPublic">
-              <a (click)="copyPublicLink(row.link)" style="cursor:pointer;color: orange"><span class="material-icons">content_copy</span></a>
-            </div>                        
             <div style="color:#ababab" *ngIf="row['canEdit']">
               <a routerLink="/link/edit/{{row.id}}" style="color:#ababab"><span class="material-icons">edit</span></a>
             </div>
