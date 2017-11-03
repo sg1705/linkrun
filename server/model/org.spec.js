@@ -11,7 +11,13 @@ let org = new Org();
 
 describe('org', function() {
     context('createOrg', function() {
-        let msCreateStub = sinon.stub(ModelService.prototype, 'create');
+        let msCreateStub;
+        before(function(){
+            msCreateStub = sinon.stub(ModelService.prototype, 'create');
+        })
+        after(function(){
+            msCreateStub.restore();
+        })
         it('should call modelService.create with correct data', function(){
             let ms = new ModelService('Org');
             const ORG_NAME = 'a';
