@@ -7,7 +7,9 @@
     "start": "node server/app.js",
     "dev": "nodemon server/app.js",
     "build:prod": "cd client && ng build --prod --env=prod",
-    "build:staging": "cd client && ng build --prod"
+    "build:staging": "cd client && ng build --prod",
+    "test": "npm run test-unit",
+    "test-unit": "mocha 'server/**/*.spec.js'"
   },
   "private": true,
   "dependencies": {
@@ -37,12 +39,14 @@
   "devDependencies": {
     "@types/jasmine": "2.5.38",
     "@types/node": "^6.0.42",
+    "chai": "^4.1.2",
     "jasmine-core": "2.5.2",
     "jasmine-spec-reporter": "2.5.0",
     "mocha": "^3.0.2",
     "nodejs-repo-tools": "git+https://git@github.com/GoogleCloudPlatform/nodejs-repo-tools.git",
     "protractor": "~4.0.13",
     "proxyquire": "^1.7.10",
-    "sinon": "^1.17.5"
+    "sinon": "^1.17.5",
+    "sinon-chai": "^2.14.0"
   }
 }
