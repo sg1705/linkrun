@@ -9,7 +9,7 @@
     "build:prod": "cd client && ng build --prod --env=prod",
     "build:staging": "cd client && ng build --prod",
     "test": "npm run test-unit",
-    "test-unit": "mocha 'server/**/*.spec.js'"
+    "test-unit": "mocha \"server/**/*.spec.js\""
   },
   "private": true,
   "dependencies": {
