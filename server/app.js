@@ -118,8 +118,7 @@ app.use('/opensearch.xml', function (req, res, next) {
  * serving public url 
  */
 app.get("/@:orgShortName/:gourl", function(req, res, next) {
-
-  let ga = new GA();  
+  let ga = new GA(); 
   logger.info('routeGoUrl:', req.params.gourl);
   logger.info('orgShortName:', req.params.orgShortName);
   let orgShortName = req.params.orgShortName;
@@ -143,7 +142,7 @@ app.get("/@:orgShortName/:gourl", function(req, res, next) {
   .then(orgEntities => {
     if (orgEntities.entities.length == 0) {
           //org doesn't exist
-          ga.trackEvent(userId, orgId, 'Link', 'redirect_failed', 'no_org_shortname_exist', '100')
+          ga.trackEvent(userId, orgId, 'Link', 'redirect_failed', 'no_org_shortname_exist', '100', cookie.getGAClientId(req))
           logger.info("no_org_shortname_exist", {'orgShortName' : orgShortName});
           // TODO: route to error page with warning that you are attepting to access 
           // org that does not exist. Violation will be reported.
@@ -167,8 +166,8 @@ app.get("/@:orgShortName/:gourl", function(req, res, next) {
       .then(linkEntities => { 
         if ((linkEntities.entities.length == 0) || (!linkEntities.entities[0].url) )
         {
-          ga.trackEvent(userId, orgId, 'Link', 'redirect_failed', 'no_url_found', '100')
-          logger.info("no_url_found", {'link' : routeGoUrl});
+          ga.trackEvent(userId, orgId, 'Link', 'redirect_failed', 'no_url_found', '100', cookie.getGAClientId(req))
+          logger.info("no_url_found", {'userId':userId, 'orgId':orgId,'link' : routeGoUrl});
           helper.serve404(req, 'No URL found for the short link', res);
           return;
         } else {
@@ -179,7 +178,7 @@ app.get("/@:orgShortName/:gourl", function(req, res, next) {
             helper.serve404(req, "It is private link. You don\'t have permission to access it", res);
             return;
           }
-          helper.routeUrl(linkEntities, userId, orgId, ga, res);
+          helper.routeUrl(linkEntities, userId, orgId, ga, req, res);
         }
       })
     .catch(err => {
@@ -199,6 +198,7 @@ app.get("/@:orgShortName/:gourl", function(req, res, next) {
  * Intercept any go url when user isn't logged in
  */
 app.get("/:gourl", helper.setRouteUrl, function(req, res, next) {
+
   if (
         (req.params.gourl.indexOf('/__') > -1) 
         || (req.params.gourl.indexOf('/_/') > -1)
@@ -271,23 +271,23 @@ app.get("/:gourl", helper.setRouteUrl, auth.isLoggedIn, function (req, res, next
                 }
                 res.redirect(301, url);
                 if (linkEntities.entities[0].userId == userId) 
-                  ga.trackEvent(userId, orgId, 'Link', 'redirect', linkEntities.entities[0].id, '100')
+                  ga.trackEvent(userId, orgId, 'Link', 'redirect', linkEntities.entities[0].id, '100', cookie.getGAClientId(req))
                 else 
-                  ga.trackEvent(userId, orgId, 'Link', 'redirect_others', linkEntities.entities[0].id, '100')  
-                logger.info("routing_link", {'link' : linkEntities.entities[0]});
+                  ga.trackEvent(userId, orgId, 'Link', 'redirect_others', linkEntities.entities[0].id, '100', cookie.getGAClientId(req))  
+                logger.info("routing_link", {'userId':userId, 'orgId':orgId,'link' : linkEntities.entities[0]});
               });
             } else {
-              ga.trackEvent(userId, orgId, 'Link', 'redirect_failed', 'no_url_found', '100')
-              logger.info("no_route_found", {'link' : correctedRouteGoUrl});
+              ga.trackEvent(userId, orgId, 'Link', 'redirect_failed', 'no_url_found', '100', cookie.getGAClientId(req))
+              logger.info("no_route_found", {'userId':userId, 'orgId':orgId,'link' : correctedRouteGoUrl});
               res.redirect(APP_HOME + '/link/create?link=' + routeGoUrl);
             }
           })
       } else if (!linkEntities.entities[0].url) {
-        ga.trackEvent(userId, orgId, 'Link', 'redirect_failed', 'empty_url', '100')
+        ga.trackEvent(userId, orgId, 'Link', 'redirect_failed', 'empty_url', '100', cookie.getGAClientId(req))
         logger.info("empty_url", "redirecting to links page");
         res.redirect(APP_HOME + '/link/create?link=' + routeGoUrl);
       } else { 
-        helper.routeUrl(linkEntities, userId, orgId, ga, res);
+        helper.routeUrl(linkEntities, userId, orgId, ga, req, res);
       }
     })
     .catch(err => {

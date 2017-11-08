@@ -4,7 +4,7 @@ const request = require('request');
 
 class GA {
 
-    trackEvent(userId, orgId, category, action, label, value, cb) {
+    trackEvent(userId, orgId, category, action, label, value, clientId, cb) {
         let GA_TRACKING_ID = config.get('ga.GA_TRACKING_ID');
         const data = {
             // API Version.
@@ -13,7 +13,7 @@ class GA {
             tid: GA_TRACKING_ID,
             // Anonymous Client Identifier. Ideally, this should be a UUID that
             // is associated with particular user, device, or browser instance.
-            cid: userId,
+            cid: clientId,
             uid: userId,
             cd1: orgId, // org-id custom dimenstion
 
@@ -36,7 +36,40 @@ class GA {
             ev: value,
             //custom dimension 
         };
+        this.postEvent(userId, orgId, data, cb);
+    }
 
+    trackPageView(userId, orgId, pageName, clientId, cb) {
+        let GA_TRACKING_ID = config.get('ga.GA_TRACKING_ID');
+        const data = {
+            // API Version.
+            v: '1',
+            // Tracking ID / Property ID.
+            tid: GA_TRACKING_ID,
+            // Anonymous Client Identifier. Ideally, this should be a UUID that
+            // is associated with particular user, device, or browser instance.
+            cid: clientId,
+            uid: userId,
+            cd1: orgId, // org-id custom dimenstion
+
+            // client-id custom dimension. Custom dimension is easier to use and 
+            // has less restricitons than the built-in cid.
+            cd2: userId,
+
+            // user-id custom dimension
+            cd3: userId,
+
+            // Event hit type.
+            t: 'pageView',
+            
+            dp: pageName
+ 
+        };
+        this.postEvent(userId, orgId, data, cb);
+    }
+
+
+    postEvent(userId, orgId, data, cb) {
         request.post(
             'http://www.google-analytics.com/collect',
             {

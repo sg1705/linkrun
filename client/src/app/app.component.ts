@@ -10,6 +10,9 @@ import { environment } from '../environments/environment';
 import 'rxjs/Rx';
 import { Observable } from 'rxjs/Rx';
 
+var jsdom = require('jsdom');
+var window = jsdom.jsdom().parentWindow;
+var Cookies = require('cookies-js')(window);
 
 @Component({
   selector: 'app-root',
@@ -38,6 +41,10 @@ export class AppComponent {
     })
 
     ga('create', environment.ga.GA_TRACKING_ID, 'auto');
+    ga(function(tracker) {
+        var clientId = tracker.get('clientId');
+        Cookies.set('X_ga_clientId', clientId);
+    });
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         this.user.subscribe(user => {

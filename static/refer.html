@@ -67,6 +67,10 @@
       ga('set', 'page', '/refer');
       ga('send', 'pageview');
     }
+    ga(function(tracker) {
+      var clientId = tracker.get('clientId');
+      Cookies.set('X_ga_clientId', clientId);
+  });
   </script>
 
 
