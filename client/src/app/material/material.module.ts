@@ -13,6 +13,9 @@ import { MdIconModule } from '@angular/material';
 import { MatMenuModule, MatTableModule, MatDialogModule } from '@angular/material';
 import {MdDialog, MdDialogRef} from '@angular/material';
 import { CdkTableModule } from '@angular/cdk/table';
+import { MatSnackBarModule } from '@angular/material';
+import {MatTooltipModule} from '@angular/material';
+
 
 @NgModule({
   imports: [
@@ -28,7 +31,9 @@ import { CdkTableModule } from '@angular/cdk/table';
     CdkTableModule,
     MatTableModule,
     MatDialogModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatSnackBarModule,
+    MatTooltipModule
   ],
   exports: [
     BrowserAnimationsModule,
@@ -42,7 +47,9 @@ import { CdkTableModule } from '@angular/cdk/table';
     CdkTableModule,
     MatTableModule,
     MatDialogModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatSnackBarModule,
+    MatTooltipModule
   ]
 })
 export class MaterialModule { }
