@@ -1,6 +1,29 @@
 'use strict';
 
 var errorHandler;
+
+/**
+ * Setup Google Cloud monitoring
+ */
+if (process.env.NODE_ENV === 'production') {
+  require('@google-cloud/trace-agent').start();
+  errorHandler = require('@google-cloud/error-reporting')();
+}
+
+/**
+ * Setup Google Cloud monitoring
+ */
+if (process.env.NODE_ENV === 'staging') {
+  require('@google-cloud/trace-agent').start();
+  errorHandler = require('@google-cloud/error-reporting')();
+}
+
+if (process.env.GCLOUD_PROJECT) {
+  require('@google-cloud/debug-agent').start();
+}
+
+
+
 var config = require('config');
 var path = require('path');
 var express = require('express');
@@ -43,32 +66,12 @@ if (process.env.NODE_ENV == 'production') {
 }
 
 const COOKIE_NAME = 'xsession';
-/**
- * Setup Google Cloud monitoring
- */
-if (process.env.NODE_ENV === 'production') {
-  require('@google/cloud-trace').start();
-  errorHandler = require('@google/cloud-errors').start();
-  // app.use('/*.js',express.static(path.join(__dirname, '../dist')));
-  // app.use('/*.css',express.static(path.join(__dirname, '../dist')));  
-}
 
 const APP_HOME = '/__/app';
 const LINK_ACL_DEFAULT = 0;
 const LINK_ACL_PUBLIC = 1;
 const LINK_ACL_PRIVATE = 2;
 
-/**
- * Setup Google Cloud monitoring
- */
-if (process.env.NODE_ENV === 'staging') {
-  require('@google/cloud-trace').start();
-  errorHandler = require('@google/cloud-errors').start();
-}
-
-if (process.env.GCLOUD_PROJECT) {
-  require('@google/cloud-debug').start();
-}
 
 //set proxy
 if ((process.env.NODE_ENV === 'production') || (process.env.NODE_ENV === 'staging')) {

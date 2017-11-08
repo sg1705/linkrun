@@ -11,6 +11,7 @@ import {MdTabsModule} from '@angular/material';
 import {MdDialog, MdDialogRef} from '@angular/material';
 import { LinkService } from '../services/link.service';
 import { UserService } from '../services/user.service';
+import { HelperService } from '../services/helper.service';
 import { User } from '../model/user';
 import { Link } from '../model/link';
 import { LinkNameValidator } from './link.validator';
@@ -49,6 +50,7 @@ export class FormComponent implements OnInit {
     private fb: FormBuilder, 
     private linkService: LinkService,
     private userService: UserService,
+    private helperService: HelperService,
     private router: Router,
     private activateRoute: ActivatedRoute ) {
       this.linkFormGroup = fb.group({
@@ -170,10 +172,17 @@ export class FormComponent implements OnInit {
   }
 
   private showConfirmationDialog(resolve, message, link:Link) {
+    let publicLink = null;
+    if (this.linkAclFeature && this.aclMessage) {
+      publicLink = this.helperService.generatePublicLinkFromOrgShortName(link.link, this.orgShortName)
+    }
     let dialogRef = this.dialog.open(FormConfirmationDialogComponent, {
       width: '300px',
-      height: '220px', 
-      data: { orgName: this.orgName }
+      height: '270px', 
+      data: { 
+        orgName: this.orgName,
+        shortLink: this.helperService.generateFullShortLink(link.link),
+        publicLink: publicLink }
     });
     dialogRef.componentInstance.message = message;
     dialogRef.componentInstance.link = link;

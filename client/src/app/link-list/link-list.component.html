@@ -9,7 +9,21 @@
 
       <ng-container mdColumnDef="link">
         <md-header-cell *mdHeaderCellDef class="link header"> SHORT LINK </md-header-cell>
-        <md-cell *mdCellDef="let row" class="link"> <a href="/{{row.link}}">link.run/{{row.link}}</a></md-cell>
+        <md-cell *mdCellDef="let row; let i = index" class="shortlink-cell">
+          <div style="display: flex;flex-direction: row;">
+            <a class="shortlink" href="/{{row.link}}">link.run/{{row.link}}</a>
+            <div class="shortlink-clipboard" style="display:flex; flex-direction:row">
+            <a mdTooltip="Copy ShortLink" [hidden]="activeIndex != i" (click)="copyLink(row.link)" style="cursor:pointer;color:#ababab">
+              <span class="material-icons">content_copy</span>
+            </a>
+            <a mdTooltip="Copy Public ShortLink" *ngIf="userObject.orgAllowsPublic" [hidden]="activeIndex != i" (click)="copyPublicLink(row.link)" style="cursor:pointer;color: orange">
+              <span class="material-icons">content_copy</span>
+            </a>
+            </div>
+          </div>
+
+
+        </md-cell>
       </ng-container>
 
       <ng-container mdColumnDef="url">
@@ -19,19 +33,19 @@
 
       <ng-container mdColumnDef="createdby">
         <md-header-cell *mdHeaderCellDef class="link header">CREATED BY</md-header-cell>
-        <md-cell *mdCellDef="let row" class="link">{{row.userName}}</md-cell>
+        <md-cell *mdCellDef="let row" class="link" style="flex: 0 0 25%">{{row.userName}}</md-cell>
       </ng-container>
 
 
 
       <ng-container mdColumnDef="action">
         <md-header-cell *mdHeaderCellDef class="action header">ACTION</md-header-cell>
-        <md-cell *mdCellDef="let row" class="action">
-          <div style="display:flex; justify-content: flex-end;" *ngIf="row['canEdit']">
-            <div style="color:#ababab">
+        <md-cell *mdCellDef="let row; let i = index" class="action">
+          <div style="display:flex; justify-content: flex-end;">
+            <div style="color:#ababab" *ngIf="row['canEdit']">
               <a routerLink="/link/edit/{{row.id}}" style="color:#ababab"><span class="material-icons">edit</span></a>
             </div>
-            <div style="color:#ababab">
+            <div style="color:#ababab" *ngIf="row['canEdit']">
               <a (click)="deleteLink(row.id)" style="cursor:pointer"><span class="material-icons">delete</span></a>
             </div>
           </div>
@@ -39,7 +53,7 @@
       </ng-container>
 
       <md-header-row *mdHeaderRowDef="displayedColumns"></md-header-row>
-      <md-row *mdRowDef="let row; columns: displayedColumns;"></md-row>
+      <md-row [class.highlight]="activeIndex == i" (mouseenter)="mouseEnter(i)" (mouseleave)="mouseLeave(i)" *mdRowDef="let row; let i = index; columns: displayedColumns;"></md-row>
     </md-table>
   </div>
 </section>

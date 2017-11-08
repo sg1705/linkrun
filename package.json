@@ -7,15 +7,17 @@
     "start": "node server/app.js",
     "dev": "nodemon server/app.js",
     "build:prod": "cd client && ng build --prod --env=prod",
-    "build:staging": "cd client && ng build --prod"
+    "build:staging": "cd client && ng build --prod",
+    "test": "npm run test-unit",
+    "test-unit": "mocha 'server/**/*.spec.js'"
   },
   "private": true,
   "dependencies": {
     "@google-cloud/datastore": "^1.0.0",
+    "@google-cloud/debug-agent": "^2.2.2",
+    "@google-cloud/error-reporting": "^0.2.2",
     "@google-cloud/logging": "^1.0.0",
-    "@google/cloud-debug": "^0.9.1",
-    "@google/cloud-errors": "^0.1.1",
-    "@google/cloud-trace": "^0.6.0",
+    "@google-cloud/trace-agent": "^2.3.1",
     "@microsoft/microsoft-graph-client": "^1.0.0",
     "body-parser": "^1.16.0",
     "config": "^1.25.1",
@@ -37,12 +39,14 @@
   "devDependencies": {
     "@types/jasmine": "2.5.38",
     "@types/node": "^6.0.42",
+    "chai": "^4.1.2",
     "jasmine-core": "2.5.2",
     "jasmine-spec-reporter": "2.5.0",
     "mocha": "^3.0.2",
     "nodejs-repo-tools": "git+https://git@github.com/GoogleCloudPlatform/nodejs-repo-tools.git",
     "protractor": "~4.0.13",
     "proxyquire": "^1.7.10",
-    "sinon": "^1.17.5"
+    "sinon": "^1.17.5",
+    "sinon-chai": "^2.14.0"
   }
 }
