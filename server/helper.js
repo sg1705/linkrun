@@ -36,7 +36,6 @@ function getRouteUrl(req) {
 
 function setRouteUrl(req, res, next) {
   //store in cookie
-  console.log('gourl:' + req.params.gourl);
   res.cookie('X_ROUTE', 
     { route: req.params.gourl},
     { signed: true });
