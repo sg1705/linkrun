@@ -216,9 +216,9 @@ app.get("/:gourl", helper.setRouteUrl, function(req, res, next) {
         return console.log(err);
         next();
       }
-      var result = data.replace("mylink", req.params.gourl);
+      var result = data.replace(/mylink/g, req.params.gourl);
       res.set('Content-Type', 'text/html');
-      res.send(result)
+      res.send(result);
     });
   }
 });
