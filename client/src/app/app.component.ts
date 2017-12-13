@@ -10,40 +10,44 @@ import { environment } from '../environments/environment';
 import 'rxjs/Rx';
 import { Observable } from 'rxjs/Rx';
 
-var jsdom = require('jsdom');
-var window = jsdom.jsdom().parentWindow;
-var Cookies = require('cookies-js')(window);
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent{
 
   user: Observable<User>;
 
   constructor(
     private userService: UserService,
     public router: Router,
-    private googleAnalyticsEventsService: GoogleAnalyticsEventsService) {
+    private googleAnalyticsEventsService: GoogleAnalyticsEventsService,
+    private _cookieService:CookieService) {
+  }
+
+  getCookie(key: string){
+    return this._cookieService.get(key);
   }
 
   ngOnInit() {
     this.user = this.userService.getCurrentUser();
     this.user.subscribe(user => {
-      console.debug('logged in user', user);
+      console.log('******* logged in user: ', user);
       if (!user.id) {
         window.location.href = '/_/';
       }
       console.log('Environment is production:', environment.production);
-
     })
-
+    
     ga('create', environment.ga.GA_TRACKING_ID, 'auto');
-    ga(function(tracker) {
-        var clientId = tracker.get('clientId');
-        Cookies.set('X_ga_clientId', clientId);
+    console.log('GA create event');
+    ga((tracker) => {
+       var clientId = tracker.get('clientId');
+       this._cookieService.set('X_ga_clientId', clientId.toString());
+       console.log('Angular2 cookie:', this._cookieService.get('X_ga_clientId'));
     });
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
@@ -55,5 +59,5 @@ export class AppComponent {
       }
     });
   }
-
+  
 }

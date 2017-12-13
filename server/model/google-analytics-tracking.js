@@ -1,6 +1,7 @@
 'use strict';
 var config = require('config');
 const request = require('request');
+var logger       = require('./logger.js');
 
 class GA {
 

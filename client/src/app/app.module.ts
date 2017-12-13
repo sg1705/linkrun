@@ -15,6 +15,7 @@ import { LinkNameValidator } from './form/link.validator';
 import { UserService } from './services/user.service';
 import { HelperService } from './services/helper.service';
 import { GoogleAnalyticsEventsService } from "./services/google-analytics-events.service";
+import { CookieService } from 'ngx-cookie-service';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,7 @@ import { GoogleAnalyticsEventsService } from "./services/google-analytics-events
   entryComponents: [
     FormConfirmationDialogComponent,
   ],
-  providers: [UserService, GoogleAnalyticsEventsService, HelperService],
+  providers: [UserService, GoogleAnalyticsEventsService, HelperService,CookieService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
