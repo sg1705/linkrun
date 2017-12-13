@@ -35,7 +35,7 @@ export class AppComponent{
   ngOnInit() {
     this.user = this.userService.getCurrentUser();
     this.user.subscribe(user => {
-      console.log('******* logged in user: ', user);
+      console.debug('logged in user: ', user);
       if (!user.id) {
         window.location.href = '/_/';
       }
@@ -47,7 +47,6 @@ export class AppComponent{
     ga((tracker) => {
        var clientId = tracker.get('clientId');
        this._cookieService.set('X_ga_clientId', clientId.toString());
-       console.log('Angular2 cookie:', this._cookieService.get('X_ga_clientId'));
     });
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
