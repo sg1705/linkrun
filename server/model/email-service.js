@@ -18,6 +18,7 @@ class EmailService {
      */
 
     sendReferralEmail(email, fName, orgId) {
+        if (process.env.NODE_ENV == 'production') return; //skip email for production for now
         let companyName = 'your company';
         org.getOrg(orgId).then(orgEntity => {
             if (orgEntity.orgShortName) companyName = orgEntity.orgShortName
