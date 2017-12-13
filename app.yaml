@@ -3,5 +3,4 @@ runtime: nodejs
 env: flex  
 env_variables:
   NODE_ENV: 'staging'
-  SENDGRID_API_KEY: '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'
 # [END app_yaml]

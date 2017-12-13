@@ -2,12 +2,11 @@
 'use strict';
 
 const config = require('config');
-const sgMail = require('@sendgrid/mail')
-const Org = require('./org')
-let org = new Org();
+const EmailService = require('./email-service')
+let emailService = new EmailService()
+
 var logger   = require('./logger.js');
 var GA = require('./google-analytics-tracking.js')
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 class User {
   
@@ -106,7 +105,7 @@ class User {
               lName,
               picture)
             .then((entity) => {
-              // this.sendReferralEmail(email, fName, orgId);
+              emailService.sendReferralEmail(email, fName, orgId);
               resolve(entity);
             }).catch (err => {
               logger.error('rejected when updating user', err);
@@ -125,7 +124,7 @@ class User {
             .then((entity) => {
               ga.trackEvent(entity.id, orgId, 'User', 'create', 'success', '100');
               if (process.env.NODE_ENV != 'production') {
-                this.sendReferralEmail(email, fName, orgId);
+                emailService.sendReferralEmail(email, fName, orgId);
               }
               resolve(entity);
             }).catch(err => {
@@ -167,33 +166,7 @@ class User {
     });
   }
 
-  /**
-   * Send referral email
-   * 
-   */
 
-   sendReferralEmail(email, fName, orgId){
-     let companyName = 'your company';
-     org.getOrg(orgId).then(orgEntity => {
-       if (orgEntity.orgShortName) companyName = orgEntity.orgShortName
-       if (orgEntity.orgName) companyName = orgEntity.orgName
-      })
-    const msg = {
-      to: email,
-      from: 'info@link.run',
-      subject: 'welcome, ' + fName,
-      substitutionWrappers: ['%', '%'],
-      substitutions: {
-        name: fName,
-        orgName: companyName
-      },
-      template_id: "352eefaa-8377-46c6-9649-49588ebc7aeb"
-    };
-    logger.info('sending message: ' )
-    logger.info(msg )
-    sgMail.send(msg);
-
-   }
 
 
 
