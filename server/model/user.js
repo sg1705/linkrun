@@ -84,7 +84,7 @@ class User {
    * @return user entity
    * 
    */
-  getOrCreateUserByEmail(orgId, email, fName, lName, picture, refresh_token) {
+  getOrCreateUserByEmail(orgId, orgName, email, fName, lName, picture, refresh_token) {
     return new Promise((resolve, reject) => {
       this.readByColumn(
         'email',
@@ -105,7 +105,7 @@ class User {
               lName,
               picture)
             .then((entity) => {
-              // emailService.sendReferralEmail(email, fName, orgId);
+              // emailService.sendReferralEmail(email, fName, orgName);
               resolve(entity);
             }).catch (err => {
               logger.error('rejected when updating user', err);
@@ -123,7 +123,7 @@ class User {
               picture)
             .then((entity) => {
               ga.trackEvent(entity.id, orgId, 'User', 'create', 'success', '100');
-              emailService.sendReferralEmail(email, fName, orgId);
+              emailService.sendReferralEmail(email, fName, orgName);
               resolve(entity);
             }).catch(err => {
               logger.error('rejected when creating user', err);

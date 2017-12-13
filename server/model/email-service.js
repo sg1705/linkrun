@@ -16,21 +16,18 @@ class EmailService {
      * 
      */
 
-    sendReferralEmail(email, fName, orgId) {
+    sendReferralEmail(email, fName, orgName) {
         if (process.env.NODE_ENV == 'production') return; //skip email for production for now
         let companyName = 'your company';
-        org.getOrg(orgId).then(orgEntity => {
-            if (orgEntity.orgShortName) companyName = orgEntity.orgShortName
-            if (orgEntity.orgName) companyName = orgEntity.orgName
-        })
+        if (orgName && !orgName.includes('@gmail.com')) companyName = orgName;
         const msg = {
             to: email,
             from: 'info@link.run',
             subject: 'welcome, ' + fName,
             substitutionWrappers: [WRAPPER, WRAPPER ],
             substitutions: {
-                name: fName,
-                orgName: companyName
+                "name": fName,
+                "orgName": companyName
             },
             template_id: config.get("email.referral_welcome_template_id")
         };
