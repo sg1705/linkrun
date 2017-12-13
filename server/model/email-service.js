@@ -8,7 +8,6 @@ let org = new Org();
 sgMail.setApiKey(config.get("email.SENDGRID_API_KEY"));
 const WRAPPER = '%';
 
-// [START config]
 class EmailService {
 
 
@@ -33,7 +32,7 @@ class EmailService {
                 name: fName,
                 orgName: companyName
             },
-            template_id: config.get("email.template_id")
+            template_id: config.get("email.referral_welcome_template_id")
         };
         logger.info('sending message: ')
         logger.info(msg)

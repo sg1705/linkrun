@@ -41,6 +41,6 @@
   "COOKIE_NAME" : "xsession",
   "email":{
     "SENDGRID_API_KEY": "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",
-    "template_id": "352eefaa-8377-46c6-9649-49588ebc7aeb"
+    "referral_welcome_template_id": "352eefaa-8377-46c6-9649-49588ebc7aeb"
   }
 }
