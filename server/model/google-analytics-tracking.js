@@ -6,6 +6,10 @@ var logger       = require('./logger.js');
 class GA {
 
     trackEvent(userId, orgId, category, action, label, value, clientId, cb) {
+        if (clientId == null) {
+            clientId = "NOT_SET";
+            category = category + "_WO_CID";
+        }
         let GA_TRACKING_ID = config.get('ga.GA_TRACKING_ID');
         const data = {
             // API Version.
@@ -42,6 +46,9 @@ class GA {
 
     trackPageView(userId, orgId, pageName, clientId, cb) {
         let GA_TRACKING_ID = config.get('ga.GA_TRACKING_ID');
+        if (clientId == null) {
+            clientId = "NOT_SET"
+        }
         const data = {
             // API Version.
             v: '1',

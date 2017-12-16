@@ -44,7 +44,7 @@ import { CookieService } from 'ngx-cookie-service';
   entryComponents: [
     FormConfirmationDialogComponent,
   ],
-  providers: [UserService, GoogleAnalyticsEventsService, HelperService,CookieService],
+  providers: [UserService, GoogleAnalyticsEventsService, HelperService, CookieService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -43,10 +43,10 @@ export class AppComponent{
     })
     
     ga('create', environment.ga.GA_TRACKING_ID, 'auto');
-    console.log('GA create event');
     ga((tracker) => {
        var clientId = tracker.get('clientId');
        this._cookieService.set('X_ga_clientId', clientId.toString());
+       console.log('X_ga_clientId:', this._cookieService.get('X_ga_clientId'));
     });
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
