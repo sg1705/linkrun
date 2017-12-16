@@ -33,8 +33,7 @@ class EmailService {
                 },
                 template_id: config.get("email.template_id." + emailType)
             };
-            logger.info('sending message: ');
-            logger.info(msg);
+            logger.info('sending email: ', {'userId':userId, 'orgId':orgId, 'msg':msg});
             sgMail.send(msg).then((result)=>{
                 logger.info('email sent successfully');
                 ga.trackEvent(userId, orgId, 'User', 'email send', 'success', '100');

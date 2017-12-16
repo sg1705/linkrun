@@ -105,9 +105,9 @@ class User {
               lName,
               picture)
             .then((entity) => {
-              emailService.sendEmail(email, 'welcome', fName, orgName, entity.id, orgId).catch((err)=>{
-                // email sending error
-              });
+              // emailService.sendEmail(email, 'welcome', fName, orgName, entity.id, orgId).catch((err)=>{
+              //   // email sending error
+              // });
               resolve(entity);
             }).catch (err => {
               logger.error('rejected when updating user', err);
