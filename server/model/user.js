@@ -118,7 +118,7 @@ class User {
               lName,
               picture)
             .then((entity) => {
-              ga.trackEvent(entity.id, orgId, 'User', 'create', 'success', '100')
+              ga.trackEvent(entity.id, orgId, 'User', 'create', 'success', '100', cookie.getGAClientId(req))
               resolve(entity);
             }).catch(err => {
               logger.error('rejected when creating user', err);

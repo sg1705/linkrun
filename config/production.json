@@ -38,5 +38,6 @@
   "static": {
     "signInPage": "index-production"
   },  
-  "COOKIE_NAME" : "xsession"
+  "COOKIE_NAME" : "xsession", 
+  "GA_CLIENT_ID" : "X_ga_clientId"
 }
