@@ -105,7 +105,9 @@ class User {
               lName,
               picture)
             .then((entity) => {
-              // emailService.sendReferralEmail(email, fName, orgName);
+              emailService.sendEmail(email, 'welcome', fName, orgName, entity.id, orgId).catch((err)=>{
+                // email sending error
+              });
               resolve(entity);
             }).catch (err => {
               logger.error('rejected when updating user', err);
@@ -123,7 +125,9 @@ class User {
               picture)
             .then((entity) => {
               ga.trackEvent(entity.id, orgId, 'User', 'create', 'success', '100');
-              emailService.sendReferralEmail(email, fName, orgName);
+              emailService.sendEmail(email, 'welcome', fName, orgName, entity.id, orgId).catch((err)=>{
+                // email sending error
+              });
               resolve(entity);
             }).catch(err => {
               logger.error('rejected when creating user', err);
