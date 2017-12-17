@@ -46,7 +46,6 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
   <script>
     var url = window.location.href;
-    console.log('looging url', url);
     (function (i, s, o, g, r, a, m) {
       i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
         (i[r].q = i[r].q || []).push(arguments)
@@ -63,6 +62,9 @@
       ga('create', 'UA-99455967-1', 'auto');
       ga('send', 'pageview');
     }
+    ga(function(tracker) {
+      var clientId = tracker.get('clientId');
+    });
   </script>
 </head>
 

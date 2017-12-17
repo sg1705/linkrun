@@ -44,9 +44,10 @@
   <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet">
   <!-- <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">  -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+  <script src="js/cookies.min.js"></script>
   <script>
     var url = window.location.href;
-    console.log('looging url', url);
+
     (function (i, s, o, g, r, a, m) {
       i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
         (i[r].q = i[r].q || []).push(arguments)
@@ -63,6 +64,10 @@
       ga('create', 'UA-99455967-1', 'auto');
       ga('send', 'pageview');
     }
+    ga(function(tracker) {
+      var clientId = tracker.get('clientId');
+      Cookies.set('X_ga_clientId', clientId);
+    });
   </script>
 </head>
 

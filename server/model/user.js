@@ -124,7 +124,7 @@ class User {
               lName,
               picture)
             .then((entity) => {
-              ga.trackEvent(entity.id, orgId, 'User', 'create', 'success', '100');
+              ga.trackEvent(entity.id, orgId, 'User', 'create', 'success', '100', cookie.getGAClientId(req))
               emailService.sendEmail(email, 'welcome', fName, orgName, entity.id, orgId).catch((err)=>{
                 // email sending error
               });

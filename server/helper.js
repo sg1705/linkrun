@@ -3,7 +3,7 @@
 var logger = require('./model/logger.js');
 var fs = require('fs');
 var path = require('path');
-
+var cookie = require('./cookie.js');
 /**
  * Caching function
  */
@@ -55,16 +55,17 @@ function clearRouteUrl(res) {
   res.cookie('X_ROUTE', '', {expires: new Date(0)});
 }
 
-function routeUrl(linkEntities, userId, orgId, ga, res) {
+function routeUrl(linkEntities, userId, orgId, ga, req, res) {
   let url = linkEntities.entities[0].url;
   if (!(url.startsWith('https://') || url.startsWith('http://') || url.startsWith('ftp://'))) {
     url = 'http://' + url;
   }        
   if (linkEntities.entities[0].userId == userId) 
-    ga.trackEvent(userId, orgId, 'Link', 'redirect', linkEntities.entities[0].id, '100')
+    ga.trackEvent(userId, orgId, 'Link', 'redirect', linkEntities.entities[0].id, '100', cookie.getGAClientId(req))
   else 
-    ga.trackEvent(userId, orgId, 'Link', 'redirect others', linkEntities.entities[0].id, '100')      
-  logger.info("routing_link", {'link' : linkEntities.entities[0]});
+    ga.trackEvent(userId, orgId, 'Link', 'redirect others', linkEntities.entities[0].id, '100', cookie.getGAClientId(req))      
+  ga.trackPageView(userId, orgId, '/link/redirect', cookie.getGAClientId(req))
+  logger.info("routing_link", {'userId':userId, 'orgId':orgId,'link' : linkEntities.entities[0]});
   res.redirect(301, url);
 }
 

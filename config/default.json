@@ -38,6 +38,7 @@
     "signInPage": "index-test"
   },
   "COOKIE_NAME" : "xsession",
+  "GA_CLIENT_ID" : "X_ga_clientId"
   "email":{
     "SENDGRID_API_KEY": "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",
     "template_id": {
