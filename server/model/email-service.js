@@ -41,7 +41,6 @@ class EmailService {
 
             }).catch(err => {
                 logger.error('email send error:' + err);
-                ga.trackEvent(userId, orgId, 'User', 'email send', 'fail', '100');
                 reject(err);
             });
         })
