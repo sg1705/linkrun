@@ -104,7 +104,9 @@ class User {
               fName,
               lName,
               picture)
-            .catch (err => {
+            .then((entity) => {
+              resolve(entity);
+            }).catch (err => {
               logger.error('rejected when updating user', err);
               reject(err);
             })
