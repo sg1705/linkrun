@@ -9,7 +9,7 @@
     "build:prod": "cd client && ng build --prod --env=prod",
     "build:staging": "cd client && ng build --prod",
     "test": "npm run test-unit",
-    "test-unit": "mocha 'server/**/*.spec.js'"
+    "test-unit": "mocha \"server/**/*.spec.js\""
   },
   "private": true,
   "dependencies": {
@@ -19,6 +19,7 @@
     "@google-cloud/logging": "^1.0.0",
     "@google-cloud/trace-agent": "^2.3.1",
     "@microsoft/microsoft-graph-client": "^1.0.0",
+    "@sendgrid/mail": "^6.1.4",
     "body-parser": "^1.16.0",
     "config": "^1.25.1",
     "cookie-parser": "^1.4.3",

@@ -2,6 +2,9 @@
 'use strict';
 
 const config = require('config');
+const EmailService = require('./email-service')
+let emailService = new EmailService()
+
 var logger   = require('./logger.js');
 var GA = require('./google-analytics-tracking.js')
 
@@ -81,7 +84,7 @@ class User {
    * @return user entity
    * 
    */
-  getOrCreateUserByEmail(orgId, email, fName, lName, picture, refresh_token) {
+  getOrCreateUserByEmail(orgId, orgName, email, fName, lName, picture, refresh_token) {
     return new Promise((resolve, reject) => {
       this.readByColumn(
         'email',
@@ -101,9 +104,7 @@ class User {
               fName,
               lName,
               picture)
-            .then((entity) => {
-              resolve(entity);
-            }).catch (err => {
+            .catch (err => {
               logger.error('rejected when updating user', err);
               reject(err);
             })
@@ -119,6 +120,9 @@ class User {
               picture)
             .then((entity) => {
               ga.trackEvent(entity.id, orgId, 'User', 'create', 'success', '100', cookie.getGAClientId(req))
+              emailService.sendEmail(email, 'welcome', fName, orgName, entity.id, orgId).catch((err)=>{
+                // email sending error
+              });
               resolve(entity);
             }).catch(err => {
               logger.error('rejected when creating user', err);
@@ -158,6 +162,8 @@ class User {
       })
     });
   }
+
+
 
 
 
