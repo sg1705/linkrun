@@ -4,7 +4,9 @@ const request = require('request');
 var logger       = require('./logger.js');
 
 class GA {
-
+    trackEvent(userId, orgId, category, action, label, value, cb) {
+        this.trackEvent(userId, orgId, category, action, label, value, null, cb) 
+    }
     trackEvent(userId, orgId, category, action, label, value, clientId, cb) {
         if (clientId == null) {
             clientId = "NOT_SET";
