@@ -78,7 +78,7 @@ describe('LinkService', () => {
           conn.mockRespond(new Response(new ResponseOptions({ body: JSON.stringify(mockLink) })));
         });
         
-        service.(new Link(mockLink.id, mockLink.link, mockLink.url, mockLink.description)).then(link => {
+        service.createLink(new Link(mockLink.id, mockLink.link, mockLink.url, mockLink.description)).then(link => {
           expect(link.url).toEqual(mockLink.url);
           expect(link.description).toEqual(mockLink.description);
         });

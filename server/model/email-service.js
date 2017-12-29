@@ -9,7 +9,6 @@ let ga = new GA();
 let org = new Org();
 sgMail.setApiKey(config.get("email.SENDGRID_API_KEY"));
 const WRAPPER = '%';
-let cookie = require('../cookie.js');
 
 class EmailService {
 
