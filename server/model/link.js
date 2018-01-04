@@ -17,13 +17,6 @@ class Link {
   getModel () {
     return this.modelService;
   }
-
-  /**
-   * Create a new link.
-   */
-createLink(orgId, userId, gourl, url, description, acl) {
-  this.createLink(orgId, userId, null, gourl, url, description, acl); 
- }
   /**
    * Create a new link.
    * First check whether the link exists or not
@@ -49,15 +42,6 @@ createLink(orgId, userId, clientId, gourl, url, description, acl) {
       }  
     });
    })
-  }
-
-  /**
-   * Update an existing link.
-   * First check whether the link is owned by userId
-   * Client id is null
-   */
-  updateLink(id, orgId, userId, gourl, url, description, acl) {
-    this.updateLink(id, orgId, userId, null, gourl, url, description, acl);
   }
 
   /**
@@ -125,13 +109,6 @@ createLink(orgId, userId, clientId, gourl, url, description, acl) {
     return this.getModel().readByColumn('userId', userId);
   }
 
-   /**
-   * Delete a link.
-   * First check whether the link is owned by userId
-   */
-  deleteLink(userId, orgId, linkId) {
-    this.deleteLink(userId, orgId, null, linkId)
-  }
   /**
    * Delete a link.
    * First check whether the link is owned by userId
