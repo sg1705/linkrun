@@ -1,4 +1,5 @@
 'use strict';
+
 const sgMail = require('@sendgrid/mail')
 const config = require('config');
 const Org = require('./org')
@@ -17,11 +18,12 @@ class EmailService {
      * 
      */
 
-    sendEmail(email, emailType, fName, orgName, userId, orgId) {
+    sendEmail(email, emailType, fName, orgName, clientId, userId, orgId) {
         return new Promise((resolve, reject) => {
             if (process.env.NODE_ENV == 'production') return; //skip email for production for now
             let companyName = 'your company';
             if (orgName && !orgName.includes('@gmail.com')) companyName = orgName;
+            let GA_TRACKING_ID = config.get('ga.GA_TRACKING_ID');
             const msg = {
                 to: email,
                 from: 'info@link.run',
@@ -29,14 +31,17 @@ class EmailService {
                 substitutionWrappers: [WRAPPER, WRAPPER ],
                 substitutions: {
                     "name": fName,
-                    "orgName": companyName
+                    "orgName": companyName,
+                    "gaTrackingId" : GA_TRACKING_ID,
+                    "clientId" : clientId,
+                    "userId" : userId
                 },
                 template_id: config.get("email.template_id." + emailType)
             };
             logger.info('sending email: ', {'userId':userId, 'orgId':orgId, 'msg':msg});
             sgMail.send(msg).then((result)=>{
-                logger.info('email sent successfully');
-                ga.trackEvent(userId, orgId, 'User', 'email send', 'success', '100');
+                logger.info('email sent:', {'userId':userId, 'orgId':orgId, 'msg':msg});
+                ga.trackEvent(userId, orgId, 'User', 'email send', 'success', '100', clientId);
                 resolve();
 
             }).catch(err => {

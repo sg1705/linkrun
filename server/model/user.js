@@ -84,7 +84,7 @@ class User {
    * @return user entity
    * 
    */
-  getOrCreateUserByEmail(orgId, orgName, email, fName, lName, picture, refresh_token) {
+  getOrCreateUserByEmail(orgId, orgName, email, fName, lName, picture, refresh_token, clientId) {
     return new Promise((resolve, reject) => {
       this.readByColumn(
         'email',
@@ -121,9 +121,10 @@ class User {
               lName,
               picture)
             .then((entity) => {
-              ga.trackEvent(entity.id, orgId, 'User', 'create', 'success', '100', cookie.getGAClientId(req))
-              emailService.sendEmail(email, 'welcome', fName, orgName, entity.id, orgId).catch((err)=>{
+              ga.trackEvent(entity.id, orgId, 'User', 'create', 'success', '100', clientId)
+              emailService.sendEmail(email, 'welcome', fName, orgName, clientId, entity.id, orgId).catch((err)=>{
                 // email sending error
+                logger.error('rejected when sending email', err);
               });
               resolve(entity);
             }).catch(err => {
