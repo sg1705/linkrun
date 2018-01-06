@@ -20,7 +20,6 @@ class EmailService {
 
     sendEmail(email, emailType, fName, orgName, clientId, userId, orgId) {
         return new Promise((resolve, reject) => {
-            if (process.env.NODE_ENV == 'production') return; //skip email for production for now
             let companyName = 'your company';
             if (orgName && !orgName.includes('@gmail.com')) companyName = orgName;
             let GA_TRACKING_ID = config.get('ga.GA_TRACKING_ID');
