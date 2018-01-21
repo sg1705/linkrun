@@ -3,7 +3,6 @@
 var config = require('config');
 
 const COOKIE_NAME = config.get('COOKIE_NAME');
-const GA_CLIENT_ID = config.get('GA_CLIENT_ID');
 
 /**
  * Sets the cookie in the header
@@ -42,15 +41,11 @@ function clearCookie(res) {
   res.clearCookie(COOKIE_NAME, { path: '/' });
 }
 
-function getGAClientId(req) {
-  return req.cookies[GA_CLIENT_ID];
-}
 
 module.exports = {
     setCookie: setCookie,
     getOrgIdFromCookie: getOrgIdFromCookie,
     getUserIdFromCookie: getUserIdFromCookie,    
     getXsession: getXsession,
-    clearCookie: clearCookie,
-    getGAClientId : getGAClientId
+    clearCookie: clearCookie
 };

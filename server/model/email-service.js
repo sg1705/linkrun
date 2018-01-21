@@ -18,7 +18,7 @@ class EmailService {
      * 
      */
 
-    sendEmail(email, emailType, fName, orgName, clientId, userId, orgId) {
+    sendEmail(email, emailType, fName, orgName, userId, orgId) {
         return new Promise((resolve, reject) => {
             let companyName = 'your company';
             if (orgName && !orgName.includes('@gmail.com')) companyName = orgName;
@@ -32,7 +32,6 @@ class EmailService {
                     "name": fName,
                     "orgName": companyName,
                     "gaTrackingId" : GA_TRACKING_ID,
-                    "clientId" : clientId,
                     "userId" : userId
                 },
                 template_id: config.get("email.template_id." + emailType)
@@ -40,7 +39,7 @@ class EmailService {
             logger.info('sending email: ', {'userId':userId, 'orgId':orgId, 'msg':msg});
             sgMail.send(msg).then((result)=>{
                 logger.info('email sent:', {'userId':userId, 'orgId':orgId, 'msg':msg});
-                ga.trackEvent(userId, orgId, 'User', 'email send', 'success', '100', clientId);
+                ga.trackEvent(userId, orgId, 'User', 'email send', 'success', '100');
                 resolve();
 
             }).catch(err => {
