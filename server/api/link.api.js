@@ -87,7 +87,7 @@ router.post('/create', (req, res, next) => {
   var url = req.body['url'];
   var desc = req.body['description'] || '';
   var acl = req.body['acl'] || 0;  
-  linkService.createLink(orgId, userId, cookieService.getGAClientId(req), link, url, desc, acl).then(entity => {
+  linkService.createLink(orgId, userId, link, url, desc, acl).then(entity => {
     res.json(entity);
   })  
 });
@@ -101,7 +101,7 @@ router.post('/update/:id', (req, res, next) => {
   var url = req.body['url'];
   var desc = req.body['description'] || '';
   var acl = req.body['acl'] || 0;
-  linkService.updateLink(linkId, orgId, userId, cookieService.getGAClientId(req), link, url, desc, acl).then(entity => {
+  linkService.updateLink(linkId, orgId, userId, link, url, desc, acl).then(entity => {
     res.json(entity);
   })  
 });
@@ -111,7 +111,7 @@ router.post('/delete/:id', (req, res, next) => {
   var userId = cookieService.getXsession(req).userId;
   var orgId = cookieService.getXsession(req).orgId;
   var linkId = req.params['id'];
-  linkService.deleteLink(userId, orgId, cookieService.getGAClientId(req), linkId).then(done => {
+  linkService.deleteLink(userId, orgId, linkId).then(done => {
     res.json({done: true});
   })  
 });

@@ -57,23 +57,23 @@ function authenticateUser(res,req, authMethod, orgName, email, fName, lName, pic
         //org doesn't exist
         return orgService.createOrg(orgName, authMethod)
           .then((orgEntity) => {
-                return userService.getOrCreateUserByEmail(orgEntity.id, orgName, email, fName, lName, picture, refresh_token, cookie.getGAClientId(req))
+                return userService.getOrCreateUserByEmail(orgEntity.id, orgName, email, fName, lName, picture, refresh_token)
                 .then(userEntity => {
-                  ga.trackEvent(userEntity.id, orgEntity.id, 'Org', 'create', 'success', '100', cookie.getGAClientId(req));
+                  ga.trackEvent(userEntity.id, orgEntity.id, 'Org', 'create', 'success', '100');
                   return userEntity;
               })
         });
           } else {
             // org exists
             let orgEntity = orgEntities.entities[0];
-            return userService.getOrCreateUserByEmail(orgEntity.id, orgName, email, fName, lName, picture, refresh_token, cookie.getGAClientId(req));
+            return userService.getOrCreateUserByEmail(orgEntity.id, orgName, email, fName, lName, picture, refresh_token);
           }
       })
       .then(userEntity => {
         //set cookie
         cookie.setCookie(res, userEntity.id, userEntity.orgId);  
-        ga.trackEvent(userEntity.id, userEntity.orgId, 'User', 'login', 'success', '100', cookie.getGAClientId(req))
-        ga.trackPageView(userEntity.id, userEntity.orgId, '/user-login-success', cookie.getGAClientId(req))      
+        ga.trackEvent(userEntity.id, userEntity.orgId, 'User', 'login', 'success', '100')
+        ga.trackPageView(userEntity.id, userEntity.orgId, '/user-login-success')      
       })
       //retrieve user
       .then((data) => {

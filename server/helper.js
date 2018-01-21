@@ -61,10 +61,10 @@ function routeUrl(linkEntities, userId, orgId, ga, req, res) {
     url = 'http://' + url;
   }        
   if (linkEntities.entities[0].userId == userId) 
-    ga.trackEvent(userId, orgId, 'Link', 'redirect', linkEntities.entities[0].id, '100', cookie.getGAClientId(req))
+    ga.trackEvent(userId, orgId, 'Link', 'redirect', linkEntities.entities[0].id, '100')
   else 
-    ga.trackEvent(userId, orgId, 'Link', 'redirect others', linkEntities.entities[0].id, '100', cookie.getGAClientId(req))      
-  ga.trackPageView(userId, orgId, '/link/redirect', cookie.getGAClientId(req))
+    ga.trackEvent(userId, orgId, 'Link', 'redirect others', linkEntities.entities[0].id, '100')      
+  ga.trackPageView(userId, orgId, '/link/redirect')
   logger.info("routing_link", {'userId':userId, 'orgId':orgId,'link' : linkEntities.entities[0]});
   res.redirect(301, url);
 }
