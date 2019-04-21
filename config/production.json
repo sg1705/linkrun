@@ -44,5 +44,9 @@
     "template_id": {
       "welcome": "352eefaa-8377-46c6-9649-49588ebc7aeb"
     }
+  },
+
+  "flags" : {
+    "angular8" : "false"
   }
 }
