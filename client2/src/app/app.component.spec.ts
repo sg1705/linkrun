@@ -3,13 +3,17 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
 import { UserService } from './services/user.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
+declare let ga: Function;
+
 
 
 describe('AppComponent', () => {
+  window['ga'] = function() {}
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       providers: [
-        UserService
+        UserService,
       ],
       imports: [
         RouterTestingModule,

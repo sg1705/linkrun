@@ -7,6 +7,8 @@ import { environment } from '../environments/environment';
 
 import { Observable } from 'rxjs';
 
+// declare ga as a function to set and sent the events
+declare let ga: Function;
 
 @Component({
   selector: 'app-root',
@@ -32,7 +34,25 @@ export class AppComponent {
         window.location.href = '/_/';
       }
       console.log('Environment is production:', environment.production);
-    })    
+    });
+
+    //initialize Google Analytics
+    ga('create', environment.ga.GA_TRACKING_ID, 'auto');
+
+    //fire analytics event at every router
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.user.subscribe(user => {
+          ga('set', 'userId', user.id); // Set the user ID using signed-in user_id.          
+          ga('set', 'page', event.urlAfterRedirects);
+          ga('send', 'pageview');
+        })
+      }
+    });
+
+
+
+
   }
 
 
