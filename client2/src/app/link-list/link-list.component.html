@@ -1,0 +1,58 @@
+<section class="mat-typography">
+  <div class="mat-elevation-z4" style="background:white">
+    <h1 class="title mat-h1"><i>{{(user|async)?.orgName}}</i> short links.
+      <a style="color:#ababab; float:right" href="/__/api/linksv2/csv" download="links.csv">
+        <span class="material-icons">cloud_download</span>
+      </a>
+    </h1>
+    <mat-table #table [dataSource]="dataSource">
+
+      <ng-container matColumnDef="link">
+        <mat-header-cell *matHeaderCellDef class="link header"> SHORT LINK </mat-header-cell>
+        <mat-cell *matCellDef="let row; let i = index" class="shortlink-cell">
+          <div style="display: flex;flex-direction: row;">
+            <a class="shortlink" href="/{{row.link}}">link.run/{{row.link}}</a>
+            <div class="shortlink-clipboard" style="display:flex; flex-direction:row">
+            <a matTooltip="Copy ShortLink" [hidden]="activeIndex != i" (click)="copyLink(row.link)" style="cursor:pointer;color:#ababab">
+              <span class="material-icons">content_copy</span>
+            </a>
+            <a matTooltip="Copy Public ShortLink" *ngIf="userObject.orgAllowsPublic" [hidden]="activeIndex != i" (click)="copyPublicLink(row.link)" style="cursor:pointer;color: orange">
+              <span class="material-icons">content_copy</span>
+            </a>
+            </div>
+          </div>
+        </mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="url">
+        <mat-header-cell *matHeaderCellDef class="url header">URL</mat-header-cell>
+        <mat-cell *matCellDef="let row" class="url"> <a href="/{{row.url}}">{{row.url}}</a></mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="createdby">
+        <mat-header-cell *matHeaderCellDef class="link header">CREATED BY</mat-header-cell>
+        <mat-cell *matCellDef="let row" class="link" style="flex: 0 0 25%">{{row.userName}}</mat-cell>
+      </ng-container>
+
+
+
+      <ng-container matColumnDef="action">
+        <mat-header-cell *matHeaderCellDef class="action header">ACTION</mat-header-cell>
+        <mat-cell *matCellDef="let row; let i = index" class="action">
+          <div style="display:flex; justify-content: flex-end;">
+            <div style="color:#ababab" *ngIf="row['canEdit']">
+              <a style="color:#ababab"><span class="material-icons">edit</span></a>
+              <!-- <a routerLink="/link/edit/{{row.id}}" style="color:#ababab"><span class="material-icons">edit</span></a> -->
+            </div>
+            <div style="color:#ababab" *ngIf="row['canEdit']">
+              <a (click)="deleteLink(row.id)" style="cursor:pointer"><span class="material-icons">delete</span></a>
+            </div>
+          </div>
+        </mat-cell>
+      </ng-container>
+
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row [class.highlight]="activeIndex == i" (mouseenter)="mouseEnter(i)" (mouseleave)="mouseLeave(i)" *matRowDef="let row; let i = index; columns: displayedColumns;"></mat-row>
+    </mat-table>
+  </div>
+</section>

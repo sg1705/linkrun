@@ -15,6 +15,7 @@ describe('AppComponent', () => {
   window['ga'] = function() {}
 
   let backend: HttpTestingController;
+  let userService: UserService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -31,6 +32,7 @@ describe('AppComponent', () => {
         LoginComponent
       ],
     }).compileComponents();
+    userService = TestBed.get(UserService);
   }));
 
   it('should create the app', () => {
@@ -38,4 +40,5 @@ describe('AppComponent', () => {
     const app = fixture.debugElement.componentInstance;
     expect(app).toBeTruthy();
   });
+
 });

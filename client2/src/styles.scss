@@ -9,6 +9,34 @@
 // Be sure that you only ever include this mixin once!
 @include mat-core();
 
+
+$custom-theme-primary: mat-palette($mat-orange);
+$custom-theme-accent: mat-palette($mat-orange, A200, A100, A400);
+
+$custom-theme-warn: mat-palette($mat-red);
+$custom-theme: mat-light-theme($custom-theme-primary, $custom-theme-accent, $custom-theme-warn);
+
+@include angular-material-theme($custom-theme);
+
+
+.alternate-theme {
+    $alternate-primary: mat-palette($mat-light-green);
+    $alternate-accent: mat-palette($mat-light-green, A200, A100, A400);
+    $alternate-warn: mat-palette($mat-red);
+    $alternate-theme: mat-dark-theme($alternate-primary, $alternate-accent, $alternate-warn);
+    @include angular-material-theme($alternate-theme);
+}
+
+$gray-theme-300: mat-palette($mat-grey,  A200, A100, A400);
+
+.app {
+  // background-color: mat-color($custom-theme-primary, 100);
+  //https://medium.com/covalent-ui/angular-material-2-theme-tutorial-2f7e6c344006
+  background-color: mat-color($gray-theme-300, 300);
+}
+
+
+
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/

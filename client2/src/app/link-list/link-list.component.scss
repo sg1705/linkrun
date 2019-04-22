@@ -1,0 +1,76 @@
+// Import theming functions
+@import '~@angular/material/theming';
+@import '../../styles.scss';
+
+@include mat-core();
+
+.title {
+    padding: 24px;
+}
+
+.header {
+    font-size: 18px;
+}
+
+.link {
+    flex: 5;
+    margin-right: 15px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    a {
+        text-decoration: none;
+        color:mat-color($custom-theme-primary, 700);
+    }
+
+}
+
+.shortlink-cell {
+    flex: 1 0 25%;
+    margin-right: 15px;
+}
+
+.shortlink {
+    width:100px;
+    flex: 0 0 75%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;        
+    a {
+        text-decoration: none;
+        color:mat-color($custom-theme-primary, 700);
+
+    }
+}
+
+.shortlink-clipboard {
+    flex: 0 0 25%;
+}
+
+
+.url {
+    flex:1 0 33%;
+    margin-right: 15px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    a {
+        text-decoration: none;
+        color:mat-color($custom-theme-primary, 700);
+    }
+      
+
+}
+
+.action {
+    flex: 0 0 10%;
+    text-align:right;
+    margin-right: 15px;
+    overflow: hidden;
+    text-overflow: ellipsis;        
+}
+
+.highlight {
+   background-color: mat-color($gray-theme-300, 300);
+}
