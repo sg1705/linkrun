@@ -24,8 +24,6 @@ export class AppComponent {
     public router: Router) {
   }
 
-  title = 'client2';
-
   ngOnInit() {
     this.user = this.userService.getCurrentUser();
     this.user.subscribe(user => {

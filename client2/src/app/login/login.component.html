@@ -1,0 +1,11 @@
+<div style="display:flex; align-items: center">
+  <!--<p>
+    {{fName}}&nbsp;{{lName}}
+  </p>-->
+  <img style="cursor: pointer" class="img-circle" src="{{picture}}" [matMenuTriggerFor]="appMenu">
+  </div>
+  
+  <mat-menu #appMenu="matMenu">
+    <button mat-menu-item onclick="window.location.href='/__/logout'">Logout</button>
+    <button mat-menu-item>Help</button>
+  </mat-menu>
