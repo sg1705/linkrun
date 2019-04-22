@@ -73,13 +73,6 @@ describe('LinkService', () => {
   });
   
 
-  it('should return true if link exists', () => {
-    linkService.isLinkExists('fsdfds').then(isExists => {
-      expect(isExists).toBeTruthy();
-    });
-    backend.expectOne('/__/api/linksv2/linkName/'+mockResponse[0].gourl).flush(mockResponse);
-  });
-
   it('should return done when link is deleted', () => {
     linkService.deleteLink(mockResponse[0].id).then(isDeleted => {
       expect(isDeleted).toBeTruthy();
