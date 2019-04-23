@@ -1,7 +1,7 @@
 import { Component, OnInit, Renderer } from '@angular/core';
 
-import { DataSource } from '@angular/cdk/collections';
-import {MatSnackBar} from '@angular/material';
+import { DataSource }   from '@angular/cdk/collections';
+import { MatSnackBar }  from '@angular/material';
 
 import { ClipboardService } from 'ngx-clipboard';
 
@@ -22,7 +22,7 @@ import * as _ from 'lodash';
   selector: 'app-link-list',
   templateUrl: './link-list.component.html',
   styleUrls: ['./link-list.component.scss'],
-  providers: [LinkService]  
+  providers: [LinkService]
 })
 export class LinkListComponent implements OnInit {
 

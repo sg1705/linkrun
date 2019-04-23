@@ -1,0 +1,213 @@
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { FormBuilder,FormGroup } from '@angular/forms';
+
+import { MatDialog } from '@angular/material';
+
+import { LinkService } from '../services/link.service';
+import { UserService } from '../services/user.service';
+import { HelperService } from '../services/helper.service';
+import { User } from '../model/user';
+import { Link } from '../model/link';
+import { LinkListComponent } from '../link-list/link-list.component';
+import { FormConfirmationDialogComponent } from './form-confirmation-dialog.component';
+
+
+import { Observable } from 'rxjs';
+import * as _ from 'lodash';
+declare let ga: Function;
+
+
+
+@Component({
+  selector: 'app-form',
+  templateUrl: './form.component.html',
+  styleUrls: ['./form.component.scss'],
+})
+export class FormComponent implements OnInit {
+
+  linkFormGroup: FormGroup;
+  linkId: number = 0;
+  mode:string = 'create';
+  formTitle:string = 'Create Short Link';
+  user: Observable<User>;
+  orgName: string;
+  orgShortName: string;
+  aclMessage:boolean = false;
+  shortLink:string = '';
+
+  @ViewChild('link') inputLink: ElementRef;
+  @ViewChild('url') inputUrl: ElementRef;
+  @ViewChild('linkList') linkList: LinkListComponent;
+
+  linkAclFeature:boolean = false;
+
+  constructor(
+    private dialog: MatDialog,
+    private fb: FormBuilder, 
+    private linkService: LinkService,
+    private userService: UserService,
+    private helperService: HelperService,
+    private router: Router,
+    private activateRoute: ActivatedRoute ) {
+      this.linkFormGroup = fb.group({
+        'link': '',
+        'url' : '',
+        'description': '',
+        'acl': false
+      });
+      //set linkid in case of /edit
+      this.activateRoute.params.subscribe(params => {
+        this.linkId = params['id'];
+        this.initialize();
+      })
+      this.user = this.userService.getCurrentUser();
+      this.user.subscribe(user => {
+        this.orgName = user.orgName;
+        this.orgShortName = user.orgShortName;
+        
+        if (user.orgAllowsPublic) {
+          this.linkAclFeature = true;
+        }
+      });    
+   }
+
+  ngOnInit() {
+    this.inputLink.nativeElement.focus();
+
+    this.linkFormGroup.controls['acl'].valueChanges.subscribe(acl => {
+      this.aclMessage = acl;
+    })
+
+    this.linkFormGroup.controls['link'].valueChanges.subscribe(link => {
+      this.shortLink = link;
+    })
+    
+
+  }
+
+
+  private initialize() {
+    if (this.router.url.indexOf('/link/edit') > -1) {
+      //set edit mode
+      this.mode = 'edit';
+      this.formTitle = 'Edit Short Link';
+      // get the link
+      this.linkService.getLink(this.linkId)
+      .then(link => {
+        this.linkFormGroup.controls['link'].setValue(link.link);
+        this.linkFormGroup.controls['link'].disable();
+        this.linkFormGroup.controls['url'].setValue(link.url);
+        this.linkFormGroup.controls['description'].setValue(link.description);
+        this.linkFormGroup.controls['acl'].setValue(link.acl != Link.LINK_ACL_DEFAULT);
+      })
+    } else if (this.router.url.indexOf('/link/create') > -1) {
+      this.activateRoute.queryParams.subscribe(params => {
+        let link = params['link'];
+        if (link != null) {
+          this.linkFormGroup.controls['link'].setValue(link);
+        }
+      });
+    }    
+    this.setupValidation();    
+  }
+
+
+  private setupValidation() {
+    this.linkFormGroup.statusChanges.subscribe(data => {
+      for (const field in this.formErrors) {
+          // clear previous error message (if any)
+          this.formErrors[field] = '';
+          const control = this.linkFormGroup.get(field);
+          if (control && control.dirty && !control.valid) {
+            const messages = this.validationMessages[field];
+            for (const key in control.errors) {
+              this.formErrors[field] += messages[key] + ' ';
+            }
+          }
+        }
+    })
+  }
+
+  private getACL(acl:boolean) {
+    if (acl) {
+      return Link.LINK_ACL_PUBLIC;
+    }
+    return Link.LINK_ACL_DEFAULT;
+  }
+
+
+  onSubmit(l):Promise<boolean> {
+    if (this.mode == 'edit') {
+      return new Promise((resolve, reject) => {
+        var link = this.linkFormGroup.controls['link'].value;
+        var url = this.linkFormGroup.controls['url'].value;
+        var description = this.linkFormGroup.controls['description'].value;
+        var acl = this.getACL(this.linkFormGroup.controls['acl'].value);
+        this.linkService.updateLink(new Link(this.linkId, link, url, description, acl))
+        .then(link => {
+          console.log('link updated', link);
+          this.reset();
+          this.showConfirmationDialog(resolve, 'edited', link);
+        })
+      });
+    } else {
+      return new Promise((resolve, reject) => {
+        this.linkService.createLink(new Link(0, l.link, l.url, l.description, this.getACL(l.acl)))
+        .then(link => {
+          console.log('link created', link);
+          this.showConfirmationDialog(resolve, 'created', link);
+          this.linkList.refreshList();
+        })
+      });
+    }
+  }
+
+  private reset() {
+    this.linkList.refreshList();
+    this.linkFormGroup.reset();
+  }
+
+  private showConfirmationDialog(resolve, message, link:Link) {
+    let publicLink = null;
+    if (this.linkAclFeature && this.aclMessage) {
+      publicLink = this.helperService.generatePublicLinkFromOrgShortName(link.link, this.orgShortName)
+    }
+    let dialogRef = this.dialog.open(FormConfirmationDialogComponent, {
+      width: '300px',
+      height: '270px', 
+      data: { 
+        orgName: this.orgName,
+        shortLink: this.helperService.generateFullShortLink(link.link),
+        publicLink: publicLink }
+    });
+    dialogRef.componentInstance.message = message;
+    dialogRef.componentInstance.link = link;
+    //send an analytics event
+    ga('send', 'pageview', '/link/confirm-create');
+    dialogRef.afterClosed().subscribe(result => {
+      this.reset();
+      resolve(this.router.navigateByUrl('/link/create'));            
+    });
+  }
+
+  validationMessages = {
+    'link': {
+      'required':           'Link is required.',
+      'minlength':          'Link must be at least 2 characters long.',
+      'linkName':           'Link by this name already exists'
+    },
+    'url': {
+      'required':   'Url is required.',
+      'minlength':  'Url must be at least 2 characters long.',
+    }
+  };
+
+  formErrors = {
+    'link': '',
+    'url': ''
+  };
+
+
+
+}
