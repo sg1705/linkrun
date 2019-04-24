@@ -12,10 +12,9 @@
     <mat-grid-tile>
       <mat-form-field floatLabel="always">
         <div style="display:flex">
-        <span style="color: #bababa">Link.run/</span>
-        <input #link [formControl]="linkFormGroup.controls['link']" name="link" matInput  linkNameValidator
-          required minlength="2" placeholder="Short Link">
-          </div>        
+          <span style="color: #bababa">Link.run/</span>
+          <input #link [formControl]="linkFormGroup.controls['link']" name="link" matInput  linkNameValidator required minlength="2" placeholder="Short Link"/>
+        </div>        
           <mat-error>
             {{formErrors.link}}
           </mat-error>
@@ -24,7 +23,7 @@
     </mat-grid-tile>
     <mat-grid-tile>
       <mat-form-field>
-        <input style="font-size: 12px" #url [formControl]="linkFormGroup.controls['url']"  name="url" matInput placeholder="URL" required minlength="2">
+        <input style="font-size: 12px" #url [formControl]="linkFormGroup.controls['url']"  name="url" matInput placeholder="URL" required minlength="2"/>
         <mat-error>
             {{formErrors.url}}
         </mat-error>        

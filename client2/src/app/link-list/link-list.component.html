@@ -39,7 +39,7 @@
           <div style="display:flex; justify-content: flex-end;">
             <div style="color:#ababab" *ngIf="row['canEdit']">
               <a style="color:#ababab"><span class="material-icons">edit</span></a>
-              <!-- <a routerLink="/link/edit/{{row.id}}" style="color:#ababab"><span class="material-icons">edit</span></a> -->
+              <a routerLink="/link/edit/{{row.id}}" style="color:#ababab"><span class="material-icons">edit</span></a>
             </div>
             <div style="color:#ababab" *ngIf="row['canEdit']">
               <a (click)="deleteLink(row.id)" style="cursor:pointer"><span class="material-icons">delete</span></a>

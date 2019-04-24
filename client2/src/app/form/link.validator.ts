@@ -9,7 +9,8 @@ import { LinkService } from '../services/link.service';
   providers: [
     {
       provide: NG_ASYNC_VALIDATORS,
-      useExisting: forwardRef(() => LinkNameValidator), multi: true
+      useExisting: LinkNameValidator, multi: true
+    //   useExisting: forwardRef(() => LinkNameValidator), multi: true
     }
   ]
 })
@@ -17,6 +18,7 @@ import { LinkService } from '../services/link.service';
 export class LinkNameValidator implements AsyncValidator {
 
     constructor(private linkService:LinkService) {
+
     }
 
     validate( c : AbstractControl ) : Promise<{[key : string] : any}>|Observable<{[key : string] : any}> {

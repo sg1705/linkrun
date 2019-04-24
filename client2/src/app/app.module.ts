@@ -11,6 +11,8 @@ import { LoginComponent } from './login/login.component';
 import { LinkListComponent } from './link-list/link-list.component';
 import { FormComponent } from './form/form.component';
 import { FormConfirmationDialogComponent } from './form/form-confirmation-dialog.component';
+import { LinkNameValidator } from './form/link.validator';
+
 
 
 @NgModule({
@@ -19,7 +21,8 @@ import { FormConfirmationDialogComponent } from './form/form-confirmation-dialog
     LoginComponent,
     LinkListComponent,
     FormComponent,
-    FormConfirmationDialogComponent
+    FormConfirmationDialogComponent,
+    LinkNameValidator
   ],
   imports: [
     BrowserModule,
