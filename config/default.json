@@ -10,15 +10,15 @@
 
   "oauthCredentials": {
     "google": {
-        "id": "106821081585-q0igdb16nf51g7272vd83s6ao3plnfbh.apps.googleusercontent.com",
-        "secret": "M_Wm9g4EGna0kK7ZQQZpDXar"
+      "id": "106821081585-q0igdb16nf51g7272vd83s6ao3plnfbh.apps.googleusercontent.com",
+      "secret": "M_Wm9g4EGna0kK7ZQQZpDXar"
     },
-    "msft" : {
+    "msft": {
       "client": {
         "id": "45de05e9-2bca-458c-ab3e-37710181611c",
         "secret": "AyrgGTeUPZanMSCmQKe6jWO"
       },
-      "auth" : {
+      "auth": {
         "tokenHost": "https://login.microsoftonline.com",
         "authorizePath": "common/oauth2/v2.0/authorize",
         "tokenPath": "common/oauth2/v2.0/token"
@@ -27,21 +27,25 @@
   },
 
   "oauthCallbacks": {
-    "googleCallbackUrl"  : "http://localhost:8090/__/login/google/oauthcallback",
-    "msftCallbackUrl"    : "http://localhost:8090/__/login/msft/oauthcallback"
+    "googleCallbackUrl": "http://localhost:8090/__/login/google/oauthcallback",
+    "msftCallbackUrl": "http://localhost:8090/__/login/msft/oauthcallback"
   },
-  
-  "ga":{
-    "GA_TRACKING_ID" : "UA-99455967-1"
+
+  "ga": {
+    "GA_TRACKING_ID": "UA-99455967-1"
   },
   "static": {
     "signInPage": "index-test"
   },
-  "COOKIE_NAME" : "xsession",
+  "COOKIE_NAME": "xsession",
   "email": {
     "SENDGRID_API_KEY": "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",
     "template_id": {
       "welcome": "352eefaa-8377-46c6-9649-49588ebc7aeb"
     }
+  },
+
+  "flags": {
+    "angular8": "true"
   }
 }
