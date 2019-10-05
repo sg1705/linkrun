@@ -3,7 +3,11 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+
+  ga: {
+    GA_TRACKING_ID: "UA-99455967-1"
+  }
 };
 
 /*
