@@ -10,9 +10,19 @@ import { AppComponent } from "./app.component";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { LoginComponent } from "./login/login.component";
 import { LinkListComponent } from "./link-list/link-list.component";
+import { FormComponent } from "./form/form.component";
+import { FormConfirmationDialogComponent } from "./form/form-confirmation-dialog.component";
+import { LinkNameValidator } from "./form/link.validator";
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, LinkListComponent],
+  declarations: [
+    AppComponent,
+    LoginComponent,
+    LinkListComponent,
+    FormComponent,
+    FormConfirmationDialogComponent,
+    LinkNameValidator
+  ],
   imports: [
     AppRoutingModule,
     BrowserModule,
@@ -21,6 +31,7 @@ import { LinkListComponent } from "./link-list/link-list.component";
     ReactiveFormsModule,
     MaterialModule
   ],
+  entryComponents: [FormConfirmationDialogComponent],
   providers: [],
   bootstrap: [AppComponent]
 })
