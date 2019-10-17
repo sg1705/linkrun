@@ -1,0 +1,18 @@
+<mat-toolbar class="toolbar">
+  <div
+    style="display:flex; justify-content:space-between; width:100%; align-items: center"
+  >
+    <div>
+      <span style="width: 300px"
+        ><a href="/_/landing"
+          ><img height="40" width="144" src="./assets/logo.png"/></a
+      ></span>
+    </div>
+    <div>URL Shortener for {{ (user | async)?.orgName }}</div>
+    <app-login></app-login>
+  </div>
+</mat-toolbar>
+
+<div style="width:800px; margin:auto">
+  <router-outlet></router-outlet>
+</div>

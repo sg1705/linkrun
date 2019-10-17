@@ -1,0 +1,37 @@
+<div
+  class="mat-typography"
+  style="display:flex; flex-direction:column; height: 100%; justify-content: space-between;"
+>
+  <h1 color="primary" mat-dialog-title>Shortlink Created</h1>
+
+  <p>
+    <b>link.run/{{ link.link }}</b>
+    <a
+      matTooltip="Copy ShortLink"
+      (click)="copyLink()"
+      style="cursor:pointer;color:#ababab"
+      ><span class="material-icons">content_copy</span></a
+    >
+    <a
+      [hidden]="publicLink == null"
+      mdTooltip="Copy Public ShortLink"
+      (click)="copyPublicLink()"
+      style="cursor:pointer;color: orange"
+      ><span class="material-icons">content_copy</span></a
+    >
+    <br />
+    <br />
+    Anyone at <i>{{ data.orgName }}</i> can use this shortlink
+  </p>
+
+  <mat-dialog-actions style="justify-content: flex-end">
+    <button
+      mat-raised-button
+      color="primary"
+      mat-button
+      [mat-dialog-close]="true"
+    >
+      Close
+    </button>
+  </mat-dialog-actions>
+</div>
