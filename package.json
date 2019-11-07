@@ -6,8 +6,8 @@
   "scripts": {
     "start": "node server/app.js",
     "dev": "nodemon server/app.js",
-    "build:prod": "cd client && ng build --prod --env=prod",
-    "build:staging": "cd client && ng build --prod",
+    "build:prod": "cd client3 && ng build --prod --env=prod",
+    "build:staging": "cd client3 && ng build --prod",
     "test": "npm run test-unit",
     "test-unit": "mocha \"server/**/*.spec.js\""
   },

@@ -2,7 +2,7 @@
 
 Linkrun is a large Angular2 app running on a nodejs server.
 
-1. `src` directory has code for client
+1. `src` directory has code for client3
 2. `server` directory has nodejs code for server
 3. `config` has configuration for both dev and production.
 
@@ -20,7 +20,7 @@ Two terminal windows need to be open to run the development environment.
 
 ### Start development server
 
-1. Run `cd client && npm install && ng build --watch` to start the server that will watch any changes in client app and run the build.
+1. Run `cd client3 && npm install && ng build --watch` to start the server that will watch any changes in client3 app and run the build.
 2. Run `npm run dev` to start the server on `http://localhost:8090/`
 3. App Engine will run `npm start`, so make sure that npm start is working
 4. `gcloud app deploy`
@@ -33,7 +33,7 @@ have run the command `gcloud auth application-default login`, your identity can 
 
 # Deploying on Google Cloud Staging
 
-1. Build for product `npm install && cd client && npm install && cd .. && npm run build:staging`
+1. Build for product `npm install && cd client3 && npm install && cd .. && npm run build:staging`
 2. Change the environment variable in app.yaml to `staging`
 3. List projects `gcloud config list`
 4. Set Project `gcloud config set project beta-linkrun`
@@ -46,7 +46,7 @@ have run the command `gcloud auth application-default login`, your identity can 
 When building angular application for production, we should make sure that we are passing `--env=prod` flag
 to `ng build`. `npm run build:prod` passes the environment flag.
 
-1. Build for product `npm install && cd client && npm install && cd .. && npm run build:prod`
+1. Build for product `npm install && cd client3 && npm install && cd .. && npm run build:prod`
 2. Change the environment variable in app.yaml to `production`
 3. List projects `gcloud config list`
 4. Set Project `gcloud config set project prod-linkrun`
