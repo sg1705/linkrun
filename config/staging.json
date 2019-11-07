@@ -46,6 +46,6 @@
   },
 
   "flags": {
-    "angular8": "false"
+    "angular8": "true"
   }
 }
